@@ -1,0 +1,23 @@
+# Large 3D assets
+*.fbx filter=lfs diff=lfs merge=lfs -text
+*.glb filter=lfs diff=lfs merge=lfs -text
+*.gltf filter=lfs diff=lfs merge=lfs -text
+
+# Large textures
+*.dds filter=lfs diff=lfs merge=lfs -text
+*.tga filter=lfs diff=lfs merge=lfs -text
+*.hdr filter=lfs diff=lfs merge=lfs -text
+*.exr filter=lfs diff=lfs merge=lfs -text
+
+# Media
+*.wav filter=lfs diff=lfs merge=lfs -text
+*.mp4 filter=lfs diff=lfs merge=lfs -text
+*.mov filter=lfs diff=lfs merge=lfs -text
+*.psd filter=lfs diff=lfs merge=lfs -text
+
+# Required third-party runtime/build dependencies
+ShaderApp/assimp-vc143-mt.dll filter=lfs diff=lfs merge=lfs -text
+ShaderApp/assimp-vc143-mt.lib filter=lfs diff=lfs merge=lfs -text
+ShaderApp/dxcompiler.dll filter=lfs diff=lfs merge=lfs -text
+ShaderApp/dxil.dll filter=lfs diff=lfs merge=lfs -text
+dx12lib/assimp-vc143-mt.lib filter=lfs diff=lfs merge=lfs -text

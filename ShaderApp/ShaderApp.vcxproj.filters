@@ -1,0 +1,375 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{622769f5-b33c-405d-9b0b-8d48d5c0d6b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\dx12lib">
+      <UniqueIdentifier>{d8ad610a-9bc7-496e-b6de-a05bf422c642}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="ShaderApp.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\ShaderApp.rc2">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="d3dcsx_47.dll" />
+    <None Include="dxcompiler.dll" />
+    <None Include="dxgi.dll" />
+    <None Include="dxil.dll" />
+    <None Include="ShaderApp\x64\Debug\assimp-vc143-mt.dll" />
+    <None Include="inc\assimp\.editorconfig" />
+    <None Include="inc\assimp\config.h.in" />
+    <None Include="inc\assimp\module.modulemap" />
+    <None Include="inc\assimp\revision.h.in" />
+    <None Include="packages.config" />
+    <None Include="G_Text.json" />
+    <None Include="box_json.json" />
+    <None Include="tunnel_json.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\ShaderApp.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Shaders\PixelShader.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\VertexShader.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Decal_PS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Lighting_PS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Unlit_PS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\UnlitPixelShader.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Basic_VS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Base_PS.hlsli">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="inc\framework.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Helpers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\pch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\ShaderApp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\ShaderAppDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\assimp\version.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\DirectXTex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Events.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\KeyCodes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\HighResolutionTimer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Camry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resources.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Utility.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Shape.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Lighting.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DX12Lib\inc\Adapter.h">
+      <Filter>Header Files\dx12lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DX12Lib\inc\Buffer.h">
+      <Filter>Header Files\dx12lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DX12Lib\inc\ByteAddressBuffer.h">
+      <Filter>Header Files\dx12lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DX12Lib\inc\CommandList.h">
+      <Filter>Header Files\dx12lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DX12Lib\inc\CommandQueue.h">
+      <Filter>Header Files\dx12lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DX12Lib\inc\ConstantBuffer.h">
+      <Filter>Header Files\dx12lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DX12Lib\inc\ConstantBufferView.h">
+      <Filter>Header Files\dx12lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DX12Lib\inc\d3dx12.h">
+      <Filter>Header Files\dx12lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DX12Lib\inc\Defines.h">
+      <Filter>Header Files\dx12lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DX12Lib\inc\DescriptorAllocation.h">
+      <Filter>Header Files\dx12lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DX12Lib\inc\DescriptorAllocator.h">
+      <Filter>Header Files\dx12lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DX12Lib\inc\DescriptorAllocatorPage.h">
+      <Filter>Header Files\dx12lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DX12Lib\inc\Device.h">
+      <Filter>Header Files\dx12lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DX12Lib\inc\dx12lib.h">
+      <Filter>Header Files\dx12lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DX12Lib\inc\DX12LibPCH.h">
+      <Filter>Header Files\dx12lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DX12Lib\inc\DynamicDescriptorHeap.h">
+      <Filter>Header Files\dx12lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DX12Lib\inc\GenerateMipsPSO.h">
+      <Filter>Header Files\dx12lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DX12Lib\inc\GUI.h">
+      <Filter>Header Files\dx12lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DX12Lib\inc\Helpers.h">
+      <Filter>Header Files\dx12lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DX12Lib\inc\IndexBuffer.h">
+      <Filter>Header Files\dx12lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DX12Lib\inc\Material.h">
+      <Filter>Header Files\dx12lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DX12Lib\inc\Mesh.h">
+      <Filter>Header Files\dx12lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DX12Lib\inc\PanoToCubemapPSO.h">
+      <Filter>Header Files\dx12lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DX12Lib\inc\PipelineStateObject.h">
+      <Filter>Header Files\dx12lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DX12Lib\inc\RenderTarget.h">
+      <Filter>Header Files\dx12lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DX12Lib\inc\Resource.h">
+      <Filter>Header Files\dx12lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DX12Lib\inc\ResourceStateTracker.h">
+      <Filter>Header Files\dx12lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DX12Lib\inc\RootSignature.h">
+      <Filter>Header Files\dx12lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DX12Lib\inc\Scene.h">
+      <Filter>Header Files\dx12lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DX12Lib\inc\SceneNode.h">
+      <Filter>Header Files\dx12lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DX12Lib\inc\ShaderResourceView.h">
+      <Filter>Header Files\dx12lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DX12Lib\inc\StructuredBuffer.h">
+      <Filter>Header Files\dx12lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DX12Lib\inc\SwapChain.h">
+      <Filter>Header Files\dx12lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DX12Lib\inc\Texture.h">
+      <Filter>Header Files\dx12lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DX12Lib\inc\ThreadSafeQueue.h">
+      <Filter>Header Files\dx12lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DX12Lib\inc\UnorderedAccessView.h">
+      <Filter>Header Files\dx12lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DX12Lib\inc\UploadBuffer.h">
+      <Filter>Header Files\dx12lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DX12Lib\inc\VertexBuffer.h">
+      <Filter>Header Files\dx12lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DX12Lib\inc\VertexTypes.h">
+      <Filter>Header Files\dx12lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DX12Lib\inc\Visitor.h">
+      <Filter>Header Files\dx12lib</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\d3dx12.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\OBJ_3D_Model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\SceneVisitor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\EffectPSO.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Light.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Const.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\VideoPage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\ObjectPage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\LightPage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\ControlBoard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\ContentPage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\CameraPage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Object.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\ColorControl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\SceneGeometry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\scenes\HexCorridorScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\pch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ShaderApp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ShaderAppDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\HighResolutionTimer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Utility.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OBJ_3D_Model.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ShaderAppDlgInitialize.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ShaderAppDlgOnUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SceneVisitor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EffectPSO.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ContentPage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LightPage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CameraPage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ControlBoard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ObjectPage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VideoPage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ColorControl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Builder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Fractal.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TT_Text.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MultiMesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MeshObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scenes\HexCorridorScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\source\repos\Materialization\x64\Debug\test_box.json" />
+  </ItemGroup>
+</Project>

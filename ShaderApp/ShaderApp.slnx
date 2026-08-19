@@ -1,0 +1,8 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="../DX12Lib/dx12lib.vcxproj" Id="8dd7f00b-4c3f-46af-aecd-35652a9e35d2" />
+  <Project Path="ShaderApp.vcxproj" />
+</Solution>

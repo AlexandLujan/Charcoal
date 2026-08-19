@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>18.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{8dd7f00b-4c3f-46af-aecd-35652a9e35d2}</ProjectGuid>
+    <RootNamespace>dx12lib</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v145</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v145</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v145</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v145</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;DX12LIB_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;DX12LIB_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;DX12LIB_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions);_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS;_CRT_SECURE_NO_WARNINGS;DX12LIB_API_EXPORTS</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>DX12LibPCH.h</PrecompiledHeaderFile>
+      <OpenMPSupport>false</OpenMPSupport>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <AdditionalIncludeDirectories>$(ProjectDir)inc</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <EnableParallelCodeGeneration>false</EnableParallelCodeGeneration>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+      <AdditionalDependencies>d3d12.lib;dxgi.lib;dxguid.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;assimp-vc143-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;DX12LIB_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions);_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>DX12LibPCH.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>C:\Users\djump\Documents\TNTech\source\dx12lib\inc</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
+      <EnableParallelCodeGeneration>false</EnableParallelCodeGeneration>
+      <OpenMPSupport>false</OpenMPSupport>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+      <AdditionalDependencies>d3d12.lib;dxgi.lib;dxguid.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;assimp-vc143-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="GenerateMips_CS.h" />
+    <ClInclude Include="ImGUI_PS.h" />
+    <ClInclude Include="ImGUI_VS.h" />
+    <ClInclude Include="inc\Adapter.h" />
+    <ClInclude Include="inc\assimp\aabb.h" />
+    <ClInclude Include="inc\assimp\ai_assert.h" />
+    <ClInclude Include="inc\assimp\anim.h" />
+    <ClInclude Include="inc\assimp\AssertHandler.h" />
+    <ClInclude Include="inc\assimp\Base64.hpp" />
+    <ClInclude Include="inc\assimp\BaseImporter.h" />
+    <ClInclude Include="inc\assimp\Bitmap.h" />
+    <ClInclude Include="inc\assimp\BlobIOSystem.h" />
+    <ClInclude Include="inc\assimp\ByteSwapper.h" />
+    <ClInclude Include="inc\assimp\camera.h" />
+    <ClInclude Include="inc\assimp\cexport.h" />
+    <ClInclude Include="inc\assimp\cfileio.h" />
+    <ClInclude Include="inc\assimp\cimport.h" />
+    <ClInclude Include="inc\assimp\ColladaMetaData.h" />
+    <ClInclude Include="inc\assimp\color4.h" />
+    <ClInclude Include="inc\assimp\commonMetaData.h" />
+    <ClInclude Include="inc\assimp\config.h" />
+    <ClInclude Include="inc\assimp\CreateAnimMesh.h" />
+    <ClInclude Include="inc\assimp\DefaultIOStream.h" />
+    <ClInclude Include="inc\assimp\DefaultIOSystem.h" />
+    <ClInclude Include="inc\assimp\DefaultLogger.hpp" />
+    <ClInclude Include="inc\assimp\defs.h" />
+    <ClInclude Include="inc\assimp\Exceptional.h" />
+    <ClInclude Include="inc\assimp\Exporter.hpp" />
+    <ClInclude Include="inc\assimp\fast_atof.h" />
+    <ClInclude Include="inc\assimp\GenericProperty.h" />
+    <ClInclude Include="inc\assimp\GltfMaterial.h" />
+    <ClInclude Include="inc\assimp\Hash.h" />
+    <ClInclude Include="inc\assimp\Importer.hpp" />
+    <ClInclude Include="inc\assimp\importerdesc.h" />
+    <ClInclude Include="inc\assimp\IOStream.hpp" />
+    <ClInclude Include="inc\assimp\IOStreamBuffer.h" />
+    <ClInclude Include="inc\assimp\IOSystem.hpp" />
+    <ClInclude Include="inc\assimp\light.h" />
+    <ClInclude Include="inc\assimp\LineSplitter.h" />
+    <ClInclude Include="inc\assimp\LogAux.h" />
+    <ClInclude Include="inc\assimp\Logger.hpp" />
+    <ClInclude Include="inc\assimp\LogStream.hpp" />
+    <ClInclude Include="inc\assimp\material.h" />
+    <ClInclude Include="inc\assimp\MathFunctions.h" />
+    <ClInclude Include="inc\assimp\matrix3x3.h" />
+    <ClInclude Include="inc\assimp\matrix4x4.h" />
+    <ClInclude Include="inc\assimp\MemoryIOWrapper.h" />
+    <ClInclude Include="inc\assimp\mesh.h" />
+    <ClInclude Include="inc\assimp\metadata.h" />
+    <ClInclude Include="inc\assimp\NullLogger.hpp" />
+    <ClInclude Include="inc\assimp\ObjMaterial.h" />
+    <ClInclude Include="inc\assimp\ParsingUtils.h" />
+    <ClInclude Include="inc\assimp\pbrmaterial.h" />
+    <ClInclude Include="inc\assimp\postprocess.h" />
+    <ClInclude Include="inc\assimp\Profiler.h" />
+    <ClInclude Include="inc\assimp\ProgressHandler.hpp" />
+    <ClInclude Include="inc\assimp\qnan.h" />
+    <ClInclude Include="inc\assimp\quaternion.h" />
+    <ClInclude Include="inc\assimp\RemoveComments.h" />
+    <ClInclude Include="inc\assimp\scene.h" />
+    <ClInclude Include="inc\assimp\SceneCombiner.h" />
+    <ClInclude Include="inc\assimp\SGSpatialSort.h" />
+    <ClInclude Include="inc\assimp\SkeletonMeshBuilder.h" />
+    <ClInclude Include="inc\assimp\SmallVector.h" />
+    <ClInclude Include="inc\assimp\SmoothingGroups.h" />
+    <ClInclude Include="inc\assimp\SpatialSort.h" />
+    <ClInclude Include="inc\assimp\StandardShapes.h" />
+    <ClInclude Include="inc\assimp\StreamReader.h" />
+    <ClInclude Include="inc\assimp\StreamWriter.h" />
+    <ClInclude Include="inc\assimp\StringComparison.h" />
+    <ClInclude Include="inc\assimp\StringUtils.h" />
+    <ClInclude Include="inc\assimp\Subdivision.h" />
+    <ClInclude Include="inc\assimp\texture.h" />
+    <ClInclude Include="inc\assimp\TinyFormatter.h" />
+    <ClInclude Include="inc\assimp\types.h" />
+    <ClInclude Include="inc\assimp\vector2.h" />
+    <ClInclude Include="inc\assimp\vector3.h" />
+    <ClInclude Include="inc\assimp\version.h" />
+    <ClInclude Include="inc\assimp\Vertex.h" />
+    <ClInclude Include="inc\assimp\XmlParser.h" />
+    <ClInclude Include="inc\assimp\XMLTools.h" />
+    <ClInclude Include="inc\assimp\ZipArchiveIOSystem.h" />
+    <ClInclude Include="inc\Buffer.h" />
+    <ClInclude Include="inc\ByteAddressBuffer.h" />
+    <ClInclude Include="inc\CommandList.h" />
+    <ClInclude Include="inc\CommandQueue.h" />
+    <ClInclude Include="inc\ConstantBuffer.h" />
+    <ClInclude Include="inc\ConstantBufferView.h" />
+    <ClInclude Include="inc\d3dx12.h" />
+    <ClInclude Include="inc\Defines.h" />
+    <ClInclude Include="inc\DescriptorAllocation.h" />
+    <ClInclude Include="inc\DescriptorAllocator.h" />
+    <ClInclude Include="inc\DescriptorAllocatorPage.h" />
+    <ClInclude Include="inc\Device.h" />
+    <ClInclude Include="inc\dx12lib.h" />
+    <ClInclude Include="inc\DynamicDescriptorHeap.h" />
+    <ClInclude Include="inc\GenerateMipsPSO.h" />
+    <ClInclude Include="inc\GUI.h" />
+    <ClInclude Include="inc\Helpers.h" />
+    <ClInclude Include="inc\imgui\imconfig.h" />
+    <ClInclude Include="inc\imgui\imgui.h" />
+    <ClInclude Include="inc\imgui\imgui_impl_win32.h" />
+    <ClInclude Include="inc\imgui\imgui_internal.h" />
+    <ClInclude Include="inc\imgui\imstb_rectpack.h" />
+    <ClInclude Include="inc\imgui\imstb_textedit.h" />
+    <ClInclude Include="inc\imgui\imstb_truetype.h" />
+    <ClInclude Include="inc\IndexBuffer.h" />
+    <ClInclude Include="inc\Material.h" />
+    <ClInclude Include="inc\Mesh.h" />
+    <ClInclude Include="inc\PanoToCubemapPSO.h" />
+    <ClInclude Include="inc\DX12LibPCH.h" />
+    <ClInclude Include="inc\PipelineStateObject.h" />
+    <ClInclude Include="inc\RenderTarget.h" />
+    <ClInclude Include="inc\Resource.h" />
+    <ClInclude Include="inc\ResourceStateTracker.h" />
+    <ClInclude Include="inc\RootSignature.h" />
+    <ClInclude Include="inc\Scene.h" />
+    <ClInclude Include="inc\SceneNode.h" />
+    <ClInclude Include="inc\ShaderResourceView.h" />
+    <ClInclude Include="inc\StructuredBuffer.h" />
+    <ClInclude Include="inc\SwapChain.h" />
+    <ClInclude Include="inc\Texture.h" />
+    <ClInclude Include="inc\ThreadSafeQueue.h" />
+    <ClInclude Include="inc\UnorderedAccessView.h" />
+    <ClInclude Include="inc\UploadBuffer.h" />
+    <ClInclude Include="inc\VertexBuffer.h" />
+    <ClInclude Include="inc\VertexTypes.h" />
+    <ClInclude Include="inc\Visitor.h" />
+    <ClInclude Include="PanoToCubemap_CS.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">DX12LibPCH.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">DX12LibPCH.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="src\Adapter.cpp" />
+    <ClCompile Include="src\Buffer.cpp" />
+    <ClCompile Include="src\ByteAddressBuffer.cpp" />
+    <ClCompile Include="src\CommandList.cpp" />
+    <ClCompile Include="src\CommandQueue.cpp" />
+    <ClCompile Include="src\ConstantBuffer.cpp" />
+    <ClCompile Include="src\ConstantBufferView.cpp" />
+    <ClCompile Include="src\DescriptorAllocation.cpp" />
+    <ClCompile Include="src\DescriptorAllocator.cpp" />
+    <ClCompile Include="src\DescriptorAllocatorPage.cpp" />
+    <ClCompile Include="src\Device.cpp" />
+    <ClCompile Include="src\DynamicDescriptorHeap.cpp" />
+    <ClCompile Include="src\GenerateMipsPSO.cpp" />
+    <ClCompile Include="src\GUI.cpp" />
+    <ClCompile Include="src\imgui\imgui.cpp" />
+    <ClCompile Include="src\imgui\imgui_demo.cpp" />
+    <ClCompile Include="src\imgui\imgui_draw.cpp" />
+    <ClCompile Include="src\imgui\imgui_impl_win32.cpp" />
+    <ClCompile Include="src\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="src\IndexBuffer.cpp" />
+    <ClCompile Include="src\Material.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\Mesh.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\PanoToCubemapPSO.cpp" />
+    <ClCompile Include="src\PipelineStateObject.cpp" />
+    <ClCompile Include="src\RenderTarget.cpp" />
+    <ClCompile Include="src\Resource.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\ResourceStateTracker.cpp" />
+    <ClCompile Include="src\RootSignature.cpp" />
+    <ClCompile Include="src\Scene.cpp" />
+    <ClCompile Include="src\SceneNode.cpp" />
+    <ClCompile Include="src\ShaderResourceView.cpp" />
+    <ClCompile Include="src\StructuredBuffer.cpp" />
+    <ClCompile Include="src\SwapChain.cpp" />
+    <ClCompile Include="src\Texture.cpp" />
+    <ClCompile Include="src\UnorderedAccessView.cpp" />
+    <ClCompile Include="src\UploadBuffer.cpp" />
+    <ClCompile Include="src\VertexBuffer.cpp" />
+    <ClCompile Include="src\VertexTypes.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="inc\assimp\.editorconfig" />
+    <None Include="inc\assimp\color4.inl" />
+    <None Include="inc\assimp\material.inl" />
+    <None Include="inc\assimp\matrix3x3.inl" />
+    <None Include="inc\assimp\matrix4x4.inl" />
+    <None Include="inc\assimp\module.modulemap" />
+    <None Include="inc\assimp\quaternion.inl" />
+    <None Include="inc\assimp\revision.h.in" />
+    <None Include="inc\assimp\SmoothingGroups.inl" />
+    <None Include="inc\assimp\vector2.inl" />
+    <None Include="inc\assimp\vector3.inl" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="assimp-vc143-mt.lib" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+    <Import Project="packages\directxtex_desktop_2019.2025.10.28.1\build\native\directxtex_desktop_2019.targets" Condition="Exists('packages\directxtex_desktop_2019.2025.10.28.1\build\native\directxtex_desktop_2019.targets')" />
+  </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\directxtex_desktop_2019.2025.10.28.1\build\native\directxtex_desktop_2019.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\directxtex_desktop_2019.2025.10.28.1\build\native\directxtex_desktop_2019.targets'))" />
+  </Target>
+</Project>

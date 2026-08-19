@@ -1,0 +1,195 @@
+# ============================================================
+# Charcoal
+# Visual Studio / C++ / DirectX 12
+# ============================================================
+
+
+# ------------------------------------------------------------
+# Visual Studio
+# ------------------------------------------------------------
+
+.vs/
+.vscode/
+
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Visual Studio temporary/database files
+*.VC.db
+*.VC.VC.opendb
+*.opendb
+*.sdf
+*.opensdf
+*.cache
+*.aps
+*.ncb
+
+
+# ------------------------------------------------------------
+# Build directories
+# ------------------------------------------------------------
+
+Debug/
+Release/
+RelWithDebInfo/
+MinSizeRel/
+
+x64/
+x86/
+Win32/
+
+bin/
+obj/
+
+[Bb]uild/
+[Bb]uilds/
+out/
+
+
+# ------------------------------------------------------------
+# C / C++ generated files
+# ------------------------------------------------------------
+
+*.obj
+*.o
+*.iobj
+*.ipdb
+
+*.pch
+*.idb
+
+*.ilk
+*.pdb
+
+*.exp
+*.lastbuildstate
+
+*.tlog
+*.log
+
+
+# ------------------------------------------------------------
+# Executables / generated binaries
+# ------------------------------------------------------------
+
+*.exe
+*.dll
+
+# Generated libraries.
+# If a third-party dependency requires a precompiled .lib,
+# explicitly un-ignore that dependency below.
+*.lib
+
+
+# ------------------------------------------------------------
+# DirectX / HLSL generated shader binaries
+# ------------------------------------------------------------
+
+*.cso
+
+# Keep source shaders
+!*.hlsl
+!*.hlsli
+
+
+# ------------------------------------------------------------
+# MSBuild
+# ------------------------------------------------------------
+
+*.recipe
+*.FileListAbsolute.txt
+
+GeneratedFiles/
+
+
+# ------------------------------------------------------------
+# NuGet
+# ------------------------------------------------------------
+
+packages/
+*.nupkg
+*.snupkg
+
+
+# ------------------------------------------------------------
+# Temporary / backup files
+# ------------------------------------------------------------
+
+*.tmp
+*.temp
+*.bak
+*.old
+*.orig
+
+*~
+~$*
+
+*.swp
+*.swo
+
+
+# ------------------------------------------------------------
+# Crash / debug output
+# ------------------------------------------------------------
+
+*.dmp
+
+sandbox_debug_log.txt
+
+
+# ------------------------------------------------------------
+# OS-generated files
+# ------------------------------------------------------------
+
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+.DS_Store
+
+
+# ------------------------------------------------------------
+# Charcoal runtime/generated data
+# ------------------------------------------------------------
+
+logs/
+Logs/
+
+cache/
+Cache/
+
+temp/
+Temp/
+
+captures/
+Captures/
+
+
+# ------------------------------------------------------------
+# PIX / RenderDoc captures
+# These can become enormous.
+# ------------------------------------------------------------
+
+*.wpix
+*.rdc
+
+
+# ------------------------------------------------------------
+# Keep repository metadata/config
+# ------------------------------------------------------------
+
+!.gitignore
+!.gitattributes
+
+# ------------------------------------------------------------
+# Required third-party binaries
+# ------------------------------------------------------------
+
+!ShaderApp/assimp-vc143-mt.dll
+!ShaderApp/assimp-vc143-mt.lib
+!ShaderApp/dxcompiler.dll
+!ShaderApp/dxil.dll
+
+!dx12lib/assimp-vc143-mt.lib
