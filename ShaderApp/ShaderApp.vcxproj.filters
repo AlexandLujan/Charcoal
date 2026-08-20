@@ -38,10 +38,10 @@
     <None Include="inc\assimp\config.h.in" />
     <None Include="inc\assimp\module.modulemap" />
     <None Include="inc\assimp\revision.h.in" />
-    <None Include="packages.config" />
     <None Include="G_Text.json" />
     <None Include="box_json.json" />
     <None Include="tunnel_json.json" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\ShaderApp.ico">

@@ -16,6 +16,8 @@
 #include <VertexTypes.h>
 #include <Helpers.h>
 #include <fstream>
+#include <filesystem>
+#include <windows.h>
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -23,6 +25,20 @@
 using namespace Microsoft::WRL;
 using namespace DirectX;
 using namespace dx12lib;
+
+using namespace Microsoft::WRL;
+using namespace DirectX;
+using namespace dx12lib;
+
+std::filesystem::path GetExecutableDirectory()
+{
+    wchar_t path[MAX_PATH];
+
+    GetModuleFileNameW(nullptr, path, MAX_PATH);
+
+    return std::filesystem::path(path).parent_path();
+}
+
 // Clamp a value between a min and max range.
 template<typename T>
 constexpr const T& clamp(const T& val, const T& min, const T& max)
@@ -147,22 +163,36 @@ BOOL CShaderAppDlg::Initialize()
     log << "[Initialize] Root signature created\n";
     log.flush();
 
+    const std::filesystem::path executableDirectory = GetExecutableDirectory();
+
+    const std::filesystem::path vertexShaderPath =
+        executableDirectory / L"VertexShader.cso";
+
+    const std::filesystem::path pixelShaderPath =
+        executableDirectory / L"PixelShader.cso";
+
     Microsoft::WRL::ComPtr<ID3DBlob> vertexShaderBlob;
 
-    log << "[Initialize] Loading VertexShader.cso\n";
+    log << "[Initialize] Loading VertexShader.cso from: "
+        << vertexShaderPath.string() << "\n";
     log.flush();
 
-    ThrowIfFailed(D3DReadFileToBlob(L"VertexShader.cso", &vertexShaderBlob));
+    ThrowIfFailed(
+        D3DReadFileToBlob(vertexShaderPath.c_str(), &vertexShaderBlob)
+    );
 
     log << "[Initialize] VertexShader.cso loaded\n";
     log.flush();
 
     Microsoft::WRL::ComPtr<ID3DBlob> pixelShaderBlob;
 
-    log << "[Initialize] Loading PixelShader.cso\n";
+    log << "[Initialize] Loading PixelShader.cso from: "
+        << pixelShaderPath.string() << "\n";
     log.flush();
 
-    ThrowIfFailed(D3DReadFileToBlob(L"PixelShader.cso", &pixelShaderBlob));
+    ThrowIfFailed(
+        D3DReadFileToBlob(pixelShaderPath.c_str(), &pixelShaderBlob)
+    );
 
     log << "[Initialize] PixelShader.cso loaded\n";
     log.flush();
