@@ -200,8 +200,12 @@ BOOL CShaderAppDlg::OnInitDialog()
 
 	RegisterLight("Default Directional Light", defaultLight);
 
+	LightName = "Default Directional Light";
+	currentLight = defaultLight;
+
 	controlBoard->ResetLightingNameList();
 	controlBoard->UpdateAddLightingName("Default Directional Light");
+	controlBoard->SetSelectedLighting(0);
 
 	g_IsInitialized = false;
 
@@ -365,89 +369,241 @@ LRESULT CShaderAppDlg::OnCameraMessage(WPARAM wParam, LPARAM lParam)
 			}
 			break;
 		case WM_CAMERA_X_CHANGED:
+		{
 			c = CameraList[cameraName];
 			if (c == nullptr) break;
-			c->X() = (INT)lParam;
 
-	//		c->Update();
-	//		needs_update = true;
+			const int32_t value = static_cast<int32_t>(lParam);
+			c->X() = static_cast<float>(value) / 10.0f;
 
-			c->set_LookAt(
-				c->CameraPositionVector(),
-				c->TargetPositionVector(),
-				XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f)
-			);
+			//		c->Update();
+			//		needs_update = true;
+
+			XMVECTOR eye = c->CameraPositionVector();
+			XMVECTOR target = c->TargetPositionVector();
+
+			if (!XMVector3Equal(eye, target))
+			{
+				XMVECTOR direction = XMVector3Normalize(
+					XMVectorSubtract(target, eye)
+				);
+
+				XMVECTOR up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+
+				float alignment = fabsf(
+					XMVectorGetX(
+						XMVector3Dot(direction, up)
+					)
+				);
+
+				// If looking almost straight up/down,
+				// use Z as the temporary up axis instead.
+				if (alignment >= 0.999f)
+				{
+					up = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
+				}
+
+				c->set_LookAt(eye, target, up);
+			}
+		}
 			break;
 		case WM_CAMERA_Y_CHANGED:
+		{
 			c = CameraList[cameraName];
 			if (c == nullptr) break;
-			c->Y() = (INT)lParam;
 
-	//		c->Update();
-	//		needs_update = true;
+			const int32_t value = static_cast<int32_t>(lParam);
+			c->Y() = static_cast<float>(value) / 10.0f;
 
-			c->set_LookAt(
-				c->CameraPositionVector(),
-				c->TargetPositionVector(),
-				XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f)
-			);
+			//		c->Update();
+			//		needs_update = true;
 
+			XMVECTOR eye = c->CameraPositionVector();
+			XMVECTOR target = c->TargetPositionVector();
+
+			if (!XMVector3Equal(eye, target))
+			{
+				XMVECTOR direction = XMVector3Normalize(
+					XMVectorSubtract(target, eye)
+				);
+
+				XMVECTOR up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+
+				float alignment = fabsf(
+					XMVectorGetX(
+						XMVector3Dot(direction, up)
+					)
+				);
+
+				// If looking almost straight up/down,
+				// use Z as the temporary up axis instead.
+				if (alignment >= 0.999f)
+				{
+					up = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
+				}
+
+				c->set_LookAt(eye, target, up);
+			}
+		}
 			break;
 		case WM_CAMERA_Z_CHANGED:
+		{
 			c = CameraList[cameraName];
 			if (c == nullptr) break;
-			c->Z() = (INT)lParam;
 
-	//		c->Update();
-	//		needs_update = true;
+			const int32_t value = static_cast<int32_t>(lParam);
+			c->Z() = static_cast<float>(value) / 10.0f;
 
-			c->set_LookAt(
-				c->CameraPositionVector(),
-				c->TargetPositionVector(),
-				XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f)
-			);
+			//		c->Update();
+			//		needs_update = true;
+
+			XMVECTOR eye = c->CameraPositionVector();
+			XMVECTOR target = c->TargetPositionVector();
+
+			if (!XMVector3Equal(eye, target))
+			{
+				XMVECTOR direction = XMVector3Normalize(
+					XMVectorSubtract(target, eye)
+				);
+
+				XMVECTOR up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+
+				float alignment = fabsf(
+					XMVectorGetX(
+						XMVector3Dot(direction, up)
+					)
+				);
+
+				// If looking almost straight up/down,
+				// use Z as the temporary up axis instead.
+				if (alignment >= 0.999f)
+				{
+					up = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
+				}
+
+				c->set_LookAt(eye, target, up);
+			}
+		}
 			break;
 		case WM_CAMERA_TARGET_X_CHANGED:
+		{
 			c = CameraList[cameraName];
 			if (c == nullptr) break;
-			c->TargetX() = (INT)lParam;
 
-	//		c->Update();
-	//		needs_update = true;
+			const int32_t value = static_cast<int32_t>(lParam);
+			c->TargetX() = static_cast<float>(value) / 10.0f;
 
-			c->set_LookAt(
-				c->CameraPositionVector(),
-				c->TargetPositionVector(),
-				XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f)
-			);
+
+			//		c->Update();
+			//		needs_update = true;
+
+			XMVECTOR eye = c->CameraPositionVector();
+			XMVECTOR target = c->TargetPositionVector();
+
+			if (!XMVector3Equal(eye, target))
+			{
+				XMVECTOR direction = XMVector3Normalize(
+					XMVectorSubtract(target, eye)
+				);
+
+				XMVECTOR up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+
+				float alignment = fabsf(
+					XMVectorGetX(
+						XMVector3Dot(direction, up)
+					)
+				);
+
+				// If looking almost straight up/down,
+				// use Z as the temporary up axis instead.
+				if (alignment >= 0.999f)
+				{
+					up = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
+				}
+
+				c->set_LookAt(eye, target, up);
+			}
+		}
 			break;
 		case WM_CAMERA_TARGET_Y_CHANGED:
+		{
 			c = CameraList[cameraName];
 			if (c == nullptr) break;
-			c->TargetY() = (INT)lParam;
 
-	//		c->Update();
-	//		needs_update = true;
+			const int32_t value = static_cast<int32_t>(lParam);
+			c->TargetY() = static_cast<float>(value) / 10.0f;
 
-			c->set_LookAt(
-				c->CameraPositionVector(),
-				c->TargetPositionVector(),
-				XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f)
-			);
+
+			//		c->Update();
+			//		needs_update = true;
+
+			XMVECTOR eye = c->CameraPositionVector();
+			XMVECTOR target = c->TargetPositionVector();
+
+			if (!XMVector3Equal(eye, target))
+			{
+				XMVECTOR direction = XMVector3Normalize(
+					XMVectorSubtract(target, eye)
+				);
+
+				XMVECTOR up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+
+				float alignment = fabsf(
+					XMVectorGetX(
+						XMVector3Dot(direction, up)
+					)
+				);
+
+				// If looking almost straight up/down,
+				// use Z as the temporary up axis instead.
+				if (alignment >= 0.999f)
+				{
+					up = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
+				}
+
+				c->set_LookAt(eye, target, up);
+			}
+		}
 			break;
 		case WM_CAMERA_TARGET_Z_CHANGED:
+		{
 			c = CameraList[cameraName];
 			if (c == nullptr) break;
-			c->TargetZ() = (INT)lParam;
 
-	//		c->Update();
-	//		needs_update = true;
+			const int32_t value = static_cast<int32_t>(lParam);
+			c->TargetZ() = static_cast<float>(value) / 10.0f;
 
-			c->set_LookAt(
-				c->CameraPositionVector(),
-				c->TargetPositionVector(),
-				XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f)
-			);
+
+			//		c->Update();
+			//		needs_update = true;
+
+			XMVECTOR eye = c->CameraPositionVector();
+			XMVECTOR target = c->TargetPositionVector();
+
+			if (!XMVector3Equal(eye, target))
+			{
+				XMVECTOR direction = XMVector3Normalize(
+					XMVectorSubtract(target, eye)
+				);
+
+				XMVECTOR up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+
+				float alignment = fabsf(
+					XMVectorGetX(
+						XMVector3Dot(direction, up)
+					)
+				);
+
+				// If looking almost straight up/down,
+				// use Z as the temporary up axis instead.
+				if (alignment >= 0.999f)
+				{
+					up = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
+				}
+
+				c->set_LookAt(eye, target, up);
+			}
+		}
 			break;
 	}
 	return NOERROR;
@@ -569,7 +725,7 @@ LRESULT CShaderAppDlg::OnLightMessage(WPARAM wParam, LPARAM lParam)
 	shared_ptr<Light> l = currentLight;
 	if ((currentLight == nullptr) and (wParam != WM_LIGHT_CHANGED))
 	{
-		l = LightList[LightingName];
+		l = LightList[LightName];
 		if (l == nullptr) return 1;
 		currentLight = l;
 	}
@@ -596,22 +752,40 @@ LRESULT CShaderAppDlg::OnLightMessage(WPARAM wParam, LPARAM lParam)
 				l->TurnOff();
 			break;
 		case WM_LIGHT_X_CHANGED:
-			l->X() = (float)lParam;
+		{
+			const int32_t value = static_cast<int32_t>(lParam);
+			l->X() = static_cast<float>(value);
+		}
 			break;
 		case WM_LIGHT_Y_CHANGED:
-			l->Y() = (float)lParam;
+		{
+			const int32_t value = static_cast<int32_t>(lParam);
+			l->Y() = static_cast<float>(value);
+		}
 			break;
 		case WM_LIGHT_Z_CHANGED:
-			l->Z() = (float)lParam;
+		{
+			const int32_t value = static_cast<int32_t>(lParam);
+			l->Z() = static_cast<float>(value);
+		}
 			break;
 		case WM_LIGHT_TARGET_X_CHANGED:
-			l->TargetX() = (float)lParam;
+		{ 
+			const int32_t value = static_cast<int32_t>(lParam); 
+			l->TargetX() = static_cast<float>(value) / 100.0f;
+		}
 			break;
 		case WM_LIGHT_TARGET_Y_CHANGED:
-			l->TargetY() = (float)lParam;
+		{
+			const int32_t value = static_cast<int32_t>(lParam);
+			l->TargetY() = static_cast<float>(value) / 100.0f;
+		}
 			break;
 		case WM_LIGHT_TARGET_Z_CHANGED:
-			l->TargetZ() = (float)lParam;
+		{ 
+			const int32_t value = static_cast<int32_t>(lParam);
+			l->TargetZ() = static_cast<float>(value) / 100.0f;
+		}
 			break;
 		case WM_LIGHT_COLOR_CHANGED:
 			{
@@ -623,6 +797,7 @@ LRESULT CShaderAppDlg::OnLightMessage(WPARAM wParam, LPARAM lParam)
 			{
 		//		FLOAT the_intensity = powf(10.0f, ((float)lParam / 100.0f));
 		//		l->Intensity() = the_intensity;
+			l->diffuseIntensity = static_cast<float>(lParam) / 100.0f;
 			}
 			break;
 		case WM_LIGHT_AMBIENT_COLOR_CHANGED:
@@ -633,8 +808,9 @@ LRESULT CShaderAppDlg::OnLightMessage(WPARAM wParam, LPARAM lParam)
 			break;
 		case WM_LIGHT_AMBIENT_INTENSITY_CHANGED:
 			{
-				FLOAT the_intensity = powf(10.0f, ((float)lParam / 100.0f));
-				l->Ambient() = the_intensity;
+				// FLOAT the_intensity = powf(10.0f, ((float)lParam / 100.0f));
+				// l->Ambient() = the_intensity;
+				l->Ambient() = static_cast<float>(lParam) / 100.0f;
 			}
 			break;
 		case WM_LIGHT_BEAM_CONE_ANGLE_CHANGED:

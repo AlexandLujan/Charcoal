@@ -76,39 +76,62 @@ void CCameraPage::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 		switch (SliderID)
 		{
 		case IDC_CAMERA_X_SLIDER:
-			((CControlBoard*)GetParentSheet())->SendCameraMessage(WM_CAMERA_X_CHANGED, (slideValue - (SCREEN_WIDTH / 2)) / 5);
-			text.Format((LPCWSTR)L"%d", (slideValue - (SCREEN_WIDTH / 2)) / 10);
+		{
+			const int value = slideValue - (SCREEN_WIDTH / 2);
+			((CControlBoard*)GetParentSheet())->SendCameraMessage(WM_CAMERA_X_CHANGED, value);
+
+			text.Format(L"%.1f", value / 10.0f);
 			camera_location_x.SetWindowTextW(text);
-			break;
+		}
+		break;
 		case IDC_CAMERA_Y_SLIDER:
-			((CControlBoard*)GetParentSheet())->SendCameraMessage(WM_CAMERA_Y_CHANGED, (slideValue - (SCREEN_HEIGHT / 2)) / 5);
-			text.Format((LPCWSTR)L"%d", (slideValue - (SCREEN_HEIGHT / 2)) / 10);
+		{
+			const int value = slideValue - (SCREEN_HEIGHT / 2);
+			((CControlBoard*)GetParentSheet())->SendCameraMessage(WM_CAMERA_Y_CHANGED, value);
+
+			text.Format(L"%.1f", value / 10.0f);
 			camera_location_y.SetWindowTextW(text);
-			break;
+		}
+		break;
 		case IDC_CAMERA_Z_SLIDER:
-			((CControlBoard*)GetParentSheet())->SendCameraMessage(WM_CAMERA_Z_CHANGED, (slideValue - (SCREEN_WIDTH / 2)) / 5);
-			text.Format((LPCWSTR)L"%d", (slideValue - (SCREEN_WIDTH / 2))/ 10);
+		{
+			const int value = slideValue - (SCREEN_WIDTH / 2);
+			((CControlBoard*)GetParentSheet())->SendCameraMessage(WM_CAMERA_Z_CHANGED, value);
+
+			text.Format(L"%.1f", value / 10.0f);
 			camera_location_z.SetWindowTextW(text);
-			break;
+		}
+		break;
 		case IDC_TARGET_X_SLIDER:
-			((CControlBoard*)GetParentSheet())->SendCameraMessage(WM_CAMERA_TARGET_X_CHANGED, (slideValue - (SCREEN_WIDTH / 2)));
-			text.Format((LPCWSTR)L"%d", (slideValue - (SCREEN_WIDTH / 2)) / 10);
+		{
+			const int value = slideValue - (SCREEN_WIDTH / 2);
+			((CControlBoard*)GetParentSheet())->SendCameraMessage(WM_CAMERA_TARGET_X_CHANGED, value);
+
+			text.Format(L"%.1f", value / 10.0f);
 			camera_target_x.SetWindowTextW(text);
-			break;
+		}
+		break;
 		case IDC_TARGET_Y_SLIDER:
-			((CControlBoard*)GetParentSheet())->SendCameraMessage(WM_CAMERA_TARGET_Y_CHANGED, (slideValue - (SCREEN_HEIGHT / 2)));
-			text.Format((LPCWSTR)L"%d", (slideValue - (SCREEN_HEIGHT / 2)) / 10);
+		{
+			const int value = slideValue - (SCREEN_HEIGHT / 2);
+			((CControlBoard*)GetParentSheet())->SendCameraMessage(WM_CAMERA_TARGET_Y_CHANGED, value);
+
+			text.Format(L"%.1f", value / 10.0f);
 			camera_target_y.SetWindowTextW(text);
-			break;
+		}
+		break;
 		case IDC_TARGET_Z_SLIDER:
-			((CControlBoard*)GetParentSheet())->SendCameraMessage(WM_CAMERA_TARGET_Z_CHANGED, (slideValue - (SCREEN_WIDTH / 2)));
-			text.Format((LPCWSTR)L"%d", (slideValue - (SCREEN_WIDTH / 2)) / 10);
+		{
+			const int value = slideValue - (SCREEN_WIDTH / 2);
+			((CControlBoard*)GetParentSheet())->SendCameraMessage(WM_CAMERA_TARGET_Z_CHANGED, value);
+
+			text.Format(L"%.1f", value / 10.0f);
 			camera_target_z.SetWindowTextW(text);
-			break;
+		}
+		break;
 		}
 	}
 	CPropertyPage::OnHScroll(nSBCode, nPos, pScrollBar);
-
 }
 void CCameraPage::AddCameraName(string camName)
 {
@@ -125,9 +148,9 @@ void CCameraPage::SetSelectedCamera(int value)
 }
 void CCameraPage::UpdatePosition(XMINT3 pos)
 {
-	Camera_X_Slider.SetPos(pos.x + (SCREEN_WIDTH / 2));
-	Camera_Y_Slider.SetPos(pos.y + (SCREEN_HEIGHT / 2));
-	Camera_Z_Slider.SetPos(pos.z + (SCREEN_WIDTH / 2));
+	Camera_X_Slider.SetPos((pos.x * 10) + (SCREEN_WIDTH / 2));
+    Camera_Y_Slider.SetPos((pos.y * 10) + (SCREEN_HEIGHT / 2));
+    Camera_Z_Slider.SetPos((pos.z * 10) + (SCREEN_WIDTH / 2));
 	CString text;
 	text.Format((LPCWSTR)L"%d", pos.x);
 	camera_location_x.SetWindowTextW(text);
@@ -139,9 +162,9 @@ void CCameraPage::UpdatePosition(XMINT3 pos)
 
 void CCameraPage::UpdateTarget(XMINT3 pos)
 {
-	Target_X_Slider.SetPos(pos.x + (SCREEN_WIDTH / 2));
-	Target_Y_Slider.SetPos(pos.y + (SCREEN_HEIGHT / 2));
-	Target_Z_Slider.SetPos(pos.z + (SCREEN_WIDTH / 2));
+	Target_X_Slider.SetPos((pos.x * 10) + (SCREEN_WIDTH / 2));
+	Target_Y_Slider.SetPos((pos.y * 10) + (SCREEN_HEIGHT / 2));
+	Target_Z_Slider.SetPos((pos.z * 10) + (SCREEN_WIDTH / 2));
 	CString text;
 	text.Format((LPCWSTR)L"%d", pos.x);
 	camera_target_x.SetWindowTextW(text);

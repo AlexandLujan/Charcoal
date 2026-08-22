@@ -121,6 +121,20 @@ void CShaderAppDlg::OnUpdate(UpdateEventArgs ua)
 	commandList->SetGraphicsRootSignature(pRootSignature);
 	commandList->SetGraphics32BitConstants(0, mvpMatrix);
 
+	if (!DirectionalLightList.empty())
+	{
+		const auto& light = DirectionalLightList.begin()->second;
+
+		DirectionalLightCB lightCB{};
+
+		lightCB.Direction = light->DirectionWS;
+		lightCB.Color = light->color;
+		lightCB.Ambient = light->ambient;
+		lightCB.DiffuseIntensity = light->diffuseIntensity;
+
+		commandList->SetGraphicsDynamicConstantBuffer(1, lightCB);
+	}
+
 	/*
 	* The old clear background color, gonna add this later as the default.
 	const FLOAT clearColor[] =
@@ -320,9 +334,9 @@ void CShaderAppDlg::UpdateCamera(float DeltaTime)
 	const XMVECTOR upDirection = XMVectorSet(0, 1, 0, 0);
 
 	XMFLOAT3 eyePos = pCurrentCamera->CameraLocation();
-	eyePos.z += 10.0f * DeltaTime;
+	//eyePos.z += 10.0f * DeltaTime;
 	XMFLOAT3 targetPos = pCurrentCamera->TargetLocation();
-	targetPos.z = eyePos.z + 1000.0f;
+	//targetPos.z = eyePos.z + 1000.0f;
 	pCurrentCamera->set_LookAt(XMVectorSet(eyePos.x, eyePos.y, eyePos.z, 1), XMVectorSet(targetPos.x, targetPos.y, targetPos.z, 1), upDirection);
 
 

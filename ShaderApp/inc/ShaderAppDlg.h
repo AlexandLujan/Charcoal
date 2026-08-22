@@ -48,6 +48,16 @@ struct SimpleParticle
 	int size;
 };
 
+struct DirectionalLightCB
+{
+	DirectX::XMFLOAT4 Direction;
+	DirectX::XMFLOAT4 Color;
+
+	float Ambient;
+	float DiffuseIntensity;
+	DirectX::XMFLOAT2 Padding;
+};
+
 // CShaderAppDlg dialog
 class CShaderAppDlg : public CDialogEx
 {
