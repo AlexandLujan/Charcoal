@@ -12,9 +12,27 @@
 #include <d3dcompiler.h>
 #include <d3dx12.h>
 #include <wrl/client.h>
+#include <filesystem>
+#include <Windows.h>
 
 using namespace Microsoft::WRL;
 using namespace dx12lib;
+
+namespace
+{
+    std::filesystem::path GetExecutableDirectory()
+    {
+        wchar_t path[MAX_PATH];
+
+        GetModuleFileNameW(
+            nullptr,
+            path,
+            MAX_PATH
+        );
+
+        return std::filesystem::path(path).parent_path();
+    }
+}
 
 EffectPSO::EffectPSO(Device& device, bool enableLighting, bool enableDecal)
     : m_Device(device)
@@ -27,25 +45,62 @@ EffectPSO::EffectPSO(Device& device, bool enableLighting, bool enableDecal)
 
     // Setup the root signature
     // Load the vertex shader.
+    const auto executableDirectory =
+        GetExecutableDirectory();
+
+    const auto vertexShaderPath =
+        executableDirectory / L"Basic_VS.cso";
+
     ComPtr<ID3DBlob> vertexShaderBlob;
-    ThrowIfFailed(D3DReadFileToBlob(L"x64/Debug/Basic_VS.cso", &vertexShaderBlob));
+
+    ThrowIfFailed(
+        D3DReadFileToBlob(
+            vertexShaderPath.c_str(),
+            &vertexShaderBlob
+        )
+    );
 
     // Load the pixel shader.
     ComPtr<ID3DBlob> pixelShaderBlob;
-    if (enableLighting) 
+
+    if (enableLighting)
     {
-        if (enableDecal) 
+        if (enableDecal)
         {
-            ThrowIfFailed(D3DReadFileToBlob(L"x64/Debug/Decal_PS.cso", &pixelShaderBlob));
+            const auto pixelShaderPath =
+                executableDirectory / L"Decal_PS.cso";
+
+            ThrowIfFailed(
+                D3DReadFileToBlob(
+                    pixelShaderPath.c_str(),
+                    &pixelShaderBlob
+                )
+            );
         }
         else
         {
-            ThrowIfFailed(D3DReadFileToBlob(L"x64/Debug/Lighting_PS.cso", &pixelShaderBlob));
+            const auto pixelShaderPath =
+                executableDirectory / L"Lighting_PS.cso";
+
+            ThrowIfFailed(
+                D3DReadFileToBlob(
+                    pixelShaderPath.c_str(),
+                    &pixelShaderBlob
+                )
+            );
         }
     }
     else
     {
-        ThrowIfFailed(D3DReadFileToBlob(L"x64/Debug/Unlit_PS.cso", &pixelShaderBlob));
+        const auto pixelShaderPath =
+            executableDirectory / L"Unlit_PS.cso";
+
+        ThrowIfFailed(
+            D3DReadFileToBlob(
+                pixelShaderPath.c_str(),
+                &pixelShaderBlob
+            )
+        );
     }
 
     // Create a root signature.
@@ -90,23 +145,22 @@ EffectPSO::EffectPSO(Device& device, bool enableLighting, bool enableDecal)
         CD3DX12_PIPELINE_STATE_STREAM_SAMPLE_DESC           SampleDesc;
     } pipelineStateStream;
 
-    // Create a color buffer with sRGB for gamma correction.
-    DXGI_FORMAT backBufferFormat = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB; //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    // Match the swap-chain render target format.
+    DXGI_FORMAT backBufferFormat = DXGI_FORMAT_R8G8B8A8_UNORM; //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     DXGI_FORMAT depthBufferFormat = DXGI_FORMAT_D32_FLOAT;
 
-    // Check the best multisample quality level that can be used for the given back buffer format.
-    DXGI_SAMPLE_DESC sampleDesc = m_Device.GetMultisampleQualityLevels(backBufferFormat);
+    // Match the swap chain sample description.
+    DXGI_SAMPLE_DESC sampleDesc = {};
+    sampleDesc.Count = 1;
+    sampleDesc.Quality = 0;
 
     D3D12_RT_FORMAT_ARRAY rtvFormats = {};
     rtvFormats.NumRenderTargets = 1;
     rtvFormats.RTFormats[0] = backBufferFormat;
 
     CD3DX12_RASTERIZER_DESC rasterizerState(D3D12_DEFAULT);
-    if (m_EnableDecal)
-    {
-        // Disable backface culling on decal geometry.
-        rasterizerState.CullMode = D3D12_CULL_MODE_NONE;
-    }
+    rasterizerState.CullMode = D3D12_CULL_MODE_NONE;
+
     const D3D12_INPUT_ELEMENT_DESC inputLayout[] = {
     { "POSITION",  0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
     { "NORMAL",    0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
@@ -162,6 +216,12 @@ inline void EffectPSO::BindTexture(CommandList& commandList, uint32_t offset, co
 
 void EffectPSO::Apply(CommandList& commandList)
 {
+    if (m_pPreviousCommandList != &commandList)
+    {
+        m_DirtyFlags |= DF_All;
+        m_pPreviousCommandList = &commandList;
+    }
+
     commandList.SetPipelineState(m_PipelineStateObject);
     commandList.SetGraphicsRootSignature(m_RootSignature);
 

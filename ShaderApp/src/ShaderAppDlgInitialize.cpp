@@ -102,30 +102,114 @@ BOOL CShaderAppDlg::Initialize()
     auto& commandQueue = m_Device.GetCommandQueue(D3D12_COMMAND_LIST_TYPE_COPY);
     auto commandList = commandQueue.GetCommandList();
 
-    SceneGeometry scene = BuildHexCorridorScene();
+    HexCorridorGeometry scene = BuildHexCorridorScene();
 
-    log << "[Initialize] Copying vertex buffer\n";
+    //
+    // REGULAR GEOMETRY
+    //
+
+    log << "[Initialize] Copying regular vertex buffer\n";
     log.flush();
 
-    pVertexBuffer = commandList->CopyVertexBuffer(
-        scene.Vertices.size(), 
-        sizeof(SceneVertex), 
-        scene.Vertices.data()
+    pRegularVertexBuffer = commandList->CopyVertexBuffer(
+        scene.Regular.Vertices.size(),
+        sizeof(SceneVertex),
+        scene.Regular.Vertices.data()
     );
 
-    log << "[Initialize] Vertex buffer copied\n";
+    log << "[Initialize] Regular vertex buffer copied\n";
     log.flush();
 
-    log << "[Initialize] Copying index buffer\n";
+    log << "[Initialize] Copying regular index buffer\n";
     log.flush();
 
-    pIndexBuffer = commandList->CopyIndexBuffer(
-        scene.Indices.size(),
-        DXGI_FORMAT_R32_UINT, 
-        scene.Indices.data());
+    pRegularIndexBuffer = commandList->CopyIndexBuffer(
+        scene.Regular.Indices.size(),
+        DXGI_FORMAT_R32_UINT,
+        scene.Regular.Indices.data()
+    );
 
-    log << "[Initialize] Index buffer copied\n";
+    log << "[Initialize] Regular index buffer copied\n";
     log.flush();
+
+
+    //
+    // EMISSIVE GEOMETRY
+    //
+
+    log << "[Initialize] Copying emissive vertex buffer\n";
+    log.flush();
+
+    pEmissiveVertexBuffer = commandList->CopyVertexBuffer(
+        scene.Emissive.Vertices.size(),
+        sizeof(SceneVertex),
+        scene.Emissive.Vertices.data()
+    );
+
+    log << "[Initialize] Emissive vertex buffer copied\n";
+    log.flush();
+
+    log << "[Initialize] Copying emissive index buffer\n";
+    log.flush();
+
+    pEmissiveIndexBuffer = commandList->CopyIndexBuffer(
+        scene.Emissive.Indices.size(),
+        DXGI_FORMAT_R32_UINT,
+        scene.Emissive.Indices.data()
+    );
+
+    log << "[Initialize] Emissive index buffer copied\n";
+    log.flush();
+
+    //
+// MATERIALS
+//
+
+    log << "[Initialize] Creating regular material\n";
+    log.flush();
+
+    pRegularMaterial = std::make_shared<Material>();
+
+    pRegularMaterial->SetDiffuseColor(
+        { 0.05f, 0.05f, 0.07f, 1.0f });
+
+    pRegularMaterial->SetAmbientColor(
+        { 0.02f, 0.02f, 0.03f, 1.0f });
+
+    pRegularMaterial->SetSpecularColor(
+        { 0.15f, 0.15f, 0.15f, 1.0f });
+
+    pRegularMaterial->SetEmissiveColor(
+        { 0.0f, 0.0f, 0.0f, 1.0f });
+
+    log << "[Initialize] Regular material created\n";
+    log.flush();
+
+
+    log << "[Initialize] Creating emissive material\n";
+    log.flush();
+
+    pEmissiveMaterial = std::make_shared<Material>();
+
+    pEmissiveMaterial->SetDiffuseColor(
+        { 0.0f, 0.0f, 0.0f, 1.0f });
+
+    pEmissiveMaterial->SetAmbientColor(
+        { 0.0f, 0.0f, 0.0f, 1.0f });
+
+    pEmissiveMaterial->SetSpecularColor(
+        { 0.0f, 0.0f, 0.0f, 1.0f });
+
+    pEmissiveMaterial->SetEmissiveColor(
+        { 1.0f, 0.03f, 0.0f, 1.0f });
+
+    log << "[Initialize] Emissive material created\n";
+    log.flush();
+
+
+    //
+    // EXECUTE COPY COMMAND LIST
+    //
 
     log << "[Initialize] Executing copy command list\n";
     log.flush();
@@ -306,6 +390,19 @@ BOOL CShaderAppDlg::Initialize()
     pDepthTexture = m_Device.CreateTexture(depthTextureDesc, &optimizedClearValue);
 
     log << "[Initialize] Depth texture created\n";
+    log.flush();
+
+    log << "[Initialize] Creating lighting EffectPSO\n";
+    log.flush();
+
+    m_LightingPSO =
+        std::make_shared<EffectPSO>(
+            m_Device,
+            true,   // enable lighting
+            false   // disable decal
+        );
+
+    log << "[Initialize] Lighting EffectPSO created\n";
     log.flush();
 
     log << "[Initialize] Flushing command queue\n";

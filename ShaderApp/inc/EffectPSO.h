@@ -30,7 +30,6 @@
   *  @brief Basic lighting effect.
   */
 
-#include "EffectPSO.h"
 #include "Light.h"
 #include <Device.h> 
 #include <Material.h> 
@@ -109,11 +108,16 @@ public:
 	}
 	void SetPointLights(const map<string, shared_ptr<PointLight>>& pointLights)
 	{
+		m_PointLights.clear();
+
 		for (auto& [key, value] : pointLights)
 		{
-			if (value->Status() == "OFF") continue;
+			if (value->Status() == "OFF")
+				continue;
+
 			m_PointLights.push_back(value);
 		}
+
 		m_DirtyFlags |= DF_PointLights;
 	}
 
@@ -124,11 +128,16 @@ public:
 
 	void SetSpotLights(const map<string, shared_ptr<SpotLight>>& spotLights)
 	{
+		m_SpotLights.clear();
+
 		for (auto& [key, value] : spotLights)
 		{
-			if (value->Status() == "OFF") continue;
+			if (value->Status() == "OFF")
+				continue;
+
 			m_SpotLights.push_back(value);
 		}
+
 		m_DirtyFlags |= DF_SpotLights;
 	}
 
@@ -137,13 +146,19 @@ public:
 		return m_DirectionalLights;
 	}
 
-	void SetDirectionalLights(const map<string, shared_ptr<DirectionalLight>>& directionalLights)
+	void SetDirectionalLights(
+		const map<string, shared_ptr<DirectionalLight>>& directionalLights)
 	{
+		m_DirectionalLights.clear();
+
 		for (auto& [key, value] : directionalLights)
 		{
-			if (value->Status() == "OFF") continue;
+			if (value->Status() == "OFF")
+				continue;
+
 			m_DirectionalLights.push_back(value);
 		}
+
 		m_DirtyFlags |= DF_DirectionalLights;
 	}
 

@@ -87,7 +87,7 @@ void CShaderAppDlg::OnUpdate(UpdateEventArgs ua)
 		DirectX::XMMatrixPerspectiveFovLH(DirectX::XMConvertToRadians(45.0f), aspectRatio, 0.1f, 100.0f);
 	*/
 
-	DirectX:XMMATRIX viewMatrix = pCurrentCamera->get_ViewMatrix();
+	DirectX::XMMATRIX viewMatrix = pCurrentCamera->get_ViewMatrix();
 
 	float aspectRatio = viewport.Width / viewport.Height;
 
@@ -95,16 +95,21 @@ void CShaderAppDlg::OnUpdate(UpdateEventArgs ua)
 		45.0f,
 		aspectRatio,
 		0.1f,
-		100.0f
+		1000.0f
 	);
 
 	DirectX::XMMATRIX projectionMatrix = pCurrentCamera->get_ProjectionMatrix();
 
-	DirectX::XMMATRIX mvpMatrix = DirectX::XMMatrixTranspose(modelMatrix * viewMatrix * projectionMatrix);
+	m_LightingPSO->SetWorldMatrix(modelMatrix);
+	m_LightingPSO->SetViewMatrix(viewMatrix);
+	m_LightingPSO->SetProjectionMatrix(projectionMatrix);
+
+	// DirectX::XMMATRIX mvpMatrix = DirectX::XMMatrixTranspose(modelMatrix * viewMatrix * projectionMatrix);
 
 	auto& commandQueue = m_Device.GetCommandQueue(D3D12_COMMAND_LIST_TYPE_DIRECT);
 	auto commandList = commandQueue.GetCommandList();
 
+	/*
 	switch (RenderStyle)
 	{
 	case WIREFRAME:
@@ -119,8 +124,9 @@ void CShaderAppDlg::OnUpdate(UpdateEventArgs ua)
 		break;
 	}
 	commandList->SetGraphicsRootSignature(pRootSignature);
-	commandList->SetGraphics32BitConstants(0, mvpMatrix);
+	*/
 
+	/*
 	if (!DirectionalLightList.empty())
 	{
 		const auto& light = DirectionalLightList.begin()->second;
@@ -129,11 +135,22 @@ void CShaderAppDlg::OnUpdate(UpdateEventArgs ua)
 
 		lightCB.Direction = light->DirectionWS;
 		lightCB.Color = light->color;
-		lightCB.Ambient = light->ambient;
-		lightCB.DiffuseIntensity = light->diffuseIntensity;
+		lightCB.AmbientColor = AmbientLightColor;
+
+		if (light->Status() == "ON")
+		{
+			lightCB.Ambient = light->ambient;
+			lightCB.DiffuseIntensity = light->diffuseIntensity;
+		}
+		else
+		{
+			lightCB.Ambient = 0.0f;
+			lightCB.DiffuseIntensity = 0.0f;
+		}
 
 		commandList->SetGraphicsDynamicConstantBuffer(1, lightCB);
 	}
+	*/
 
 	/*
 	* The old clear background color, gonna add this later as the default.
@@ -153,12 +170,57 @@ void CShaderAppDlg::OnUpdate(UpdateEventArgs ua)
 
 	commandList->SetRenderTarget(renderTarget);
 	commandList->SetViewport(renderTarget.GetViewport());
-	commandList->SetScissorRect(CD3DX12_RECT(0, 0, LONG_MAX, LONG_MAX));
+	commandList->SetScissorRect(
+		CD3DX12_RECT(0, 0, LONG_MAX, LONG_MAX)
+	);
 
-	commandList->SetVertexBuffer(0, pVertexBuffer);
-	commandList->SetIndexBuffer(pIndexBuffer);
-	commandList->SetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	commandList->DrawIndexed((UINT)pIndexBuffer->GetNumIndicies());
+	commandList->SetPrimitiveTopology(
+		D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST
+	);
+
+	//
+	// REGULAR GEOMETRY
+	//
+
+	m_LightingPSO->SetMaterial(pRegularMaterial);
+	m_LightingPSO->Apply(*commandList);
+
+	commandList->SetVertexBuffer(
+		0,
+		pRegularVertexBuffer
+	);
+
+	commandList->SetIndexBuffer(
+		pRegularIndexBuffer
+	);
+
+	commandList->DrawIndexed(
+		static_cast<UINT>(
+			pRegularIndexBuffer->GetNumIndicies()
+			)
+	);
+
+	//
+	// EMISSIVE GEOMETRY
+	//
+
+	m_LightingPSO->SetMaterial(pEmissiveMaterial);
+	m_LightingPSO->Apply(*commandList);
+
+	commandList->SetVertexBuffer(
+		0,
+		pEmissiveVertexBuffer
+	);
+
+	commandList->SetIndexBuffer(
+		pEmissiveIndexBuffer
+	);
+
+	commandList->DrawIndexed(
+		static_cast<UINT>(
+			pEmissiveIndexBuffer->GetNumIndicies()
+			)
+	);
 
 	commandQueue.ExecuteCommandList(commandList);
 	pSwapChain->Present();

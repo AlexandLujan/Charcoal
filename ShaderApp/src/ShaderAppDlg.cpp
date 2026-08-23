@@ -206,6 +206,9 @@ BOOL CShaderAppDlg::OnInitDialog()
 	controlBoard->ResetLightingNameList();
 	controlBoard->UpdateAddLightingName("Default Directional Light");
 	controlBoard->SetSelectedLighting(0);
+	controlBoard->UpdateLightColor(defaultLight->Color());
+	controlBoard->UpdateLightingAmbientColor(AmbientLightColor);
+	controlBoard->UpdateLightType(defaultLight->LightType());
 
 	g_IsInitialized = false;
 
@@ -802,8 +805,8 @@ LRESULT CShaderAppDlg::OnLightMessage(WPARAM wParam, LPARAM lParam)
 			break;
 		case WM_LIGHT_AMBIENT_COLOR_CHANGED:
 			{
-		//		uint32_t c = (uint32_t)lParam;
-		//		ambient = RGB2FRGB(colorswap(c));
+				uint32_t c = static_cast<uint32_t>(lParam);
+				AmbientLightColor = RGB2FRGB(colorswap(c));
 			}
 			break;
 		case WM_LIGHT_AMBIENT_INTENSITY_CHANGED:
@@ -819,6 +822,12 @@ LRESULT CShaderAppDlg::OnLightMessage(WPARAM wParam, LPARAM lParam)
 				l->Spread() = cosf(DegreesToRadians((float)beam_angle));
 			}
 			break;
+	}
+	if (m_LightingPSO)
+	{
+		m_LightingPSO->SetPointLights(PointLightList);
+		m_LightingPSO->SetSpotLights(SpotLightList);
+		m_LightingPSO->SetDirectionalLights(DirectionalLightList);
 	}
 	return NOERROR;
 }
@@ -1127,8 +1136,26 @@ void CShaderAppDlg::OnTimer(UINT_PTR nIDEvent)
 			log << "[Timer] pSwapChain = " << (pSwapChain != nullptr ? "valid" : "NULL") << "\n";
 			log << "[Timer] pPipelineStateObject = " << (pPipelineStateObject != nullptr ? "valid" : "NULL") << "\n";
 			log << "[Timer] pRootSignature = " << (pRootSignature != nullptr ? "valid" : "NULL") << "\n";
-			log << "[Timer] pVertexBuffer = " << (pVertexBuffer != nullptr ? "valid" : "NULL") << "\n";
-			log << "[Timer] pIndexBuffer = " << (pIndexBuffer != nullptr ? "valid" : "NULL") << "\n";
+			log << "[Timer] pRegularVertexBuffer = "
+				<< (pRegularVertexBuffer != nullptr ? "valid" : "NULL") << "\n";
+
+			log << "[Timer] pRegularIndexBuffer = "
+				<< (pRegularIndexBuffer != nullptr ? "valid" : "NULL") << "\n";
+
+			log << "[Timer] pEmissiveVertexBuffer = "
+				<< (pEmissiveVertexBuffer != nullptr ? "valid" : "NULL") << "\n";
+
+			log << "[Timer] pEmissiveIndexBuffer = "
+				<< (pEmissiveIndexBuffer != nullptr ? "valid" : "NULL") << "\n";
+
+			log << "[Timer] m_LightingPSO = "
+				<< (m_LightingPSO != nullptr ? "valid" : "NULL") << "\n";
+
+			log << "[Timer] pRegularMaterial = "
+				<< (pRegularMaterial != nullptr ? "valid" : "NULL") << "\n";
+
+			log << "[Timer] pEmissiveMaterial = "
+				<< (pEmissiveMaterial != nullptr ? "valid" : "NULL") << "\n";
 			log.flush();
 		}
 
@@ -1136,8 +1163,13 @@ void CShaderAppDlg::OnTimer(UINT_PTR nIDEvent)
 			pSwapChain != nullptr &&
 			pPipelineStateObject != nullptr &&
 			pRootSignature != nullptr &&
-			pVertexBuffer != nullptr &&
-			pIndexBuffer != nullptr)
+			pRegularVertexBuffer != nullptr &&
+			pRegularIndexBuffer != nullptr &&
+			pEmissiveVertexBuffer != nullptr &&
+			pEmissiveIndexBuffer != nullptr &&
+			m_LightingPSO != nullptr &&
+			pRegularMaterial != nullptr &&
+			pEmissiveMaterial != nullptr)
 		{
 			if (timerTick <= 20)
 			{

@@ -8,36 +8,75 @@ using namespace DirectX;
 
 namespace
 {
+    void AddWallQuad(
+        SceneGeometry& geometry,
+        float x0,
+        float z0,
+        float x1,
+        float z1,
+        float bottomY,
+        float topY,
+        const XMFLOAT3& normal,
+        const XMFLOAT3& tangent,
+        const XMFLOAT3& bitangent)
+    {
+        const uint32_t baseVertex =
+            static_cast<uint32_t>(geometry.Vertices.size());
+
+        geometry.Vertices.push_back(
+            {
+                { x0, topY, z0 },
+                normal,
+                tangent,
+                bitangent,
+                { 0.0f, 0.0f, 0.0f }
+            });
+
+        geometry.Vertices.push_back(
+            {
+                { x0, bottomY, z0 },
+                normal,
+                tangent,
+                bitangent,
+                { 0.0f, 0.0f, 0.0f }
+            });
+
+        geometry.Vertices.push_back(
+            {
+                { x1, topY, z1 },
+                normal,
+                tangent,
+                bitangent,
+                { 0.0f, 0.0f, 0.0f }
+            });
+
+        geometry.Vertices.push_back(
+            {
+                { x1, bottomY, z1 },
+                normal,
+                tangent,
+                bitangent,
+                { 0.0f, 0.0f, 0.0f }
+            });
+
+        geometry.Indices.push_back(baseVertex + 0);
+        geometry.Indices.push_back(baseVertex + 1);
+        geometry.Indices.push_back(baseVertex + 2);
+
+        geometry.Indices.push_back(baseVertex + 2);
+        geometry.Indices.push_back(baseVertex + 1);
+        geometry.Indices.push_back(baseVertex + 3);
+    }
+
     void AddHexPrism(
-        SceneGeometry& scene,
+        SceneGeometry& regularGeometry,
+        SceneGeometry& emissiveGeometry,
         float centerX,
         float centerZ,
         float radius,
         float bottomY,
         float topY)
     {
-        // Dark top face.
-        const XMFLOAT3 topColor =
-        {
-            0.05f,
-            0.05f,
-            0.07f
-        };
-
-        // Bright "glow" wall colors.
-        const XMFLOAT3 wallTopColor =
-        {
-            1.00f,
-            0.18f,
-            0.05f
-        };
-
-        const XMFLOAT3 wallBottomColor =
-        {
-            0.35f,
-            0.02f,
-            0.00f
-        };
 
         const XMFLOAT3 topNormal =
         {
@@ -46,8 +85,29 @@ namespace
             0.0f
         };
 
+        const XMFLOAT3 topTangent =
+        {
+            1.0f,
+            0.0f,
+            0.0f
+        };
+
+        const XMFLOAT3 topBitangent =
+        {
+            0.0f,
+            0.0f,
+            1.0f
+        };
+
+        const XMFLOAT3 defaultTexCoord =
+        {
+            0.0f,
+            0.0f,
+            0.0f
+        };
+
         const uint32_t baseVertex =
-            static_cast<uint32_t>(scene.Vertices.size());
+            static_cast<uint32_t>(regularGeometry.Vertices.size());
 
         //
         // TOP FACE VERTICES
@@ -55,11 +115,13 @@ namespace
         //
 
         // Top center
-        scene.Vertices.push_back(
+        regularGeometry.Vertices.push_back(
             {
-                { centerX, topY, centerZ },
-                topNormal,
-                topColor
+                { centerX, topY, centerZ }, // Position
+                topNormal,                  // Normal
+                topTangent,                 // Tangent
+                topBitangent,               // Bitangent
+                defaultTexCoord             // TexCoord
             });
 
         // Top ring for top face (6 verts)
@@ -74,11 +136,13 @@ namespace
             float z =
                 centerZ + radius * std::sin(angle);
 
-            scene.Vertices.push_back(
+            regularGeometry.Vertices.push_back(
                 {
                     { x, topY, z },
                     topNormal,
-                    topColor
+                    topTangent,
+                    topBitangent,
+                    defaultTexCoord
                 });
         }
 
@@ -91,9 +155,9 @@ namespace
         {
             uint32_t next = (i + 1) % 6;
 
-            scene.Indices.push_back(baseVertex + 0);
-            scene.Indices.push_back(baseVertex + 1 + i);
-            scene.Indices.push_back(baseVertex + 1 + next);
+            regularGeometry.Indices.push_back(baseVertex + 0);
+            regularGeometry.Indices.push_back(baseVertex + 1 + i);
+            regularGeometry.Indices.push_back(baseVertex + 1 + next);
         }
 
         //
@@ -103,6 +167,18 @@ namespace
         // This lets every wall have one flat normal instead of
         // sharing corner vertices between adjacent faces.
         //
+
+        const float wallHeight =
+            topY - bottomY;
+
+        const float regularBandHeight =
+            std::min(0.5f, wallHeight * 0.4f);
+
+        const float lowerBandY =
+            bottomY + regularBandHeight;
+
+        const float upperBandY =
+            topY - regularBandHeight;
 
         for (uint32_t i = 0; i < 6; ++i)
         {
@@ -133,6 +209,32 @@ namespace
             float edgeX = x1 - x0;
             float edgeZ = z1 - z0;
 
+            XMFLOAT3 wallTangent =
+            {
+                edgeX,
+                0.0f,
+                edgeZ
+            };
+
+            float tangentLength =
+                std::sqrt(
+                    wallTangent.x * wallTangent.x +
+                    wallTangent.z * wallTangent.z
+                );
+
+            if (tangentLength > 0.0f)
+            {
+                wallTangent.x /= tangentLength;
+                wallTangent.z /= tangentLength;
+            }
+
+            const XMFLOAT3 wallBitangent =
+            {
+                0.0f,
+                1.0f,
+                0.0f
+            };
+
             XMFLOAT3 wallNormal =
             {
                 edgeZ,
@@ -152,75 +254,78 @@ namespace
                 wallNormal.z /= normalLength;
             }
 
-            const uint32_t wallBase =
-                static_cast<uint32_t>(scene.Vertices.size());
-
             //
-            // Four unique vertices for this wall.
+            // Upper regular wall band.
             //
 
-            // Top current.
-            scene.Vertices.push_back(
-                {
-                    { x0, topY, z0 },
-                    wallNormal,
-                    wallTopColor
-                });
-
-            // Bottom current.
-            scene.Vertices.push_back(
-                {
-                    { x0, bottomY, z0 },
-                    wallNormal,
-                    wallBottomColor
-                });
-
-            // Top next.
-            scene.Vertices.push_back(
-                {
-                    { x1, topY, z1 },
-                    wallNormal,
-                    wallTopColor
-                });
-
-            // Bottom next.
-            scene.Vertices.push_back(
-                {
-                    { x1, bottomY, z1 },
-                    wallNormal,
-                    wallBottomColor
-                });
+            AddWallQuad(
+                regularGeometry,
+                x0,
+                z0,
+                x1,
+                z1,
+                upperBandY,
+                topY,
+                wallNormal,
+                wallTangent,
+                wallBitangent
+            );
 
             //
-            // Two triangles forming the wall quad.
+            // Middle emissive wall band.
             //
 
-            scene.Indices.push_back(wallBase + 0);
-            scene.Indices.push_back(wallBase + 1);
-            scene.Indices.push_back(wallBase + 2);
+            AddWallQuad(
+                emissiveGeometry,
+                x0,
+                z0,
+                x1,
+                z1,
+                lowerBandY,
+                upperBandY,
+                wallNormal,
+                wallTangent,
+                wallBitangent
+            );
 
-            scene.Indices.push_back(wallBase + 2);
-            scene.Indices.push_back(wallBase + 1);
-            scene.Indices.push_back(wallBase + 3);
+            //
+            // Lower regular wall band.
+            //
+
+            AddWallQuad(
+                regularGeometry,
+                x0,
+                z0,
+                x1,
+                z1,
+                bottomY,
+                lowerBandY,
+                wallNormal,
+                wallTangent,
+                wallBitangent
+            );
         }
     }
 }
 
-SceneGeometry BuildHexCorridorScene()
+HexCorridorGeometry BuildHexCorridorScene()
 {
-    SceneGeometry scene;
+    HexCorridorGeometry scene;
 
     constexpr float radius = 1.0f;
-    constexpr float bottomY = -0.4f;
+    constexpr float bottomY = -0.55f;
 
-    constexpr int columns = 64;
-    constexpr int rows = 48;
+    constexpr int columns = 80;
+    constexpr int rows = 60;
 
     const float horizontalSpacing =
         radius * 1.7320508f * 1.05f;
 
     const float verticalSpacing =
         radius * 1.5f * 1.05f;
+
+    // Controls how wide the diagonal height band is:
+    constexpr int bandWidth = 16;
 
     for (int row = 0; row < rows; ++row)
     {
@@ -241,26 +346,47 @@ SceneGeometry BuildHexCorridorScene()
                 (row - (rows - 1) * 0.5f) *
                 verticalSpacing;
 
-            float topY = 0.4f;
+            //
+            // Create large diagonal bands across the field.
+            //
+            const int band =
+                (row + column) / bandWidth;
 
-            const int pattern =
-                (row * 7 + column * 11) % 13;
+            float topY = 0.75f;
 
-            if (pattern == 0)
+            switch (band % 4)
             {
-                topY = 1.25f;
+            case 0:
+                // Highest section.
+                topY = 3.00f;
+                break;
+
+            case 1:
+                // Raised section.
+                topY = 1.75f;
+                break;
+
+            case 2:
+                // Lowest section.
+                topY = 0.35f;
+                break;
+
+            case 3:
+                // Middle section.
+                topY = 1.00f;
+                break;
             }
-            else if (pattern <= 2)
-            {
-                topY = 0.85f;
-            }
-            else if (pattern == 3)
-            {
-                topY = 0.15f;
-            }
+
+            const float variation =
+                static_cast<float>(
+                    ((row * 37 + column * 73) % 1000)
+                    ) / 1000.0f;
+
+            topY += (variation - 0.5f) * 2.0f;
 
             AddHexPrism(
-                scene,
+                scene.Regular,
+                scene.Emissive,
                 x,
                 z,
                 radius,

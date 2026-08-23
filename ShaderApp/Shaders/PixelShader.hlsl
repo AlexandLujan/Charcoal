@@ -2,6 +2,7 @@ cbuffer DirectionalLightBuffer : register(b1)
 {
     float4 LightDirection;
     float4 LightColor;
+    float4 AmbientColor;
     
     float  Ambient;
     float  DiffuseIntensity;
@@ -27,11 +28,14 @@ float4 main(PSInput input) : SV_TARGET
 
     // float ambient = 0.15f;
 
-    float lighting =
-        Ambient + diffuse;
+    float3 ambientContribution =
+    input.Color * AmbientColor.rgb * Ambient;
+
+    float3 diffuseContribution =
+    input.Color * LightColor.rgb * diffuse;
 
     float3 finalColor =
-        input.Color * LightColor.rgb * lighting;
+    ambientContribution + diffuseContribution;
 
     return float4(finalColor, 1.0f);
 }

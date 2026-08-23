@@ -244,6 +244,13 @@ void CShaderAppDlg::RegisterLight(
 		std::dynamic_pointer_cast<DirectionalLight>(light))
 	{
 		DirectionalLightList[name] = directionalLight;
+
+		if (m_LightingPSO)
+		{
+			m_LightingPSO->SetDirectionalLights(
+				DirectionalLightList
+			);
+		}
 	}
 	else if (auto spotLight =
 		std::dynamic_pointer_cast<SpotLight>(light))

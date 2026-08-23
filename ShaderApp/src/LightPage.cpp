@@ -29,6 +29,14 @@ BOOL CLightPage::OnSetActive()
 	ambient_intensity.SetRange(1, 500);
 	ambient_intensity.SetPos(100);
 
+	if (lighting_style.GetCount() == 0)
+	{
+		lighting_style.AddString(L"Directional");
+		lighting_style.AddString(L"Point");
+		lighting_style.AddString(L"Spot");
+
+		lighting_style.SetCurSel(0);
+	}
 	return TRUE;
 }
 
@@ -140,21 +148,21 @@ void CLightPage::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 }
 void CLightPage::OnBnClickedLightStatus()
 {
-	((CControlBoard*)GetParentSheet())->SendLightMessage(WM_LIGHT_STATUS_TOGGLE, light_status.GetCheck() == BST_CHECKED);
+	((CControlBoard*)GetParentSheet())->SendLightMessage(WM_LIGHT_STATUS_TOGGLE, light_status.GetCheck() != BST_CHECKED);
 }
 
 void CLightPage::OnBnClickedLightingColor()
 {
-	ambient_color = ambient_color_button.GetColor();
+	light_color = lighting_color_button.GetColor();
 
-	((CControlBoard*)GetParentSheet())->SendLightMessage(WM_LIGHT_COLOR_CHANGED, ambient_color);
+	((CControlBoard*)GetParentSheet())->SendLightMessage(WM_LIGHT_COLOR_CHANGED, light_color);
 }
 
 void CLightPage::OnBnClickedAmbientColor()
 {
-	light_color = lighting_color_button.GetColor();
+	ambient_color = ambient_color_button.GetColor();
 
-	((CControlBoard*)GetParentSheet())->SendLightMessage(WM_LIGHT_AMBIENT_COLOR_CHANGED, light_color);
+	((CControlBoard*)GetParentSheet())->SendLightMessage(WM_LIGHT_AMBIENT_COLOR_CHANGED, ambient_color);
 }
 void CLightPage::AddLightName(string lightName) 
 {
@@ -220,7 +228,14 @@ void CLightPage::UpdateLightColor(string color)
 }
 void CLightPage::UpdateLightType(string lightType)
 {
-//	lighting_style.SetCurSel(value);
+	CString type(lightType.c_str());
+
+	int index = lighting_style.FindStringExact(-1, type);
+
+	if (index != CB_ERR)
+	{
+		lighting_style.SetCurSel(index);
+	}
 }
 void CLightPage::UpdateLightStatus(string status)
 {

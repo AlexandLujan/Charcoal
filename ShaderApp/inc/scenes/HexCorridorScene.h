@@ -2,4 +2,10 @@
 
 #include "SceneGeometry.h"
 
-SceneGeometry BuildHexCorridorScene();
+struct HexCorridorGeometry
+{
+	SceneGeometry Regular;
+	SceneGeometry Emissive;
+};
+
+HexCorridorGeometry BuildHexCorridorScene();

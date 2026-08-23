@@ -48,10 +48,13 @@ struct SimpleParticle
 	int size;
 };
 
+inline DirectX::XMFLOAT4 AmbientLightColor = { 1.0f, 1.0f, 1.0f, 1.0f };
+
 struct DirectionalLightCB
 {
 	DirectX::XMFLOAT4 Direction;
 	DirectX::XMFLOAT4 Color;
+	DirectX::XMFLOAT4 AmbientColor;
 
 	float Ambient;
 	float DiffuseIntensity;
@@ -149,6 +152,15 @@ private:
 	std::shared_ptr<RootSignature>       pRootSignature = nullptr;
 	std::shared_ptr<PipelineStateObject> pPipelineStateObject = nullptr;
 	std::shared_ptr<PipelineStateObject> pWireframePipelineStateObject = nullptr;
+
+	std::shared_ptr<VertexBuffer>        pRegularVertexBuffer = nullptr;
+	std::shared_ptr<IndexBuffer>         pRegularIndexBuffer = nullptr;
+	std::shared_ptr<VertexBuffer>        pEmissiveVertexBuffer = nullptr;
+	std::shared_ptr<IndexBuffer>         pEmissiveIndexBuffer = nullptr;
+
+	std::shared_ptr<Material> pRegularMaterial = nullptr;
+	std::shared_ptr<Material> pEmissiveMaterial = nullptr;
+
 	HighResolutionTimer m_Timer;
 
 	FLOAT BackgroundColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
