@@ -171,16 +171,20 @@ BOOL CShaderAppDlg::Initialize()
     pRegularMaterial = std::make_shared<Material>();
 
     pRegularMaterial->SetDiffuseColor(
-        { 0.05f, 0.05f, 0.07f, 1.0f });
+        { 1.0f, 1.0f, 1.0f, 1.0f });
 
     pRegularMaterial->SetAmbientColor(
-        { 0.02f, 0.02f, 0.03f, 1.0f });
+        { 0.22f, 0.22f, 0.22f, 1.0f });
 
     pRegularMaterial->SetSpecularColor(
         { 0.15f, 0.15f, 0.15f, 1.0f });
 
     pRegularMaterial->SetEmissiveColor(
         { 0.0f, 0.0f, 0.0f, 1.0f });
+
+    pRegularMaterial->SetBumpIntensity(
+        { 2.0f }
+    );
 
     log << "[Initialize] Regular material created\n";
     log.flush();
@@ -218,6 +222,78 @@ BOOL CShaderAppDlg::Initialize()
 
     log << "[Initialize] Copy command list executed\n";
     log.flush();
+
+    auto& textureCommandQueue =
+        m_Device.GetCommandQueue(D3D12_COMMAND_LIST_TYPE_DIRECT);
+
+    auto textureCommandList =
+        textureCommandQueue.GetCommandList();
+
+    const auto texturePath =
+        GetExecutableDirectory()
+        / L".."
+        / L".."
+        / L"ShaderApp"
+        / L"Textures"
+        / L"VolcanicRock"
+        / L"volcanic-rock1-albedo.png";
+
+    const auto normalTexturePath =
+        GetExecutableDirectory()
+        / L".."
+        / L".."
+        / L"ShaderApp"
+        / L"Textures"
+        / L"VolcanicRock"
+        / L"volcanic-rock1-normal-ogl.png";
+
+    const auto heightTexturePath =
+        GetExecutableDirectory()
+        / L".."
+        / L".."
+        / L"ShaderApp"
+        / L"Textures"
+        / L"VolcanicRock"
+        / L"volcanic-rock1-height.png";
+
+    auto regularTexture =
+        textureCommandList->LoadTextureFromFile(
+            texturePath.wstring(),
+            true
+        );
+
+    pRegularMaterial->SetTexture(
+        Material::TextureType::Diffuse,
+        regularTexture
+    );
+
+    auto normalTexture =
+        textureCommandList->LoadTextureFromFile(
+            normalTexturePath.wstring(),
+            false
+        );
+
+    // pRegularMaterial->SetTexture(
+//     Material::TextureType::Normal,
+//     normalTexture
+// );
+
+    auto heightTexture =
+        textureCommandList->LoadTextureFromFile(
+            heightTexturePath.wstring(),
+            false
+        );
+
+    pRegularMaterial->SetTexture(
+        Material::TextureType::Bump,
+        heightTexture
+    );
+
+    textureCommandQueue.ExecuteCommandList(
+        textureCommandList
+    );
+
+    textureCommandQueue.Flush();
 
     D3D12_INPUT_ELEMENT_DESC inputLayout[] =
     {

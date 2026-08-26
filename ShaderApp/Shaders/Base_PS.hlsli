@@ -105,6 +105,9 @@ struct LightProperties
     uint NumPointLights;
     uint NumSpotLights;
     uint NumDirectionalLights;
+    uint Padding;
+    
+    float4 AmbientLightColor;
 };
 
 struct LightResult
@@ -192,7 +195,7 @@ LightResult DoPointLight( PointLight light, float3 V, float3 P, float3 N, float 
 
     result.Diffuse = DoDiffuse( N, L ) * attenuation * light.DiffuseIntensity * light.Color;
     result.Specular = DoSpecular( V, N, L, specularPower ) * attenuation * light.SpecularIntensity * light.Color;
-    result.Ambient = light.Color * light.Ambient;
+    result.Ambient = LightPropertiesCB.AmbientLightColor * light.Ambient;
 
     return result;
 }
@@ -213,7 +216,7 @@ LightResult DoSpotLight( SpotLight light, float3 V, float3 P, float3 N, float sp
 
     result.Diffuse = DoDiffuse( N, L ) * attenuation * spotIntensity * light.DiffuseIntensity * light.Color;
     result.Specular = DoSpecular( V, N, L, specularPower ) * attenuation * spotIntensity * light.SpecularIntensity * light.Color;
-    result.Ambient = light.Color * light.Ambient;
+    result.Ambient = LightPropertiesCB.AmbientLightColor * light.Ambient;
 
     return result;
 }
@@ -226,7 +229,7 @@ LightResult DoDirectionalLight( DirectionalLight light, float3 V, float3 P, floa
 
     result.Diffuse = light.Color * DoDiffuse( N, L ) * light.DiffuseIntensity;
     result.Specular = light.Color * DoSpecular( V, N, L, specularPower ) * light.SpecularIntensity;
-    result.Ambient = light.Color * light.Ambient;
+    result.Ambient = LightPropertiesCB.AmbientLightColor * light.Ambient;
 
     return result;
 }
@@ -270,9 +273,9 @@ LightResult DoLighting( float3 P, float3 N, float specularPower )
         totalResult.Ambient += result.Ambient;
     }
 
-    totalResult.Diffuse = saturate( totalResult.Diffuse );
+    // totalResult.Diffuse = saturate( totalResult.Diffuse );
     totalResult.Specular = saturate( totalResult.Specular );
-    totalResult.Ambient = saturate( totalResult.Ambient );
+    // totalResult.Ambient = saturate( totalResult.Ambient );
 
     return totalResult;
 }

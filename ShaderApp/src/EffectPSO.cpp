@@ -329,7 +329,23 @@ void EffectPSO::Apply(CommandList& commandList)
             GPUDirectionalLight gpuLight{};
 
             gpuLight.DirectionWS = light->DirectionWS;
-            gpuLight.DirectionVS = light->DirectionVS;
+
+            XMVECTOR directionWS =
+                XMLoadFloat4(&light->DirectionWS);
+
+            XMVECTOR directionVS =
+                XMVector3TransformNormal(
+                    directionWS,
+                    m_pAlignedMVP->View
+                );
+
+            directionVS =
+                XMVector3Normalize(directionVS);
+
+            XMStoreFloat4(
+                &gpuLight.DirectionVS,
+                directionVS
+            );
 
             gpuLight.Color = light->color;
 
@@ -345,12 +361,17 @@ void EffectPSO::Apply(CommandList& commandList)
 
     if (m_DirtyFlags & (DF_PointLights | DF_SpotLights | DF_DirectionalLights))
     {
-        LightProperties lightProps;
+        LightProperties lightProps{};
         lightProps.NumPointLights = static_cast<uint32_t>(m_PointLights.size());
         lightProps.NumSpotLights = static_cast<uint32_t>(m_SpotLights.size());
         lightProps.NumDirectionalLights = static_cast<uint32_t>(m_DirectionalLights.size());
+        lightProps.Padding = 0;
+        lightProps.AmbientLightColor = m_AmbientLightColor;
 
-        commandList.SetGraphics32BitConstants(RootParameters::LightPropertiesCB, lightProps);
+        commandList.SetGraphics32BitConstants(
+            RootParameters::LightPropertiesCB,
+            lightProps
+        );
     }
 
     // Clear the dirty flags to avoid setting any states the next time the effect is applied.

@@ -800,20 +800,28 @@ LRESULT CShaderAppDlg::OnLightMessage(WPARAM wParam, LPARAM lParam)
 			{
 		//		FLOAT the_intensity = powf(10.0f, ((float)lParam / 100.0f));
 		//		l->Intensity() = the_intensity;
-			l->diffuseIntensity = static_cast<float>(lParam) / 100.0f;
+			l->diffuseIntensity = static_cast<float>(lParam) / 500.0f;
 			}
 			break;
 		case WM_LIGHT_AMBIENT_COLOR_CHANGED:
 			{
 				uint32_t c = static_cast<uint32_t>(lParam);
-				AmbientLightColor = RGB2FRGB(colorswap(c));
+				AmbientLightColor =
+					RGB2FRGB(colorswap(c));
+
+				if (m_LightingPSO)
+				{
+					m_LightingPSO->SetAmbientLightColor(
+						AmbientLightColor
+					);
+				}
 			}
 			break;
 		case WM_LIGHT_AMBIENT_INTENSITY_CHANGED:
 			{
 				// FLOAT the_intensity = powf(10.0f, ((float)lParam / 100.0f));
 				// l->Ambient() = the_intensity;
-				l->Ambient() = static_cast<float>(lParam) / 100.0f;
+				l->Ambient() = static_cast<float>(lParam) / 500.0f;
 			}
 			break;
 		case WM_LIGHT_BEAM_CONE_ANGLE_CHANGED:

@@ -2,6 +2,7 @@
 #include "scenes/HexCorridorScene.h"
 
 #include <DirectXMath.h>
+#include <algorithm>
 #include <cmath>
 
 using namespace DirectX;
@@ -38,7 +39,7 @@ namespace
                 normal,
                 tangent,
                 bitangent,
-                { 0.0f, 0.0f, 0.0f }
+                { 0.0f, 1.0f, 0.0f }
             });
 
         geometry.Vertices.push_back(
@@ -47,7 +48,7 @@ namespace
                 normal,
                 tangent,
                 bitangent,
-                { 0.0f, 0.0f, 0.0f }
+                { 1.0f, 0.0f, 0.0f }
             });
 
         geometry.Vertices.push_back(
@@ -56,7 +57,7 @@ namespace
                 normal,
                 tangent,
                 bitangent,
-                { 0.0f, 0.0f, 0.0f }
+                { 1.0f, 1.0f, 0.0f }
             });
 
         geometry.Indices.push_back(baseVertex + 0);
@@ -75,7 +76,8 @@ namespace
         float centerZ,
         float radius,
         float bottomY,
-        float topY)
+        float topY,
+        bool emissiveWalls)
     {
 
         const XMFLOAT3 topNormal =
@@ -99,13 +101,6 @@ namespace
             1.0f
         };
 
-        const XMFLOAT3 defaultTexCoord =
-        {
-            0.0f,
-            0.0f,
-            0.0f
-        };
-
         const uint32_t baseVertex =
             static_cast<uint32_t>(regularGeometry.Vertices.size());
 
@@ -121,7 +116,7 @@ namespace
                 topNormal,                  // Normal
                 topTangent,                 // Tangent
                 topBitangent,               // Bitangent
-                defaultTexCoord             // TexCoord
+                { 0.5f, 0.5f, 0.0f }        // TexCoord
             });
 
         // Top ring for top face (6 verts)
@@ -136,13 +131,19 @@ namespace
             float z =
                 centerZ + radius * std::sin(angle);
 
+            float u =
+                0.5f + ((x - centerX) / (2.0f * radius));
+
+            float v =
+                0.5f + ((z - centerZ) / (2.0f * radius));
+
             regularGeometry.Vertices.push_back(
                 {
                     { x, topY, z },
                     topNormal,
                     topTangent,
                     topBitangent,
-                    defaultTexCoord
+                    { u, v, 0.0f }
                 });
         }
 
@@ -254,56 +255,66 @@ namespace
                 wallNormal.z /= normalLength;
             }
 
-            //
-            // Upper regular wall band.
-            //
+            if (emissiveWalls)
+            {
+                // Upper regular wall band.
+                AddWallQuad(
+                    regularGeometry,
+                    x0,
+                    z0,
+                    x1,
+                    z1,
+                    upperBandY,
+                    topY,
+                    wallNormal,
+                    wallTangent,
+                    wallBitangent
+                );
 
-            AddWallQuad(
-                regularGeometry,
-                x0,
-                z0,
-                x1,
-                z1,
-                upperBandY,
-                topY,
-                wallNormal,
-                wallTangent,
-                wallBitangent
-            );
+                // Middle emissive wall band.
+                AddWallQuad(
+                    emissiveGeometry,
+                    x0,
+                    z0,
+                    x1,
+                    z1,
+                    lowerBandY,
+                    upperBandY,
+                    wallNormal,
+                    wallTangent,
+                    wallBitangent
+                );
 
-            //
-            // Middle emissive wall band.
-            //
-
-            AddWallQuad(
-                emissiveGeometry,
-                x0,
-                z0,
-                x1,
-                z1,
-                lowerBandY,
-                upperBandY,
-                wallNormal,
-                wallTangent,
-                wallBitangent
-            );
-
-            //
-            // Lower regular wall band.
-            //
-
-            AddWallQuad(
-                regularGeometry,
-                x0,
-                z0,
-                x1,
-                z1,
-                bottomY,
-                lowerBandY,
-                wallNormal,
-                wallTangent,
-                wallBitangent
-            );
+                // Lower regular wall band.
+                AddWallQuad(
+                    regularGeometry,
+                    x0,
+                    z0,
+                    x1,
+                    z1,
+                    bottomY,
+                    lowerBandY,
+                    wallNormal,
+                    wallTangent,
+                    wallBitangent
+                );
+            }
+            else
+            {
+                // Outer shell: one solid non-emissive wall.
+                AddWallQuad(
+                    regularGeometry,
+                    x0,
+                    z0,
+                    x1,
+                    z1,
+                    bottomY,
+                    topY,
+                    wallNormal,
+                    wallTangent,
+                    wallBitangent
+                );
+            }
         }
     }
 }
@@ -318,14 +329,14 @@ HexCorridorGeometry BuildHexCorridorScene()
     constexpr int columns = 80;
     constexpr int rows = 60;
 
+    constexpr float fieldRadius = 42.0f;
+    constexpr float shellThickness = 9.0f;
+
     const float horizontalSpacing =
         radius * 1.7320508f * 1.05f;
 
     const float verticalSpacing =
         radius * 1.5f * 1.05f;
-
-    // Controls how wide the diagonal height band is:
-    constexpr int bandWidth = 16;
 
     for (int row = 0; row < rows; ++row)
     {
@@ -346,43 +357,69 @@ HexCorridorGeometry BuildHexCorridorScene()
                 (row - (rows - 1) * 0.5f) *
                 verticalSpacing;
 
+            const float distanceSquared = x * x + z * z;
+
+            const float fieldRadiusSquared = fieldRadius * fieldRadius;
+
+            if (distanceSquared > fieldRadiusSquared)
+                continue;
+
+            const float shellStartRadius = fieldRadius - shellThickness;
+            const float shellStartRadiusSquared = shellStartRadius * shellStartRadius;
+            const bool isOuterShell = distanceSquared >= shellStartRadiusSquared;
+
             //
-            // Create large diagonal bands across the field.
+            // CCreate radial ripple heigh variation across the field.
             //
-            const int band =
-                (row + column) / bandWidth;
+            const float distanceFromCenter =
+                std::sqrt(distanceSquared);
 
-            float topY = 0.75f;
+            constexpr float baseHeight = 1.5f;
+            constexpr float rippleAmplitude = 1.25f;
+            constexpr float rippleFrequency = 0.45f;
 
-            switch (band % 4)
-            {
-            case 0:
-                // Highest section.
-                topY = 3.00f;
-                break;
-
-            case 1:
-                // Raised section.
-                topY = 1.75f;
-                break;
-
-            case 2:
-                // Lowest section.
-                topY = 0.35f;
-                break;
-
-            case 3:
-                // Middle section.
-                topY = 1.00f;
-                break;
-            }
+            float topY =
+                baseHeight +
+                std::sin(distanceFromCenter * rippleFrequency)
+                * rippleAmplitude;
 
             const float variation =
                 static_cast<float>(
                     ((row * 37 + column * 73) % 1000)
                     ) / 1000.0f;
 
-            topY += (variation - 0.5f) * 2.0f;
+            topY += (variation - 0.5f) * 0.5f;
+
+            if (isOuterShell)
+            {
+                constexpr float shellRingWidth = 1.5f;
+                constexpr float shellBaseHeight = 4.0f;
+                constexpr float shellGrowth = 1.35f;
+
+                const float depthIntoShell =
+                    distanceFromCenter - shellStartRadius;
+
+                const int shellRing =
+                    static_cast<int>(
+                        depthIntoShell / shellRingWidth
+                        );
+
+                const float shellHeight =
+                    shellBaseHeight *
+                    std::pow(
+                        shellGrowth,
+                        static_cast<float>(shellRing)
+                    );
+
+                const float shellVariation =
+                    static_cast<float>(
+                        ((row * 53 + column * 97) % 1000)
+                        ) / 1000.0f;
+
+                topY =
+                    shellHeight +
+                    (shellVariation - 0.5f) * 0.5f;
+            }
 
             AddHexPrism(
                 scene.Regular,
@@ -391,7 +428,8 @@ HexCorridorGeometry BuildHexCorridorScene()
                 z,
                 radius,
                 bottomY,
-                topY);
+                topY,
+                !isOuterShell);
         }
     }
 

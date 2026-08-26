@@ -55,11 +55,19 @@ class EffectPSO
 {
 public:
 	// Light properties for the pixel shader.
-	struct LightProperties
+	struct alignas(16) LightProperties
 	{
 		uint32_t NumPointLights;
 		uint32_t NumSpotLights;
 		uint32_t NumDirectionalLights;
+		uint32_t Padding;
+
+		DirectX::XMFLOAT4 AmbientLightColor;
+	};
+
+	DirectX::XMFLOAT4 m_AmbientLightColor =
+	{
+		1.0f, 1.0f, 1.0f, 1.0f
 	};
 
 	// Transformation matrices for the vertex shader.
@@ -160,6 +168,16 @@ public:
 		}
 
 		m_DirtyFlags |= DF_DirectionalLights;
+	}
+
+	void SetAmbientLightColor(const DirectX::XMFLOAT4& color)
+	{
+		m_AmbientLightColor = color;
+
+		m_DirtyFlags |=
+			DF_PointLights |
+			DF_SpotLights |
+			DF_DirectionalLights;
 	}
 
 	const std::shared_ptr<Material>& GetMaterial() const
