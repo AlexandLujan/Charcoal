@@ -107,7 +107,7 @@ public:
 		NumRootParameters
 	};
 
-	EffectPSO(Device& device, bool enableLighting, bool enableDecal);
+	EffectPSO(Device& device, bool enableLighting, bool enableDecal, DXGI_FORMAT renderTargetFormat = DXGI_FORMAT_R8G8B8A8_UINT);
 	virtual ~EffectPSO();
 
 	const vector<shared_ptr<PointLight>>& GetPointLights() const

@@ -10,6 +10,8 @@
 #pragma once
 #include "pch.h"
 #include <vector>
+#include <random>
+#include <ctime>
 #include <Device.h>
 #include <IndexBuffer.h> 
 #include <PipelineStateObject.h>
@@ -147,19 +149,23 @@ private:
 
 	std::shared_ptr<SwapChain>           pSwapChain = nullptr;
 	std::shared_ptr<Texture>             pDepthTexture = nullptr;
+	std::shared_ptr<Texture>             pSceneRenderTarget = nullptr;
 	std::shared_ptr<VertexBuffer>        pVertexBuffer = nullptr;
 	std::shared_ptr<IndexBuffer>         pIndexBuffer = nullptr;
 	std::shared_ptr<RootSignature>       pRootSignature = nullptr;
 	std::shared_ptr<PipelineStateObject> pPipelineStateObject = nullptr;
 	std::shared_ptr<PipelineStateObject> pWireframePipelineStateObject = nullptr;
 
+	std::shared_ptr<RootSignature>       pCompositeRootSignature = nullptr;
+	std::shared_ptr<PipelineStateObject> pCompositePSO = nullptr;
+
 	std::shared_ptr<VertexBuffer>        pRegularVertexBuffer = nullptr;
 	std::shared_ptr<IndexBuffer>         pRegularIndexBuffer = nullptr;
 	std::shared_ptr<VertexBuffer>        pEmissiveVertexBuffer = nullptr;
 	std::shared_ptr<IndexBuffer>         pEmissiveIndexBuffer = nullptr;
 
-	std::shared_ptr<Material> pRegularMaterial = nullptr;
-	std::shared_ptr<Material> pEmissiveMaterial = nullptr;
+	std::shared_ptr<Material>            pRegularMaterial = nullptr;
+	std::shared_ptr<Material>            pEmissiveMaterial = nullptr;
 
 	HighResolutionTimer m_Timer;
 
@@ -180,6 +186,7 @@ private:
 	FLOAT ambient = 0.2f;
 
 	RenderTarget m_RenderTarget;
+	RenderTarget m_SceneRenderTarget;
 	void OnRender();
 
 	shared_ptr<Scene> m_Scene;

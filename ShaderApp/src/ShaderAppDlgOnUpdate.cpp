@@ -52,44 +52,22 @@ XMMATRIX XM_CALLCONV LookAtMatrix(FXMVECTOR Position, FXMVECTOR Direction, FXMVE
 	return M;
 }
 
-
-
-
-
-
 void CShaderAppDlg::OnUpdate(UpdateEventArgs ua)
 {
 	static double totalTime = 0.0;
 	totalTime += ua.ElapsedTime;
 
 	auto renderTarget = pSwapChain->GetRenderTarget();
-	renderTarget.AttachTexture(AttachmentPoint::DepthStencil, pDepthTexture);
-
 	auto viewport = renderTarget.GetViewport();
 
-	DirectX::XMMATRIX modelMatrix = DirectX::XMMatrixIdentity();
-	// Rotation Toggle
-	/*
-	float angle = static_cast<float>(totalTime * 45.0);
-	const DirectX::XMVECTOR rotationAxis = DirectX::XMVectorSet(0, 1, 0, 0);
-	DirectX::XMMATRIX modelMatrix = DirectX::XMMatrixRotationAxis(rotationAxis, DirectX::XMConvertToRadians(angle));
-	*/
+	DirectX::XMMATRIX modelMatrix =
+		DirectX::XMMatrixIdentity();
 
-	/*
-	DirectX::XMVECTOR eyePosition = DirectX::XMVectorSet(0, 0, -5, 1);
-	DirectX::XMVECTOR focusPoint = DirectX::XMVectorSet(0, 0, 0, 1);
-	const DirectX::XMVECTOR upDirection = DirectX::XMVectorSet(0, 1, 0, 0);
+	DirectX::XMMATRIX viewMatrix =
+		pCurrentCamera->get_ViewMatrix();
 
-	DirectX::XMMATRIX viewMatrix = DirectX::XMMatrixLookAtLH(eyePosition, focusPoint, upDirection);
-
-	float aspectRatio = viewport.Width / viewport.Height;
-	DirectX::XMMATRIX projectionMatrix =
-		DirectX::XMMatrixPerspectiveFovLH(DirectX::XMConvertToRadians(45.0f), aspectRatio, 0.1f, 100.0f);
-	*/
-
-	DirectX::XMMATRIX viewMatrix = pCurrentCamera->get_ViewMatrix();
-
-	float aspectRatio = viewport.Width / viewport.Height;
+	float aspectRatio =
+		viewport.Width / viewport.Height;
 
 	pCurrentCamera->set_Projection(
 		45.0f,
@@ -98,132 +76,12 @@ void CShaderAppDlg::OnUpdate(UpdateEventArgs ua)
 		1000.0f
 	);
 
-	DirectX::XMMATRIX projectionMatrix = pCurrentCamera->get_ProjectionMatrix();
+	DirectX::XMMATRIX projectionMatrix =
+		pCurrentCamera->get_ProjectionMatrix();
 
 	m_LightingPSO->SetWorldMatrix(modelMatrix);
 	m_LightingPSO->SetViewMatrix(viewMatrix);
 	m_LightingPSO->SetProjectionMatrix(projectionMatrix);
-
-	// DirectX::XMMATRIX mvpMatrix = DirectX::XMMatrixTranspose(modelMatrix * viewMatrix * projectionMatrix);
-
-	auto& commandQueue = m_Device.GetCommandQueue(D3D12_COMMAND_LIST_TYPE_DIRECT);
-	auto commandList = commandQueue.GetCommandList();
-
-	/*
-	switch (RenderStyle)
-	{
-	case WIREFRAME:
-	case WIREFRAMEwPERSPECTIVE:
-		commandList->SetPipelineState(pWireframePipelineStateObject);
-		break;
-
-	case RASTERIZE:
-	case RASTERIZEwPERSPECTIVE:
-	default:
-		commandList->SetPipelineState(pPipelineStateObject);
-		break;
-	}
-	commandList->SetGraphicsRootSignature(pRootSignature);
-	*/
-
-	/*
-	if (!DirectionalLightList.empty())
-	{
-		const auto& light = DirectionalLightList.begin()->second;
-
-		DirectionalLightCB lightCB{};
-
-		lightCB.Direction = light->DirectionWS;
-		lightCB.Color = light->color;
-		lightCB.AmbientColor = AmbientLightColor;
-
-		if (light->Status() == "ON")
-		{
-			lightCB.Ambient = light->ambient;
-			lightCB.DiffuseIntensity = light->diffuseIntensity;
-		}
-		else
-		{
-			lightCB.Ambient = 0.0f;
-			lightCB.DiffuseIntensity = 0.0f;
-		}
-
-		commandList->SetGraphicsDynamicConstantBuffer(1, lightCB);
-	}
-	*/
-
-	/*
-	* The old clear background color, gonna add this later as the default.
-	const FLOAT clearColor[] =
-	{
-		0.5f + 0.5f * sinf(t),
-		0.1f,
-		0.5f + 0.5f * cosf(t),
-		1.0f
-	};
-	*/
-
-	commandList->ClearTexture(renderTarget.GetTexture(AttachmentPoint::Color0), BackgroundColor);
-
-	if (pDepthTexture)
-		commandList->ClearDepthStencilTexture(pDepthTexture, D3D12_CLEAR_FLAG_DEPTH);
-
-	commandList->SetRenderTarget(renderTarget);
-	commandList->SetViewport(renderTarget.GetViewport());
-	commandList->SetScissorRect(
-		CD3DX12_RECT(0, 0, LONG_MAX, LONG_MAX)
-	);
-
-	commandList->SetPrimitiveTopology(
-		D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST
-	);
-
-	//
-	// REGULAR GEOMETRY
-	//
-
-	m_LightingPSO->SetMaterial(pRegularMaterial);
-	m_LightingPSO->Apply(*commandList);
-
-	commandList->SetVertexBuffer(
-		0,
-		pRegularVertexBuffer
-	);
-
-	commandList->SetIndexBuffer(
-		pRegularIndexBuffer
-	);
-
-	commandList->DrawIndexed(
-		static_cast<UINT>(
-			pRegularIndexBuffer->GetNumIndicies()
-			)
-	);
-
-	//
-	// EMISSIVE GEOMETRY
-	//
-
-	m_LightingPSO->SetMaterial(pEmissiveMaterial);
-	m_LightingPSO->Apply(*commandList);
-
-	commandList->SetVertexBuffer(
-		0,
-		pEmissiveVertexBuffer
-	);
-
-	commandList->SetIndexBuffer(
-		pEmissiveIndexBuffer
-	);
-
-	commandList->DrawIndexed(
-		static_cast<UINT>(
-			pEmissiveIndexBuffer->GetNumIndicies()
-			)
-	);
-
-	commandQueue.ExecuteCommandList(commandList);
-	pSwapChain->Present();
 }
 
 void CShaderAppDlg::UpdateSceneNode(shared_ptr<SceneNode> node, uint64_t frameCount)
@@ -292,9 +150,11 @@ void CShaderAppDlg::OnRender()
 {
 	auto& commandQueue = m_Device.GetCommandQueue(D3D12_COMMAND_LIST_TYPE_DIRECT);
 	shared_ptr<CommandList> commandList = commandQueue.GetCommandList();
-	CommandList& cmdListRef = *commandList;
-	const auto& renderTarget = m_RenderTarget;
-	Camera& theCamera = *CameraList[currentCamera];
+	//CommandList& cmdListRef = *commandList;
+	const auto& renderTarget = m_SceneRenderTarget;
+	//Camera& theCamera = *CameraList[currentCamera];
+
+	/*
 	EffectPSO& p_LightingPSO = *m_LightingPSO;
 	EffectPSO& p_DecalPSO = *m_DecalPSO;
 	EffectPSO& p_UnlitPSO = *m_UnlitPSO;
@@ -302,6 +162,7 @@ void CShaderAppDlg::OnRender()
 	SceneVisitor opaquePass(cmdListRef, theCamera, p_LightingPSO, false);
 	SceneVisitor transparentPass(cmdListRef, theCamera, p_DecalPSO, true);
 	SceneVisitor unlitPass(cmdListRef, theCamera, p_UnlitPSO, false);
+	*/
 
 	// Clear the render targets.
 	commandList->ClearTexture(renderTarget.GetTexture(AttachmentPoint::Color0), BackgroundColor);
@@ -312,10 +173,70 @@ void CShaderAppDlg::OnRender()
 
 	commandList->SetViewport(m_Viewport);
 	commandList->SetScissorRect(m_ScissorRect);
-	commandList->SetRenderTarget(m_RenderTarget);
+	commandList->SetRenderTarget(m_SceneRenderTarget);
 
-	TheScene->Accept(opaquePass);
-	TheScene->Accept(transparentPass);
+	//
+	// HEX CORRIDOR - REGULAR GEOMETRY
+	//
+
+	commandList->SetPrimitiveTopology(
+		D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST
+	);
+
+	m_LightingPSO->SetMaterial(
+		pRegularMaterial
+	);
+
+	m_LightingPSO->Apply(
+		*commandList
+	);
+
+	commandList->SetVertexBuffer(
+		0,
+		pRegularVertexBuffer
+	);
+
+	commandList->SetIndexBuffer(
+		pRegularIndexBuffer
+	);
+
+	commandList->DrawIndexed(
+		static_cast<UINT>(
+			pRegularIndexBuffer->GetNumIndicies()
+			)
+	);
+
+	//
+	// HEX CORRIDOR - EMISSIVE GEOMETRY
+	//
+
+	m_LightingPSO->SetMaterial(
+		pEmissiveMaterial
+	);
+
+	m_LightingPSO->Apply(
+		*commandList
+	);
+
+	commandList->SetVertexBuffer(
+		0,
+		pEmissiveVertexBuffer
+	);
+
+	commandList->SetIndexBuffer(
+		pEmissiveIndexBuffer
+	);
+
+	commandList->DrawIndexed(
+		static_cast<UINT>(
+			pEmissiveIndexBuffer->GetNumIndicies()
+			)
+	);
+
+	commandQueue.ExecuteCommandList(commandList);
+
+	// TheScene->Accept(opaquePass);
+	// TheScene->Accept(transparentPass);
 
 	// Temporarily disable material-based light visualization to avoid linker issues.
 	/*
@@ -341,13 +262,62 @@ void CShaderAppDlg::OnRender()
 	}
 	*/
 
-	// Resolve the MSAA render target to the swapchain's backbuffer.
-	auto swapChainBackBuffer = pSwapChain->GetRenderTarget().GetTexture(AttachmentPoint::Color0);
-	auto msaaRenderTarget = m_RenderTarget.GetTexture(AttachmentPoint::Color0);
+	/*
+	//
+	// COMPOSITE PASS
+	//
 
-	commandList->ResolveSubresource(swapChainBackBuffer, msaaRenderTarget);
-	commandQueue.ExecuteCommandList(commandList);
-	pSwapChain->Present();
+	auto swapChainRenderTarget =
+		pSwapChain->GetRenderTarget();
+
+	// Switch output from HDR scene target to swap-chain back buffer.
+	commandList->SetRenderTarget(
+		swapChainRenderTarget
+	);
+
+	commandList->SetViewport(
+		swapChainRenderTarget.GetViewport()
+	);
+
+	commandList->SetScissorRect(
+		CD3DX12_RECT(
+			0,
+			0,
+			LONG_MAX,
+			LONG_MAX
+		)
+	);
+
+	// Composite pipeline.
+	commandList->SetPipelineState(
+		pCompositePSO
+	);
+
+	commandList->SetGraphicsRootSignature(
+		pCompositeRootSignature
+	);
+
+	// Bind the HDR scene texture to t0.
+	commandList->SetShaderResourceView(
+		0,
+		0,
+		pSceneRenderTarget,
+		D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE
+	);
+
+	commandList->SetPrimitiveTopology(
+		D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST
+	);
+
+	// Fullscreen triangle.
+	commandList->Draw(3);
+
+	commandQueue.ExecuteCommandList(
+		commandList
+	);
+	*/
+
+	// pSwapChain->Present(); REVERT AFTER TEST
 }
 
 void CShaderAppDlg::OnResized(UINT width, UINT height)
@@ -367,6 +337,49 @@ void CShaderAppDlg::OnResized(UINT width, UINT height)
 	optimizedClearValue.DepthStencil = { 1.0f, 0 };
 
 	pDepthTexture = m_Device.CreateTexture(depthTextureDesc, &optimizedClearValue);
+
+	//
+	// HDR SCENE TARGET
+	//
+
+	D3D12_CLEAR_VALUE sceneClearValue = {};
+	sceneClearValue.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+	sceneClearValue.Color[0] = 0.0f;
+	sceneClearValue.Color[1] = 0.0f;
+	sceneClearValue.Color[2] = 0.0f;
+	sceneClearValue.Color[3] = 1.0f;
+
+	auto sceneTextureDesc =
+		CD3DX12_RESOURCE_DESC::Tex2D(
+			DXGI_FORMAT_R16G16B16A16_FLOAT,
+			Width(),
+			Height(),
+			1,
+			1,
+			1,
+			0,
+			D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET
+		);
+
+	pSceneRenderTarget =
+		m_Device.CreateTexture(
+			sceneTextureDesc,
+			&sceneClearValue
+		);
+
+	//
+	// REATTACH
+	//
+
+	m_SceneRenderTarget.AttachTexture(
+		AttachmentPoint::Color0,
+		pSceneRenderTarget
+	);
+
+	m_SceneRenderTarget.AttachTexture(
+		AttachmentPoint::DepthStencil,
+		pDepthTexture
+	);
 }
 
 void CShaderAppDlg::UpdateCamera(float DeltaTime)

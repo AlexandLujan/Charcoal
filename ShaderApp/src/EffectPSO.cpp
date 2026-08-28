@@ -34,7 +34,7 @@ namespace
     }
 }
 
-EffectPSO::EffectPSO(Device& device, bool enableLighting, bool enableDecal)
+EffectPSO::EffectPSO(Device& device, bool enableLighting, bool enableDecal, DXGI_FORMAT renderTargetFormat)
     : m_Device(device)
     , m_DirtyFlags(DF_All)
     , m_pPreviousCommandList(nullptr)
@@ -146,7 +146,7 @@ EffectPSO::EffectPSO(Device& device, bool enableLighting, bool enableDecal)
     } pipelineStateStream;
 
     // Match the swap-chain render target format.
-    DXGI_FORMAT backBufferFormat = DXGI_FORMAT_R8G8B8A8_UNORM; //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    DXGI_FORMAT backBufferFormat = renderTargetFormat; //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     DXGI_FORMAT depthBufferFormat = DXGI_FORMAT_D32_FLOAT;
 
     // Match the swap chain sample description.

@@ -321,6 +321,71 @@ float3 DoBumpMapping( float3x3 TBN, Texture2D tex, float2 uv, float bumpScale )
     return normal;
 }
 
+float3 DoNormalBumpMapping(
+    float3x3 TBN,
+    Texture2D normalTex,
+    Texture2D bumpTex,
+    float2 uv,
+    float bumpScale
+)
+{
+    float3 normalTS =
+        ExpandNormal(
+            normalTex.Sample(
+                TextureSampler,
+                uv
+            ).xyz
+        );
+
+    float height00 =
+        bumpTex.Sample(
+            TextureSampler,
+            uv
+        ).r;
+
+    float height10 =
+        bumpTex.Sample(
+            TextureSampler,
+            uv,
+            int2(1, 0)
+        ).r;
+
+    float height01 =
+        bumpTex.Sample(
+            TextureSampler,
+            uv,
+            int2(0, 1)
+        ).r;
+
+    float dU =
+        (height10 - height00)
+        * bumpScale;
+
+    float dV =
+        (height01 - height00)
+        * bumpScale;
+
+    float3 bumpTS =
+        normalize(
+            float3(
+                -dU,
+                -dV,
+                1.0f
+            )
+        );
+
+    float3 combinedTS =
+        normalize(
+            float3(
+                normalTS.xy + bumpTS.xy,
+                normalTS.z * bumpTS.z
+            )
+        );
+
+    return normalize(
+        mul(combinedTS, TBN)
+    );
+}
 
 // If c is not black, then blend the color with the texture
 // otherwise, replace the color with the texture.
@@ -380,34 +445,53 @@ float4 main( PixelShaderInput IN ): SV_Target
     }
 
     float3 N;
-    // Normal mapping
-    if ( material.HasNormalTexture )
+    float3 tangent = normalize(IN.TangentVS);
+    float3 bitangent = normalize(IN.BitangentVS);
+    float3 normal = normalize(IN.NormalVS);
+
+    float3x3 TBN = float3x3(
+    tangent,
+    bitangent,
+    normal
+);
+
+    if (material.HasNormalTexture &&
+    material.HasBumpTexture)
     {
-        float3 tangent = normalize(IN.TangentVS);
-        float3 bitangent = normalize(IN.BitangentVS);
-        float3 normal = normalize(IN.NormalVS);
-
-        float3x3 TBN = float3x3( tangent,
-                                 bitangent,
-                                 normal );
-
-        N = DoNormalMapping( TBN, NormalTexture, uv );
+        N = DoNormalBumpMapping(
+        TBN,
+        NormalTexture,
+        BumpTexture,
+        uv,
+        material.BumpIntensity
+    );
     }
-    else if ( material.HasBumpTexture )
+    else if (material.HasNormalTexture)
     {
-        float3 tangent = normalize(IN.TangentVS);
-        float3 bitangent = normalize(IN.BitangentVS);
-        float3 normal = normalize(IN.NormalVS);
+        N = DoNormalMapping(
+        TBN,
+        NormalTexture,
+        uv
+    );
+    }
+    else if (material.HasBumpTexture)
+    {
+        float3x3 bumpTBN = float3x3(
+        tangent,
+        -bitangent,
+        normal
+    );
 
-        float3x3 TBN = float3x3( tangent,
-                                 -bitangent,
-                                 normal );
-
-        N = DoBumpMapping( TBN, BumpTexture, uv, material.BumpIntensity );
+        N = DoBumpMapping(
+        bumpTBN,
+        BumpTexture,
+        uv,
+        material.BumpIntensity
+    );
     }
     else
     {
-        N = normalize( IN.NormalVS );
+        N = normal;
     }
 
     float shadow = 1;

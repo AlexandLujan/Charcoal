@@ -183,7 +183,7 @@ BOOL CShaderAppDlg::Initialize()
         { 0.0f, 0.0f, 0.0f, 1.0f });
 
     pRegularMaterial->SetBumpIntensity(
-        { 2.0f }
+        { 1.25f }
     );
 
     log << "[Initialize] Regular material created\n";
@@ -229,43 +229,25 @@ BOOL CShaderAppDlg::Initialize()
     auto textureCommandList =
         textureCommandQueue.GetCommandList();
 
-    const auto texturePath =
+    const auto textureDirectory =
         GetExecutableDirectory()
-        / L".."
-        / L".."
-        / L"ShaderApp"
         / L"Textures"
-        / L"VolcanicRock"
-        / L"volcanic-rock1-albedo.png";
+        / L"VolcanicRock";
+
+    const auto albedoTexturePath =
+        textureDirectory / L"volcanic-rock1-albedo.png";
 
     const auto normalTexturePath =
-        GetExecutableDirectory()
-        / L".."
-        / L".."
-        / L"ShaderApp"
-        / L"Textures"
-        / L"VolcanicRock"
-        / L"volcanic-rock1-normal-ogl.png";
+        textureDirectory / L"volcanic-rock1-normal-ogl.png";
 
     const auto heightTexturePath =
-        GetExecutableDirectory()
-        / L".."
-        / L".."
-        / L"ShaderApp"
-        / L"Textures"
-        / L"VolcanicRock"
-        / L"volcanic-rock1-height.png";
+        textureDirectory / L"volcanic-rock1-height.png";
 
-    auto regularTexture =
+    auto albedoTexture =
         textureCommandList->LoadTextureFromFile(
-            texturePath.wstring(),
+            albedoTexturePath.wstring(),
             true
         );
-
-    pRegularMaterial->SetTexture(
-        Material::TextureType::Diffuse,
-        regularTexture
-    );
 
     auto normalTexture =
         textureCommandList->LoadTextureFromFile(
@@ -273,16 +255,21 @@ BOOL CShaderAppDlg::Initialize()
             false
         );
 
-    // pRegularMaterial->SetTexture(
-//     Material::TextureType::Normal,
-//     normalTexture
-// );
-
     auto heightTexture =
         textureCommandList->LoadTextureFromFile(
             heightTexturePath.wstring(),
             false
         );
+
+    pRegularMaterial->SetTexture(
+        Material::TextureType::Diffuse,
+        albedoTexture
+    );
+
+    pRegularMaterial->SetTexture(
+        Material::TextureType::Normal,
+        normalTexture
+    );
 
     pRegularMaterial->SetTexture(
         Material::TextureType::Bump,
@@ -465,7 +452,82 @@ BOOL CShaderAppDlg::Initialize()
 
     pDepthTexture = m_Device.CreateTexture(depthTextureDesc, &optimizedClearValue);
 
-    log << "[Initialize] Depth texture created\n";
+    D3D12_CLEAR_VALUE sceneClearValue = {};
+    sceneClearValue.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+    sceneClearValue.Color[0] = 0.0f;
+    sceneClearValue.Color[1] = 0.0f;
+    sceneClearValue.Color[2] = 0.0f;
+    sceneClearValue.Color[3] = 1.0f;
+
+    auto sceneTextureDesc =
+        CD3DX12_RESOURCE_DESC::Tex2D(
+            DXGI_FORMAT_R16G16B16A16_FLOAT,
+            Width(),
+            Height(),
+            1,
+            1,
+            1,
+            0,
+            D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET
+        );
+
+    pSceneRenderTarget =
+        m_Device.CreateTexture(
+            sceneTextureDesc,
+            &sceneClearValue
+        );
+
+    m_SceneRenderTarget.AttachTexture(
+        AttachmentPoint::Color0,
+        pSceneRenderTarget
+    );
+
+    m_SceneRenderTarget.AttachTexture(
+        AttachmentPoint::DepthStencil,
+        pDepthTexture
+    );
+
+    CD3DX12_DESCRIPTOR_RANGE1 compositeTextureRange(
+        D3D12_DESCRIPTOR_RANGE_TYPE_SRV,
+        1,  // one texture
+        0   // t0
+    );
+
+    CD3DX12_ROOT_PARAMETER1 compositeRootParameters[1];
+
+    compositeRootParameters[0].InitAsDescriptorTable(
+        1,
+        &compositeTextureRange,
+        D3D12_SHADER_VISIBILITY_PIXEL
+    );
+
+    CD3DX12_STATIC_SAMPLER_DESC compositeSampler(
+        0,
+        D3D12_FILTER_MIN_MAG_MIP_LINEAR
+    );
+
+    D3D12_ROOT_SIGNATURE_FLAGS compositeRootFlags =
+        D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT |
+        D3D12_ROOT_SIGNATURE_FLAG_DENY_HULL_SHADER_ROOT_ACCESS |
+        D3D12_ROOT_SIGNATURE_FLAG_DENY_DOMAIN_SHADER_ROOT_ACCESS |
+        D3D12_ROOT_SIGNATURE_FLAG_DENY_GEOMETRY_SHADER_ROOT_ACCESS;
+
+    CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC compositeRootDesc;
+
+    compositeRootDesc.Init_1_1(
+        _countof(compositeRootParameters),
+        compositeRootParameters,
+        1,
+        &compositeSampler,
+        compositeRootFlags
+    );
+
+    pCompositeRootSignature =
+        m_Device.CreateRootSignature(
+            compositeRootDesc.Desc_1_1
+        );
+
+    log << "[Initialize] HDR scene target and composite root signature created\n";
     log.flush();
 
     log << "[Initialize] Creating lighting EffectPSO\n";
@@ -475,11 +537,129 @@ BOOL CShaderAppDlg::Initialize()
         std::make_shared<EffectPSO>(
             m_Device,
             true,   // enable lighting
-            false   // disable decal
+            false,   // disable decal
+            DXGI_FORMAT_R16G16B16A16_FLOAT
         );
 
     log << "[Initialize] Lighting EffectPSO created\n";
     log.flush();
+
+    //
+    // COMPOSITE SHADERS
+    //
+
+    const auto fullscreenVertexShaderPath =
+        executableDirectory / L"Fullscreen_VS.cso";
+
+    const auto compositePixelShaderPath =
+        executableDirectory / L"Composite_PS.cso";
+
+    Microsoft::WRL::ComPtr<ID3DBlob> fullscreenVertexShaderBlob;
+    Microsoft::WRL::ComPtr<ID3DBlob> compositePixelShaderBlob;
+
+    ThrowIfFailed(
+        D3DReadFileToBlob(
+            fullscreenVertexShaderPath.c_str(),
+            &fullscreenVertexShaderBlob
+        )
+    );
+
+    ThrowIfFailed(
+        D3DReadFileToBlob(
+            compositePixelShaderPath.c_str(),
+            &compositePixelShaderBlob
+        )
+    );
+
+    //
+    // COMPOSITE PIPELINE STATE
+    //
+
+    struct CompositePipelineStateStream
+    {
+        CD3DX12_PIPELINE_STATE_STREAM_ROOT_SIGNATURE        pRootSignature;
+        CD3DX12_PIPELINE_STATE_STREAM_VS                    VS;
+        CD3DX12_PIPELINE_STATE_STREAM_PS                    PS;
+        CD3DX12_PIPELINE_STATE_STREAM_RASTERIZER            RasterizerState;
+        CD3DX12_PIPELINE_STATE_STREAM_BLEND_DESC            BlendState;
+        CD3DX12_PIPELINE_STATE_STREAM_INPUT_LAYOUT          InputLayout;
+        CD3DX12_PIPELINE_STATE_STREAM_PRIMITIVE_TOPOLOGY    PrimitiveTopologyType;
+        CD3DX12_PIPELINE_STATE_STREAM_DEPTH_STENCIL         DepthStencilState;
+        CD3DX12_PIPELINE_STATE_STREAM_RENDER_TARGET_FORMATS RTVFormats;
+        CD3DX12_PIPELINE_STATE_STREAM_SAMPLE_DESC           SampleDesc;
+        CD3DX12_PIPELINE_STATE_STREAM_SAMPLE_MASK           SampleMask;
+    } compositePipelineStateStream = {};
+
+    compositePipelineStateStream.pRootSignature =
+        pCompositeRootSignature
+        ->GetD3D12RootSignature()
+        .Get();
+
+    compositePipelineStateStream.VS =
+        CD3DX12_SHADER_BYTECODE(
+            fullscreenVertexShaderBlob.Get()
+        );
+
+    compositePipelineStateStream.PS =
+        CD3DX12_SHADER_BYTECODE(
+            compositePixelShaderBlob.Get()
+        );
+
+    CD3DX12_RASTERIZER_DESC compositeRasterizer(
+        D3D12_DEFAULT
+    );
+
+    compositeRasterizer.CullMode =
+        D3D12_CULL_MODE_NONE;
+
+    compositePipelineStateStream.RasterizerState =
+        compositeRasterizer;
+
+    compositePipelineStateStream.BlendState =
+        CD3DX12_BLEND_DESC(D3D12_DEFAULT);
+
+    compositePipelineStateStream.SampleMask =
+        UINT_MAX;
+
+    compositePipelineStateStream.InputLayout =
+    {
+        nullptr,
+        0
+    };
+
+    compositePipelineStateStream.PrimitiveTopologyType =
+        D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+
+    CD3DX12_DEPTH_STENCIL_DESC compositeDepthState(
+        D3D12_DEFAULT
+    );
+
+    compositeDepthState.DepthEnable = FALSE;
+    compositeDepthState.StencilEnable = FALSE;
+
+    compositePipelineStateStream.DepthStencilState =
+        compositeDepthState;
+
+    D3D12_RT_FORMAT_ARRAY compositeRTVFormats = {};
+    compositeRTVFormats.NumRenderTargets = 1;
+
+    compositeRTVFormats.RTFormats[0] =
+        DXGI_FORMAT_R8G8B8A8_UNORM;
+
+    compositePipelineStateStream.RTVFormats =
+        compositeRTVFormats;
+
+    DXGI_SAMPLE_DESC compositeSampleDesc = {};
+    compositeSampleDesc.Count = 1;
+    compositeSampleDesc.Quality = 0;
+
+    compositePipelineStateStream.SampleDesc =
+        compositeSampleDesc;
+
+    pCompositePSO =
+        m_Device.CreatePipelineStateObject(
+            compositePipelineStateStream
+        );
 
     log << "[Initialize] Flushing command queue\n";
     log.flush();

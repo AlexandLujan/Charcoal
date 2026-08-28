@@ -73,6 +73,12 @@
     <FxCompile Include="Shaders\Base_PS.hlsli">
       <Filter>Shaders</Filter>
     </FxCompile>
+    <FxCompile Include="Shaders\Composite_PS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Fullscreen_VS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inc\framework.h">
