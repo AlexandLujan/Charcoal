@@ -79,6 +79,9 @@
     <FxCompile Include="Shaders\Fullscreen_VS.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
+    <FxCompile Include="Shaders\BrightPass_PS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inc\framework.h">

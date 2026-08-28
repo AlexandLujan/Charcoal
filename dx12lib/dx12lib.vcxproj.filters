@@ -582,4 +582,18 @@
   <ItemGroup>
     <Library Include="assimp-vc143-mt.lib" />
   </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Resources\Shaders\GenerateMips_CS.hlsl">
+      <Filter>Resource Files</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\ImGUI_PS.hlsl">
+      <Filter>Resource Files</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\ImGUI_VS.hlsl">
+      <Filter>Resource Files</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\PanoToCubemap_CS.hlsl">
+      <Filter>Resource Files</Filter>
+    </FxCompile>
+  </ItemGroup>
 </Project>

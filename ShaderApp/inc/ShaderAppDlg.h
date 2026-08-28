@@ -150,11 +150,13 @@ private:
 	std::shared_ptr<SwapChain>           pSwapChain = nullptr;
 	std::shared_ptr<Texture>             pDepthTexture = nullptr;
 	std::shared_ptr<Texture>             pSceneRenderTarget = nullptr;
+	std::shared_ptr<Texture>             pBrightPassRenderTarget = nullptr;
 	std::shared_ptr<VertexBuffer>        pVertexBuffer = nullptr;
 	std::shared_ptr<IndexBuffer>         pIndexBuffer = nullptr;
 	std::shared_ptr<RootSignature>       pRootSignature = nullptr;
 	std::shared_ptr<PipelineStateObject> pPipelineStateObject = nullptr;
 	std::shared_ptr<PipelineStateObject> pWireframePipelineStateObject = nullptr;
+	std::shared_ptr<PipelineStateObject> pBrightPassPSO = nullptr;
 
 	std::shared_ptr<RootSignature>       pCompositeRootSignature = nullptr;
 	std::shared_ptr<PipelineStateObject> pCompositePSO = nullptr;
@@ -187,6 +189,7 @@ private:
 
 	RenderTarget m_RenderTarget;
 	RenderTarget m_SceneRenderTarget;
+	RenderTarget m_BrightPassRenderTarget;
 	void OnRender();
 
 	shared_ptr<Scene> m_Scene;

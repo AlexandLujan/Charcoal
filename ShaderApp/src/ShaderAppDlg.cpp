@@ -1189,6 +1189,7 @@ void CShaderAppDlg::OnTimer(UINT_PTR nIDEvent)
 
 			UpdateEventArgs ua(1.0 / 60.0, 0.0);
 			OnUpdate(ua);
+			OnRender();
 
 			if (timerTick <= 20)
 			{

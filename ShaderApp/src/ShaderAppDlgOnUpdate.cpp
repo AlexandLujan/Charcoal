@@ -23,6 +23,7 @@
 #include <Texture.h>
 #include <functional>
 #include <DirectXColors.h>
+#include <fstream>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -164,12 +165,24 @@ void CShaderAppDlg::OnRender()
 	SceneVisitor unlitPass(cmdListRef, theCamera, p_UnlitPSO, false);
 	*/
 
+	std::ofstream log("bloom_debug_log.txt", std::ios::app);
+
+	log << "[OnRender] Begin\n";
+	log.flush();
+
 	// Clear the render targets.
 	commandList->ClearTexture(renderTarget.GetTexture(AttachmentPoint::Color0), BackgroundColor);
+
+	log << "[OnRender] HDR color cleared\n";
+	log.flush();
+
 	commandList->ClearDepthStencilTexture(
 		renderTarget.GetTexture(AttachmentPoint::DepthStencil),
 		D3D12_CLEAR_FLAG_DEPTH
 	);
+
+	log << "[OnRender] Depth cleared\n";
+	log.flush();
 
 	commandList->SetViewport(m_Viewport);
 	commandList->SetScissorRect(m_ScissorRect);
@@ -183,13 +196,14 @@ void CShaderAppDlg::OnRender()
 		D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST
 	);
 
-	m_LightingPSO->SetMaterial(
-		pRegularMaterial
-	);
+	log << "[OnRender] Applying regular material\n";
+	log.flush();
 
-	m_LightingPSO->Apply(
-		*commandList
-	);
+	m_LightingPSO->SetMaterial(pRegularMaterial);
+	m_LightingPSO->Apply(*commandList);
+
+	log << "[OnRender] Regular PSO applied\n";
+	log.flush();
 
 	commandList->SetVertexBuffer(
 		0,
@@ -206,17 +220,21 @@ void CShaderAppDlg::OnRender()
 			)
 	);
 
+	log << "[OnRender] Regular draw recorded\n";
+	log.flush();
+
 	//
 	// HEX CORRIDOR - EMISSIVE GEOMETRY
 	//
 
-	m_LightingPSO->SetMaterial(
-		pEmissiveMaterial
-	);
+	log << "[OnRender] Applying emissive material\n";
+	log.flush();
 
-	m_LightingPSO->Apply(
-		*commandList
-	);
+	m_LightingPSO->SetMaterial(pEmissiveMaterial);
+	m_LightingPSO->Apply(*commandList);
+
+	log << "[OnRender] Emissive PSO applied\n";
+	log.flush();
 
 	commandList->SetVertexBuffer(
 		0,
@@ -233,7 +251,60 @@ void CShaderAppDlg::OnRender()
 			)
 	);
 
-	commandQueue.ExecuteCommandList(commandList);
+	/// BRIGHT PASS
+	commandList->ClearTexture(
+		m_BrightPassRenderTarget.GetTexture(AttachmentPoint::Color0),
+		DirectX::Colors::Black
+	);
+
+	commandList->SetRenderTarget(
+		m_BrightPassRenderTarget
+	);
+
+	commandList->SetViewport(
+		m_BrightPassRenderTarget.GetViewport()
+	);
+
+	commandList->SetScissorRect(
+		CD3DX12_RECT(
+			0,
+			0,
+			LONG_MAX,
+			LONG_MAX
+		)
+	);
+
+	commandList->SetPipelineState(
+		pBrightPassPSO
+	);
+
+	commandList->SetGraphicsRootSignature(
+		pCompositeRootSignature
+	);
+
+	commandList->SetShaderResourceView(
+		0,
+		0,
+		pSceneRenderTarget,
+		D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE
+	);
+
+	commandList->SetPrimitiveTopology(
+		D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST
+	);
+
+	commandList->Draw(3);
+
+	log << "[OnRender] Emissive draw recorded\n";
+	log.flush();
+
+	log << "[OnRender] Executing command list\n";
+	log.flush();
+
+	//commandQueue.ExecuteCommandList(commandList);
+
+	log << "[OnRender] Command list executed\n";
+	log.flush();
 
 	// TheScene->Accept(opaquePass);
 	// TheScene->Accept(transparentPass);
@@ -262,7 +333,7 @@ void CShaderAppDlg::OnRender()
 	}
 	*/
 
-	/*
+	
 	//
 	// COMPOSITE PASS
 	//
@@ -305,6 +376,14 @@ void CShaderAppDlg::OnRender()
 		D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE
 	);
 
+	// Bind the Bright Pass texture to t1.
+	commandList->SetShaderResourceView(
+		0,
+		1,
+		pBrightPassRenderTarget,
+		D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE
+	);
+
 	commandList->SetPrimitiveTopology(
 		D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST
 	);
@@ -315,9 +394,12 @@ void CShaderAppDlg::OnRender()
 	commandQueue.ExecuteCommandList(
 		commandList
 	);
-	*/
+	
 
-	// pSwapChain->Present(); REVERT AFTER TEST
+	pSwapChain->Present();
+
+	log << "[OnRender] Presented\n";
+	log.flush();
 }
 
 void CShaderAppDlg::OnResized(UINT width, UINT height)
@@ -379,6 +461,40 @@ void CShaderAppDlg::OnResized(UINT width, UINT height)
 	m_SceneRenderTarget.AttachTexture(
 		AttachmentPoint::DepthStencil,
 		pDepthTexture
+	);
+
+	//
+	// BRIGHT PASS RENDER TARGET
+	//
+
+	D3D12_CLEAR_VALUE brightPassClearValue = {};
+	brightPassClearValue.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+	brightPassClearValue.Color[0] = 0.0f;
+	brightPassClearValue.Color[1] = 0.0f;
+	brightPassClearValue.Color[2] = 0.0f;
+	brightPassClearValue.Color[3] = 1.0f;
+
+	auto brightPassTextureDesc =
+		CD3DX12_RESOURCE_DESC::Tex2D(
+			DXGI_FORMAT_R16G16B16A16_FLOAT,
+			Width(),
+			Height(),
+			1,
+			1,
+			1,
+			0,
+			D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET
+		);
+
+	pBrightPassRenderTarget =
+		m_Device.CreateTexture(
+			brightPassTextureDesc,
+			&brightPassClearValue
+		);
+
+	m_BrightPassRenderTarget.AttachTexture(
+		AttachmentPoint::Color0,
+		pBrightPassRenderTarget
 	);
 }
 

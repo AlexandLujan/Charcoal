@@ -205,7 +205,7 @@ BOOL CShaderAppDlg::Initialize()
         { 0.0f, 0.0f, 0.0f, 1.0f });
 
     pEmissiveMaterial->SetEmissiveColor(
-        { 1.0f, 0.03f, 0.0f, 1.0f });
+        { 4.0f, 0.12f, 0.0f, 1.0f });
 
     log << "[Initialize] Emissive material created\n";
     log.flush();
@@ -487,9 +487,43 @@ BOOL CShaderAppDlg::Initialize()
         pDepthTexture
     );
 
+    /// BRIGHT PASS RENDER TARGET
+
+    D3D12_CLEAR_VALUE brightPassClearValue = {};
+    brightPassClearValue.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+    brightPassClearValue.Color[0] = 0.0f;
+    brightPassClearValue.Color[1] = 0.0f;
+    brightPassClearValue.Color[2] = 0.0f;
+    brightPassClearValue.Color[3] = 1.0f;
+
+    auto brightPassTextureDesc =
+        CD3DX12_RESOURCE_DESC::Tex2D(
+            DXGI_FORMAT_R16G16B16A16_FLOAT,
+            Width(),
+            Height(),
+            1,
+            1,
+            1,
+            0,
+            D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET
+        );
+
+    pBrightPassRenderTarget =
+        m_Device.CreateTexture(
+            brightPassTextureDesc,
+            &brightPassClearValue
+        );
+
+    m_BrightPassRenderTarget.AttachTexture(
+        AttachmentPoint::Color0,
+        pBrightPassRenderTarget
+    );
+
+    /// COMPOSITE ROOT SIGNATURE
+
     CD3DX12_DESCRIPTOR_RANGE1 compositeTextureRange(
         D3D12_DESCRIPTOR_RANGE_TYPE_SRV,
-        1,  // one texture
+        2,  // one texture
         0   // t0
     );
 
@@ -568,6 +602,18 @@ BOOL CShaderAppDlg::Initialize()
         D3DReadFileToBlob(
             compositePixelShaderPath.c_str(),
             &compositePixelShaderBlob
+        )
+    );
+
+    const auto brightPassPixelShaderPath =
+        executableDirectory / L"BrightPass_PS.cso";
+
+    Microsoft::WRL::ComPtr<ID3DBlob> brightPassPixelShaderBlob;
+
+    ThrowIfFailed(
+        D3DReadFileToBlob(
+            brightPassPixelShaderPath.c_str(),
+            &brightPassPixelShaderBlob
         )
     );
 
@@ -659,6 +705,29 @@ BOOL CShaderAppDlg::Initialize()
     pCompositePSO =
         m_Device.CreatePipelineStateObject(
             compositePipelineStateStream
+        );
+
+    /// BRIGHT PASS PIPELINE STATE
+
+    auto brightPassPipelineStateStream =
+        compositePipelineStateStream;
+
+    brightPassPipelineStateStream.PS =
+        CD3DX12_SHADER_BYTECODE(
+            brightPassPixelShaderBlob.Get()
+        );
+
+    D3D12_RT_FORMAT_ARRAY brightPassRTVFormats = {};
+    brightPassRTVFormats.NumRenderTargets = 1;
+    brightPassRTVFormats.RTFormats[0] =
+        DXGI_FORMAT_R16G16B16A16_FLOAT;
+
+    brightPassPipelineStateStream.RTVFormats =
+        brightPassRTVFormats;
+
+    pBrightPassPSO =
+        m_Device.CreatePipelineStateObject(
+            brightPassPipelineStateStream
         );
 
     log << "[Initialize] Flushing command queue\n";
