@@ -251,6 +251,7 @@ void CShaderAppDlg::OnRender()
 			)
 	);
 
+	
 	/// BRIGHT PASS
 	commandList->ClearTexture(
 		m_BrightPassRenderTarget.GetTexture(AttachmentPoint::Color0),
@@ -285,6 +286,13 @@ void CShaderAppDlg::OnRender()
 	commandList->SetShaderResourceView(
 		0,
 		0,
+		pSceneRenderTarget,
+		D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE
+	);
+
+	commandList->SetShaderResourceView(
+		0,
+		1,
 		pSceneRenderTarget,
 		D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE
 	);
@@ -333,6 +341,118 @@ void CShaderAppDlg::OnRender()
 	}
 	*/
 
+	//
+	// HORIZONTAL BLUR PASS
+	//
+
+	commandList->ClearTexture(
+		m_BlurHorizontalRenderTarget.GetTexture(
+			AttachmentPoint::Color0
+		),
+		DirectX::Colors::Black
+	);
+
+	commandList->SetRenderTarget(
+		m_BlurHorizontalRenderTarget
+	);
+
+	commandList->SetViewport(
+		m_BlurHorizontalRenderTarget.GetViewport()
+	);
+
+	commandList->SetScissorRect(
+		CD3DX12_RECT(
+			0,
+			0,
+			LONG_MAX,
+			LONG_MAX
+		)
+	);
+
+	commandList->SetPipelineState(
+		pBlurHorizontalPSO
+	);
+
+	commandList->SetGraphicsRootSignature(
+		pCompositeRootSignature
+	);
+
+	commandList->SetShaderResourceView(
+		0,
+		0,
+		pBrightPassRenderTarget,
+		D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE
+	);
+
+	commandList->SetShaderResourceView(
+		0,
+		1,
+		pBrightPassRenderTarget,
+		D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE
+	);
+
+	commandList->SetPrimitiveTopology(
+		D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST
+	);
+
+	commandList->Draw(3);
+
+
+	//
+	// VERTICAL BLUR PASS
+	//
+
+	commandList->ClearTexture(
+		m_BlurVerticalRenderTarget.GetTexture(
+			AttachmentPoint::Color0
+		),
+		DirectX::Colors::Black
+	);
+
+	commandList->SetRenderTarget(
+		m_BlurVerticalRenderTarget
+	);
+
+	commandList->SetViewport(
+		m_BlurVerticalRenderTarget.GetViewport()
+	);
+
+	commandList->SetScissorRect(
+		CD3DX12_RECT(
+			0,
+			0,
+			LONG_MAX,
+			LONG_MAX
+		)
+	);
+
+	commandList->SetPipelineState(
+		pBlurVerticalPSO
+	);
+
+	commandList->SetGraphicsRootSignature(
+		pCompositeRootSignature
+	);
+
+	commandList->SetShaderResourceView(
+		0,
+		0,
+		pBlurHorizontalRenderTarget,
+		D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE
+	);
+
+	commandList->SetShaderResourceView(
+		0,
+		1,
+		pBlurHorizontalRenderTarget,
+		D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE
+	);
+
+	commandList->SetPrimitiveTopology(
+		D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST
+	);
+
+	commandList->Draw(3);
 	
 	//
 	// COMPOSITE PASS
@@ -376,11 +496,11 @@ void CShaderAppDlg::OnRender()
 		D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE
 	);
 
-	// Bind the Bright Pass texture to t1.
+	// Bind the final blurred bloom texture to t1.
 	commandList->SetShaderResourceView(
 		0,
 		1,
-		pBrightPassRenderTarget,
+		pBlurVerticalRenderTarget,
 		D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE
 	);
 
@@ -495,6 +615,74 @@ void CShaderAppDlg::OnResized(UINT width, UINT height)
 	m_BrightPassRenderTarget.AttachTexture(
 		AttachmentPoint::Color0,
 		pBrightPassRenderTarget
+	);
+
+	//
+// HORIZONTAL BLUR RENDER TARGET
+//
+
+	D3D12_CLEAR_VALUE blurHorizontalClearValue = {};
+	blurHorizontalClearValue.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+	blurHorizontalClearValue.Color[0] = 0.0f;
+	blurHorizontalClearValue.Color[1] = 0.0f;
+	blurHorizontalClearValue.Color[2] = 0.0f;
+	blurHorizontalClearValue.Color[3] = 1.0f;
+
+	auto blurHorizontalTextureDesc =
+		CD3DX12_RESOURCE_DESC::Tex2D(
+			DXGI_FORMAT_R16G16B16A16_FLOAT,
+			Width(),
+			Height(),
+			1,
+			1,
+			1,
+			0,
+			D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET
+		);
+
+	pBlurHorizontalRenderTarget =
+		m_Device.CreateTexture(
+			blurHorizontalTextureDesc,
+			&blurHorizontalClearValue
+		);
+
+	m_BlurHorizontalRenderTarget.AttachTexture(
+		AttachmentPoint::Color0,
+		pBlurHorizontalRenderTarget
+	);
+
+	//
+	// VERTICAL BLUR RENDER TARGET
+	//
+
+	D3D12_CLEAR_VALUE blurVerticalClearValue = {};
+	blurVerticalClearValue.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+	blurVerticalClearValue.Color[0] = 0.0f;
+	blurVerticalClearValue.Color[1] = 0.0f;
+	blurVerticalClearValue.Color[2] = 0.0f;
+	blurVerticalClearValue.Color[3] = 1.0f;
+
+	auto blurVerticalTextureDesc =
+		CD3DX12_RESOURCE_DESC::Tex2D(
+			DXGI_FORMAT_R16G16B16A16_FLOAT,
+			Width(),
+			Height(),
+			1,
+			1,
+			1,
+			0,
+			D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET
+		);
+
+	pBlurVerticalRenderTarget =
+		m_Device.CreateTexture(
+			blurVerticalTextureDesc,
+			&blurVerticalClearValue
+		);
+
+	m_BlurVerticalRenderTarget.AttachTexture(
+		AttachmentPoint::Color0,
+		pBlurVerticalRenderTarget
 	);
 }
 

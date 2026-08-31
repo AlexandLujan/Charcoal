@@ -211,7 +211,7 @@ void CShaderAppDlg::BuildLights(json& lights)
 		XMFLOAT4 The_Target = { target.value("x",0.0f) * CAMERA_SCALE_FACTOR,target.value("y", 0.0f) * CAMERA_SCALE_FACTOR,target.value("z", 0.0f) * CAMERA_SCALE_FACTOR,1 };
 		if (fixture_type == "PointLight")
 		{
-			shared_ptr<PointLight> pl = make_shared<PointLight>(Position, The_Target, fixture_color, ambient);
+			shared_ptr<PointLight> pl = make_shared<PointLight>(Position, Position, fixture_color, ambient, fixture_intensity, 1.0f, 1.0f, 0.35f, 0.44f);
 			(fixture_status == "ON") ? pl->TurnOn() : pl->TurnOff();
 			RegisterLight(fixture_name, pl);
 		}
@@ -256,11 +256,25 @@ void CShaderAppDlg::RegisterLight(
 		std::dynamic_pointer_cast<SpotLight>(light))
 	{
 		SpotLightList[name] = spotLight;
+
+		if (m_LightingPSO)
+		{
+			m_LightingPSO->SetSpotLights(
+				SpotLightList
+			);
+		}
 	}
 	else if (auto pointLight =
 		std::dynamic_pointer_cast<PointLight>(light))
 	{
 		PointLightList[name] = pointLight;
+
+		if (m_LightingPSO)
+		{
+			m_LightingPSO->SetPointLights(
+				PointLightList
+			);
+		}
 	}
 }
 

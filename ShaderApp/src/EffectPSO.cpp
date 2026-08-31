@@ -268,7 +268,21 @@ void EffectPSO::Apply(CommandList& commandList)
             GPUPointLight gpuLight{};
 
             gpuLight.PositionWS = light->PositionWS;
-            gpuLight.PositionVS = light->PositionVS;
+
+            XMVECTOR positionWS =
+                XMLoadFloat4(&light->PositionWS);
+
+            XMVECTOR positionVS =
+                XMVector4Transform(
+                    positionWS,
+                    m_pAlignedMVP->View
+                );
+
+            XMStoreFloat4(
+                &gpuLight.PositionVS,
+                positionVS
+            );
+
             gpuLight.Color = light->color;
 
             gpuLight.Ambient = light->ambient;

@@ -26,7 +26,7 @@ float4 main(PSInput IN) : SV_Target
             )
         );
 
-    const float threshold = 1.0f;
+    const float threshold = 0.20f;
 
     float3 brightColor =
         brightness > threshold

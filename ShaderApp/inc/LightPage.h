@@ -57,6 +57,7 @@ public:
 	void UpdateAmbientIntensity(FLOAT intensity);
 	void UpdateLightIntensity(FLOAT intensity);
 	void UpdateLightColor(std::string color);
+	void UpdateLightColor(XMFLOAT4 color);
 	void UpdateLightType(std::string lightType);
 	void UpdateLightStatus(std::string status);
 

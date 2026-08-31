@@ -205,7 +205,7 @@ BOOL CShaderAppDlg::Initialize()
         { 0.0f, 0.0f, 0.0f, 1.0f });
 
     pEmissiveMaterial->SetEmissiveColor(
-        { 4.0f, 0.12f, 0.0f, 1.0f });
+        { 1.00f, 0.16f, 0.015f, 1.00f });
 
     log << "[Initialize] Emissive material created\n";
     log.flush();
@@ -249,11 +249,13 @@ BOOL CShaderAppDlg::Initialize()
             true
         );
 
+    /*
     auto normalTexture =
         textureCommandList->LoadTextureFromFile(
             normalTexturePath.wstring(),
             false
         );
+    */
 
     auto heightTexture =
         textureCommandList->LoadTextureFromFile(
@@ -266,10 +268,12 @@ BOOL CShaderAppDlg::Initialize()
         albedoTexture
     );
 
+    /*
     pRegularMaterial->SetTexture(
         Material::TextureType::Normal,
         normalTexture
     );
+    */
 
     pRegularMaterial->SetTexture(
         Material::TextureType::Bump,
@@ -519,6 +523,74 @@ BOOL CShaderAppDlg::Initialize()
         pBrightPassRenderTarget
     );
 
+    ///
+    /// HORIZONTAL BLUR RENDER TARGET
+    ///
+
+    D3D12_CLEAR_VALUE blurHorizontalClearValue = {};
+    blurHorizontalClearValue.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+    blurHorizontalClearValue.Color[0] = 0.0f;
+    blurHorizontalClearValue.Color[1] = 0.0f;
+    blurHorizontalClearValue.Color[2] = 0.0f;
+    blurHorizontalClearValue.Color[3] = 1.0f;
+
+    auto blurHorizontalTextureDesc =
+        CD3DX12_RESOURCE_DESC::Tex2D(
+            DXGI_FORMAT_R16G16B16A16_FLOAT,
+            Width(),
+            Height(),
+            1,
+            1,
+            1,
+            0,
+            D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET
+        );
+
+    pBlurHorizontalRenderTarget =
+        m_Device.CreateTexture(
+            blurHorizontalTextureDesc,
+            &blurHorizontalClearValue
+        );
+
+    m_BlurHorizontalRenderTarget.AttachTexture(
+        AttachmentPoint::Color0,
+        pBlurHorizontalRenderTarget
+    );
+
+    ///
+    /// VERTICAL BLUR RENDER TARGET
+    ///
+
+    D3D12_CLEAR_VALUE blurVerticalClearValue = {};
+    blurVerticalClearValue.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+    blurVerticalClearValue.Color[0] = 0.0f;
+    blurVerticalClearValue.Color[1] = 0.0f;
+    blurVerticalClearValue.Color[2] = 0.0f;
+    blurVerticalClearValue.Color[3] = 1.0f;
+
+    auto blurVerticalTextureDesc =
+        CD3DX12_RESOURCE_DESC::Tex2D(
+            DXGI_FORMAT_R16G16B16A16_FLOAT,
+            Width(),
+            Height(),
+            1,
+            1,
+            1,
+            0,
+            D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET
+        );
+
+    pBlurVerticalRenderTarget =
+        m_Device.CreateTexture(
+            blurVerticalTextureDesc,
+            &blurVerticalClearValue
+        );
+
+    m_BlurVerticalRenderTarget.AttachTexture(
+        AttachmentPoint::Color0,
+        pBlurVerticalRenderTarget
+    );
+
     /// COMPOSITE ROOT SIGNATURE
 
     CD3DX12_DESCRIPTOR_RANGE1 compositeTextureRange(
@@ -578,6 +650,44 @@ BOOL CShaderAppDlg::Initialize()
     log << "[Initialize] Lighting EffectPSO created\n";
     log.flush();
 
+    for (size_t i = 0;
+        i < scene.EmissiveLightPositions.size();
+        ++i)
+    {
+        const auto& position =
+            scene.EmissiveLightPositions[i];
+
+        auto pointLight =
+            std::make_shared<PointLight>(
+                position,
+                position,
+                "YELLOW",
+                0.0f,   // Ambient
+                1.25f,   // Diffuse
+                0.0f,   // Specular
+                1.0f,   // Constant
+                0.03f,  // Linear
+                0.01f   // Quadratic
+            );
+
+        pointLight->SetColor(
+            XMFLOAT4{
+                1.00f,
+                0.97f,
+                0.82f,
+                1.00f
+            }
+        );
+
+        pointLight->TurnOn();
+
+        RegisterLight(
+            "Hex Point Light " +
+            std::to_string(i),
+            pointLight
+        );
+    }
+
     //
     // COMPOSITE SHADERS
     //
@@ -614,6 +724,29 @@ BOOL CShaderAppDlg::Initialize()
         D3DReadFileToBlob(
             brightPassPixelShaderPath.c_str(),
             &brightPassPixelShaderBlob
+        )
+    );
+
+    const auto blurHorizontalPixelShaderPath =
+        executableDirectory / L"BlurHorizontal_PS.cso";
+
+    const auto blurVerticalPixelShaderPath =
+        executableDirectory / L"BlurVertical_PS.cso";
+
+    Microsoft::WRL::ComPtr<ID3DBlob> blurHorizontalPixelShaderBlob;
+    Microsoft::WRL::ComPtr<ID3DBlob> blurVerticalPixelShaderBlob;
+
+    ThrowIfFailed(
+        D3DReadFileToBlob(
+            blurHorizontalPixelShaderPath.c_str(),
+            &blurHorizontalPixelShaderBlob
+        )
+    );
+
+    ThrowIfFailed(
+        D3DReadFileToBlob(
+            blurVerticalPixelShaderPath.c_str(),
+            &blurVerticalPixelShaderBlob
         )
     );
 
@@ -728,6 +861,56 @@ BOOL CShaderAppDlg::Initialize()
     pBrightPassPSO =
         m_Device.CreatePipelineStateObject(
             brightPassPipelineStateStream
+        );
+
+    //
+    // HORIZONTAL BLUR PIPELINE STATE
+    //
+
+    auto blurHorizontalPipelineStateStream =
+        compositePipelineStateStream;
+
+    blurHorizontalPipelineStateStream.PS =
+        CD3DX12_SHADER_BYTECODE(
+            blurHorizontalPixelShaderBlob.Get()
+        );
+
+    D3D12_RT_FORMAT_ARRAY blurHorizontalRTVFormats = {};
+    blurHorizontalRTVFormats.NumRenderTargets = 1;
+    blurHorizontalRTVFormats.RTFormats[0] =
+        DXGI_FORMAT_R16G16B16A16_FLOAT;
+
+    blurHorizontalPipelineStateStream.RTVFormats =
+        blurHorizontalRTVFormats;
+
+    pBlurHorizontalPSO =
+        m_Device.CreatePipelineStateObject(
+            blurHorizontalPipelineStateStream
+        );
+
+    //
+    // VERTICAL BLUR PIPELINE STATE
+    //
+
+    auto blurVerticalPipelineStateStream =
+        compositePipelineStateStream;
+
+    blurVerticalPipelineStateStream.PS =
+        CD3DX12_SHADER_BYTECODE(
+            blurVerticalPixelShaderBlob.Get()
+        );
+
+    D3D12_RT_FORMAT_ARRAY blurVerticalRTVFormats = {};
+    blurVerticalRTVFormats.NumRenderTargets = 1;
+    blurVerticalRTVFormats.RTFormats[0] =
+        DXGI_FORMAT_R16G16B16A16_FLOAT;
+
+    blurVerticalPipelineStateStream.RTVFormats =
+        blurVerticalRTVFormats;
+
+    pBlurVerticalPSO =
+        m_Device.CreatePipelineStateObject(
+            blurVerticalPipelineStateStream
         );
 
     log << "[Initialize] Flushing command queue\n";

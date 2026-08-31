@@ -192,4 +192,4 @@ Captures/
 !ShaderApp/dxcompiler.dll
 !ShaderApp/dxil.dll
 
-!dx12lib/assimp-vc143-mt.lib
+!dx12lib/assimp-vc143-mt.libShaderApp/bloom_debug_log.txt

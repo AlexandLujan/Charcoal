@@ -169,17 +169,13 @@ namespace
         // sharing corner vertices between adjacent faces.
         //
 
-        const float wallHeight =
-            topY - bottomY;
+        float wallHeight = topY - bottomY;
+        float centerY = (bottomY + topY) * 0.5f;
 
-        const float regularBandHeight =
-            std::min(0.5f, wallHeight * 0.4f);
-
-        const float lowerBandY =
-            bottomY + regularBandHeight;
-
-        const float upperBandY =
-            topY - regularBandHeight;
+        // total strip thickness = 12% of wall height
+        float emissiveThickness = wallHeight * 0.25f;
+        float emissiveBottomY = centerY - emissiveThickness * 0.5f;
+        float emissiveTopY = centerY + emissiveThickness * 0.5f;
 
         for (uint32_t i = 0; i < 6; ++i)
         {
@@ -257,35 +253,35 @@ namespace
 
             if (emissiveWalls)
             {
-                // Upper regular wall band.
+                // Upper regular wall section.
                 AddWallQuad(
                     regularGeometry,
                     x0,
                     z0,
                     x1,
                     z1,
-                    upperBandY,
+                    emissiveTopY,
                     topY,
                     wallNormal,
                     wallTangent,
                     wallBitangent
                 );
 
-                // Middle emissive wall band.
+                // Thin emissive strip.
                 AddWallQuad(
                     emissiveGeometry,
                     x0,
                     z0,
                     x1,
                     z1,
-                    lowerBandY,
-                    upperBandY,
+                    emissiveBottomY,
+                    emissiveTopY,
                     wallNormal,
                     wallTangent,
                     wallBitangent
                 );
 
-                // Lower regular wall band.
+                // Lower regular wall section.
                 AddWallQuad(
                     regularGeometry,
                     x0,
@@ -293,7 +289,7 @@ namespace
                     x1,
                     z1,
                     bottomY,
-                    lowerBandY,
+                    emissiveBottomY,
                     wallNormal,
                     wallTangent,
                     wallBitangent
@@ -430,6 +426,23 @@ HexCorridorGeometry BuildHexCorridorScene()
                 bottomY,
                 topY,
                 !isOuterShell);
+
+            if (!isOuterShell)
+            {
+                constexpr int lightSpacing = 20;
+
+                if ((row % lightSpacing == 0) &&
+                    (column % lightSpacing == 0))
+                {
+                    scene.EmissiveLightPositions.push_back(
+                        {
+                            x,
+                            topY + 0.5f,
+                            z,
+                            1.0f
+                        });
+                }
+            }
         }
     }
 

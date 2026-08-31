@@ -15,17 +15,17 @@ BOOL CLightPage::OnSetActive()
 	Light_Target_X_Slider.SetRange(-100, 100);
 	Light_Target_Y_Slider.SetRange(-100, 100);
 	Light_Target_Z_Slider.SetRange(-100, 100);
-	Light_X_Slider.SetRange(0, SCREEN_WIDTH);
-	Light_Y_Slider.SetRange(0, SCREEN_HEIGHT);
-	Light_Z_Slider.SetRange(0, SCREEN_WIDTH);
+	Light_X_Slider.SetRange(-100, 100);
+	Light_Y_Slider.SetRange(-100, 100);
+	Light_Z_Slider.SetRange(-100, 100);
 	Light_Target_X_Slider.SetPos(0);
 	Light_Target_Y_Slider.SetPos(0);
 	Light_Target_Z_Slider.SetPos(0);
-	Light_X_Slider.SetPos(SCREEN_WIDTH / 2);
-	Light_Y_Slider.SetPos(SCREEN_HEIGHT / 2);
-	Light_Z_Slider.SetPos(SCREEN_WIDTH / 2);
-	lighting_intensity.SetRange(1,500);
-	lighting_intensity.SetPos(100);
+	Light_X_Slider.SetPos(0);
+	Light_Y_Slider.SetPos(0);
+	Light_Z_Slider.SetPos(0);
+	lighting_intensity.SetRange(1, 100);
+	lighting_intensity.SetPos(1);
 	ambient_intensity.SetRange(1, 500);
 	ambient_intensity.SetPos(100);
 
@@ -108,18 +108,18 @@ void CLightPage::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 		switch (SliderID)
 		{
 		case IDC_LIGHT_X_SLIDER:
-			((CControlBoard*)GetParentSheet())->SendLightMessage(WM_LIGHT_X_CHANGED, (slideValue - (SCREEN_WIDTH / 2)));
-			text.Format((LPCWSTR)L"%d", (slideValue - (SCREEN_WIDTH / 2)));
+			((CControlBoard*)GetParentSheet())->SendLightMessage(WM_LIGHT_X_CHANGED, slideValue);
+			text.Format((LPCWSTR)L"%.1f", static_cast<float>(slideValue) / 10.0f);
 			light_location_x.SetWindowTextW(text);
 			break;
 		case IDC_LIGHT_Y_SLIDER:
-			((CControlBoard*)GetParentSheet())->SendLightMessage(WM_LIGHT_Y_CHANGED, (slideValue - (SCREEN_HEIGHT / 2)));
-			text.Format((LPCWSTR)L"%d", (slideValue - (SCREEN_HEIGHT / 2)));
+			((CControlBoard*)GetParentSheet())->SendLightMessage(WM_LIGHT_Y_CHANGED, slideValue);
+			text.Format((LPCWSTR)L"%.1f", static_cast<float>(slideValue) / 10.0f);
 			light_location_y.SetWindowTextW(text);
 			break;
 		case IDC_LIGHT_Z_SLIDER:
-			((CControlBoard*)GetParentSheet())->SendLightMessage(WM_LIGHT_Z_CHANGED, (slideValue - (SCREEN_WIDTH / 2)));
-			text.Format((LPCWSTR)L"%d", (slideValue - (SCREEN_WIDTH / 2)));
+			((CControlBoard*)GetParentSheet())->SendLightMessage(WM_LIGHT_Z_CHANGED, slideValue);
+			text.Format((LPCWSTR)L"%.1f", static_cast<float>(slideValue) / 10.0f);
 			light_location_z.SetWindowTextW(text);
 			break;
 		case IDC_LIGHT_TARGET_X_SLIDER:
@@ -148,7 +148,13 @@ void CLightPage::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 }
 void CLightPage::OnBnClickedLightStatus()
 {
-	((CControlBoard*)GetParentSheet())->SendLightMessage(WM_LIGHT_STATUS_TOGGLE, light_status.GetCheck() != BST_CHECKED);
+	const bool isOn =
+		light_status.GetCheck() != BST_CHECKED;
+
+	((CControlBoard*)GetParentSheet())->SendLightMessage(
+		WM_LIGHT_STATUS_TOGGLE,
+		isOn
+	);
 }
 
 void CLightPage::OnBnClickedLightingColor()
@@ -179,15 +185,15 @@ void CLightPage::SetSelectedLighting(INT value)
 }
 void CLightPage::UpdatePosition(XMFLOAT4 pos) 
 {
-	Light_X_Slider.SetPos((int)pos.x + (SCREEN_WIDTH / 2));
-	Light_Y_Slider.SetPos((int)pos.y + (SCREEN_HEIGHT / 2));
-	Light_Z_Slider.SetPos((int)pos.z + (SCREEN_WIDTH / 2));
+	Light_X_Slider.SetPos(static_cast<int>(pos.x * 10.0f));
+	Light_Y_Slider.SetPos(static_cast<int>(pos.y * 10.0f));
+	Light_Z_Slider.SetPos(static_cast<int>(pos.z * 10.0f));
 	CString text;
-	text.Format((LPCWSTR)L"%d", (int)pos.x);
+	text.Format((LPCWSTR)L"%.1f", pos.x);
 	light_location_x.SetWindowTextW(text);
-	text.Format((LPCWSTR)L"%d", (int)pos.y);
+	text.Format((LPCWSTR)L"%.1f", pos.y);
 	light_location_y.SetWindowTextW(text);
-	text.Format((LPCWSTR)L"%d", (int)pos.z);
+	text.Format((LPCWSTR)L"%.1f", pos.z);
 	light_location_z.SetWindowTextW(text);
 }
 void CLightPage::UpdateTarget(XMFLOAT4 pos) 
@@ -219,11 +225,16 @@ void CLightPage::UpdateLightIntensity(FLOAT intensity)
 {
 	//FLOAT log_intensity = logf(intensity);
 	//lighting_intensity.SetPos((int)(log_intensity * 100.0f));
-	lighting_intensity.SetPos(static_cast<int>(intensity * 100.0f));
+	lighting_intensity.SetPos(static_cast<int>(intensity));
 }
 void CLightPage::UpdateLightColor(string color) 
 {
 	uint32_t rgb = FRGB2RGB(FindColor(color));
+	lighting_color_button.SetColor(colorswap(rgb));
+}
+void CLightPage::UpdateLightColor(XMFLOAT4 color)
+{
+	uint32_t rgb = FRGB2RGB(color);
 	lighting_color_button.SetColor(colorswap(rgb));
 }
 void CLightPage::UpdateLightType(string lightType)
@@ -239,5 +250,5 @@ void CLightPage::UpdateLightType(string lightType)
 }
 void CLightPage::UpdateLightStatus(string status)
 {
-	light_status.SetCheck((status == "ON") ? BST_CHECKED : BST_UNCHECKED);
+	light_status.SetCheck((status == "ON") ? BST_UNCHECKED : BST_CHECKED);
 }

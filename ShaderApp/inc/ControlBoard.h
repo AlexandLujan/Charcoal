@@ -51,6 +51,7 @@ public:
 	void SendCameraMessage(UINT MessageID, std::string* content);
 	void SendLightMessage(UINT MessageID, uint32_t content);
 	void SendLightMessage(UINT MessageID, std::string* content);
+	void UpdateLightColor(XMFLOAT4 color);
 	void SendObjectMessage(UINT MessageID, uint32_t content);
 	void SendObjectMessage(UINT MessageID, std::string* content);
 	void SendVideoMessage(UINT MessageID, uint32_t content);

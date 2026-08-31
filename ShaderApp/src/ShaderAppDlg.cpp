@@ -198,14 +198,40 @@ BOOL CShaderAppDlg::OnInitDialog()
 
 	defaultLight->TurnOn();
 
-	RegisterLight("Default Directional Light", defaultLight);
+	RegisterLight(
+		"Default Directional Light",
+		defaultLight
+	);
+
+	/*
+	auto testPointLight = std::make_shared<PointLight>(
+		XMFLOAT4{ 0.0f, 5.0f, -5.0f, 1.0f },
+		XMFLOAT4{ 0.0f, 5.0f, -5.0f, 1.0f },
+		"YELLOW",
+		0.0f,
+		10.0f,  // Diffuse
+		0.0f,   // Specular
+		1.0f,   // Constant
+		0.03f,   // Linear
+		0.01f    // Quadratic
+	);
+
+	testPointLight->TurnOn();
+
+	RegisterLight(
+		"Test Point Light",
+		testPointLight
+	);
+	*/
 
 	LightName = "Default Directional Light";
 	currentLight = defaultLight;
 
 	controlBoard->ResetLightingNameList();
 	controlBoard->UpdateAddLightingName("Default Directional Light");
+	//controlBoard->UpdateAddLightingName("Test Point Light");
 	controlBoard->SetSelectedLighting(0);
+
 	controlBoard->UpdateLightColor(defaultLight->Color());
 	controlBoard->UpdateLightingAmbientColor(AmbientLightColor);
 	controlBoard->UpdateLightType(defaultLight->LightType());
@@ -735,41 +761,45 @@ LRESULT CShaderAppDlg::OnLightMessage(WPARAM wParam, LPARAM lParam)
 	switch (wParam)
 	{
 		case WM_LIGHT_CHANGED:
+		{
 			LightName = *(string*)lParam;
 			l = LightList[LightName];
 			if (l != nullptr)
 			{
 				controlBoard->UpdateLightPosition(l->Position());
 				controlBoard->UpdateLightTarget(l->Target());
-				controlBoard->UpdateLightColor(l->Color());
+				controlBoard->UpdateLightColor(l->FRGB());
 				controlBoard->UpdateLightAmbientIntensity(l->Ambient());
 				controlBoard->UpdateLightType(l->LightType());
 				controlBoard->UpdateLightStatus(l->Status());
 				currentLight = l;
 			}
+		}
 			break;
 		case WM_LIGHT_STATUS_TOGGLE:
+		{
 			if ((bool)lParam)
 				l->TurnOn();
 			else
 				l->TurnOff();
+		}
 			break;
 		case WM_LIGHT_X_CHANGED:
 		{
 			const int32_t value = static_cast<int32_t>(lParam);
-			l->X() = static_cast<float>(value);
+			l->X() = static_cast<float>(value) / 10.0f;
 		}
 			break;
 		case WM_LIGHT_Y_CHANGED:
 		{
 			const int32_t value = static_cast<int32_t>(lParam);
-			l->Y() = static_cast<float>(value);
+			l->Y() = static_cast<float>(value) / 10.0f;
 		}
 			break;
 		case WM_LIGHT_Z_CHANGED:
 		{
 			const int32_t value = static_cast<int32_t>(lParam);
-			l->Z() = static_cast<float>(value);
+			l->Z() = static_cast<float>(value) / 10.0f;
 		}
 			break;
 		case WM_LIGHT_TARGET_X_CHANGED:
@@ -791,20 +821,30 @@ LRESULT CShaderAppDlg::OnLightMessage(WPARAM wParam, LPARAM lParam)
 		}
 			break;
 		case WM_LIGHT_COLOR_CHANGED:
-			{
+		{
 				uint32_t c = (uint32_t)lParam;
 				l->SetColor(RGB2FRGB(colorswap(c)));
-			}
+		}
 			break;
 		case WM_LIGHT_INTENSITY_CHANGED:
+		{
+			const float sliderValue =
+				static_cast<float>(lParam);
+
+			if (l->LightType() == "PointLight")
 			{
-		//		FLOAT the_intensity = powf(10.0f, ((float)lParam / 100.0f));
-		//		l->Intensity() = the_intensity;
-			l->diffuseIntensity = static_cast<float>(lParam) / 500.0f;
+				l->DiffuseIntensity() =
+					sliderValue / 10.0f;
 			}
+			else if (l->LightType() == "DirectionalLight")
+			{
+				l->DiffuseIntensity() =
+					sliderValue / 100.0f;
+			}
+		}
 			break;
 		case WM_LIGHT_AMBIENT_COLOR_CHANGED:
-			{
+		{
 				uint32_t c = static_cast<uint32_t>(lParam);
 				AmbientLightColor =
 					RGB2FRGB(colorswap(c));
@@ -815,20 +855,20 @@ LRESULT CShaderAppDlg::OnLightMessage(WPARAM wParam, LPARAM lParam)
 						AmbientLightColor
 					);
 				}
-			}
+		}
 			break;
 		case WM_LIGHT_AMBIENT_INTENSITY_CHANGED:
-			{
+		{
 				// FLOAT the_intensity = powf(10.0f, ((float)lParam / 100.0f));
 				// l->Ambient() = the_intensity;
 				l->Ambient() = static_cast<float>(lParam) / 500.0f;
-			}
+		}
 			break;
 		case WM_LIGHT_BEAM_CONE_ANGLE_CHANGED:
-			{
+		{
 				INT beam_angle = (int32_t)lParam;
 				l->Spread() = cosf(DegreesToRadians((float)beam_angle));
-			}
+		}
 			break;
 	}
 	if (m_LightingPSO)
