@@ -19,10 +19,13 @@ namespace
         float topY,
         const XMFLOAT3& normal,
         const XMFLOAT3& tangent,
-        const XMFLOAT3& bitangent)
+        const XMFLOAT3& bitangent,
+        float uvScaleY = 1.0f)
     {
         const uint32_t baseVertex =
-            static_cast<uint32_t>(geometry.Vertices.size());
+            static_cast<uint32_t>(
+                geometry.Vertices.size()
+                );
 
         geometry.Vertices.push_back(
             {
@@ -39,7 +42,7 @@ namespace
                 normal,
                 tangent,
                 bitangent,
-                { 0.0f, 1.0f, 0.0f }
+                { 0.0f, uvScaleY, 0.0f }
             });
 
         geometry.Vertices.push_back(
@@ -57,7 +60,7 @@ namespace
                 normal,
                 tangent,
                 bitangent,
-                { 1.0f, 1.0f, 0.0f }
+                { 1.0f, uvScaleY, 0.0f }
             });
 
         geometry.Indices.push_back(baseVertex + 0);
@@ -70,7 +73,8 @@ namespace
     }
 
     void AddHexPrism(
-        SceneGeometry& regularGeometry,
+        SceneGeometry& regularTopGeometry,
+        SceneGeometry& regularSidesGeometry,
         SceneGeometry& emissiveGeometry,
         float centerX,
         float centerZ,
@@ -102,7 +106,7 @@ namespace
         };
 
         const uint32_t baseVertex =
-            static_cast<uint32_t>(regularGeometry.Vertices.size());
+            static_cast<uint32_t>(regularTopGeometry.Vertices.size());
 
         //
         // TOP FACE VERTICES
@@ -110,7 +114,7 @@ namespace
         //
 
         // Top center
-        regularGeometry.Vertices.push_back(
+        regularTopGeometry.Vertices.push_back(
             {
                 { centerX, topY, centerZ }, // Position
                 topNormal,                  // Normal
@@ -137,7 +141,7 @@ namespace
             float v =
                 0.5f + ((z - centerZ) / (2.0f * radius));
 
-            regularGeometry.Vertices.push_back(
+            regularTopGeometry.Vertices.push_back(
                 {
                     { x, topY, z },
                     topNormal,
@@ -156,9 +160,9 @@ namespace
         {
             uint32_t next = (i + 1) % 6;
 
-            regularGeometry.Indices.push_back(baseVertex + 0);
-            regularGeometry.Indices.push_back(baseVertex + 1 + i);
-            regularGeometry.Indices.push_back(baseVertex + 1 + next);
+            regularTopGeometry.Indices.push_back(baseVertex + 0);
+            regularTopGeometry.Indices.push_back(baseVertex + 1 + i);
+            regularTopGeometry.Indices.push_back(baseVertex + 1 + next);
         }
 
         //
@@ -172,7 +176,7 @@ namespace
         float wallHeight = topY - bottomY;
         float centerY = (bottomY + topY) * 0.5f;
 
-        // total strip thickness = 12% of wall height
+        // total strip thickness = 25% of wall height
         float emissiveThickness = wallHeight * 0.25f;
         float emissiveBottomY = centerY - emissiveThickness * 0.5f;
         float emissiveTopY = centerY + emissiveThickness * 0.5f;
@@ -253,9 +257,12 @@ namespace
 
             if (emissiveWalls)
             {
+                const float upperWallHeight =
+                    topY - emissiveTopY;
+
                 // Upper regular wall section.
                 AddWallQuad(
-                    regularGeometry,
+                    regularSidesGeometry,
                     x0,
                     z0,
                     x1,
@@ -264,7 +271,8 @@ namespace
                     topY,
                     wallNormal,
                     wallTangent,
-                    wallBitangent
+                    wallBitangent,
+                    upperWallHeight * 1.0f
                 );
 
                 // Thin emissive strip.
@@ -281,9 +289,12 @@ namespace
                     wallBitangent
                 );
 
+                const float lowerWallHeight =
+                    emissiveBottomY - bottomY;
+
                 // Lower regular wall section.
                 AddWallQuad(
-                    regularGeometry,
+                    regularSidesGeometry,
                     x0,
                     z0,
                     x1,
@@ -292,14 +303,18 @@ namespace
                     emissiveBottomY,
                     wallNormal,
                     wallTangent,
-                    wallBitangent
+                    wallBitangent,
+                    lowerWallHeight * 1.0f
                 );
             }
             else
             {
                 // Outer shell: one solid non-emissive wall.
+                const float shellWallHeight =
+                    topY - bottomY;
+
                 AddWallQuad(
-                    regularGeometry,
+                    regularSidesGeometry,
                     x0,
                     z0,
                     x1,
@@ -308,7 +323,8 @@ namespace
                     topY,
                     wallNormal,
                     wallTangent,
-                    wallBitangent
+                    wallBitangent,
+                    shellWallHeight * 1.0f
                 );
             }
         }
@@ -365,7 +381,7 @@ HexCorridorGeometry BuildHexCorridorScene()
             const bool isOuterShell = distanceSquared >= shellStartRadiusSquared;
 
             //
-            // CCreate radial ripple heigh variation across the field.
+            // Create radial ripple height variation across the field.
             //
             const float distanceFromCenter =
                 std::sqrt(distanceSquared);
@@ -418,7 +434,8 @@ HexCorridorGeometry BuildHexCorridorScene()
             }
 
             AddHexPrism(
-                scene.Regular,
+                scene.RegularTop,
+                scene.RegularSides,
                 scene.Emissive,
                 x,
                 z,
@@ -434,10 +451,13 @@ HexCorridorGeometry BuildHexCorridorScene()
                 if ((row % lightSpacing == 0) &&
                     (column % lightSpacing == 0))
                 {
+                    const float emissiveCenterY =
+                        (bottomY + topY) * 0.5f;
+
                     scene.EmissiveLightPositions.push_back(
                         {
                             x,
-                            topY + 0.5f,
+                            emissiveCenterY + 0.25f,
                             z,
                             1.0f
                         });

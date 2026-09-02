@@ -105,33 +105,61 @@ BOOL CShaderAppDlg::Initialize()
     HexCorridorGeometry scene = BuildHexCorridorScene();
 
     //
-    // REGULAR GEOMETRY
+    // REGULAR TOP GEOMETRY
     //
 
-    log << "[Initialize] Copying regular vertex buffer\n";
+    log << "[Initialize] Copying regular top vertex buffer\n";
     log.flush();
 
-    pRegularVertexBuffer = commandList->CopyVertexBuffer(
-        scene.Regular.Vertices.size(),
+    pRegularTopVertexBuffer = commandList->CopyVertexBuffer(
+        scene.RegularTop.Vertices.size(),
         sizeof(SceneVertex),
-        scene.Regular.Vertices.data()
+        scene.RegularTop.Vertices.data()
     );
 
-    log << "[Initialize] Regular vertex buffer copied\n";
+    log << "[Initialize] Regular top vertex buffer copied\n";
     log.flush();
 
-    log << "[Initialize] Copying regular index buffer\n";
+    log << "[Initialize] Copying regular top index buffer\n";
     log.flush();
 
-    pRegularIndexBuffer = commandList->CopyIndexBuffer(
-        scene.Regular.Indices.size(),
+    pRegularTopIndexBuffer = commandList->CopyIndexBuffer(
+        scene.RegularTop.Indices.size(),
         DXGI_FORMAT_R32_UINT,
-        scene.Regular.Indices.data()
+        scene.RegularTop.Indices.data()
     );
 
-    log << "[Initialize] Regular index buffer copied\n";
+    log << "[Initialize] Regular top index buffer copied\n";
     log.flush();
 
+
+    //
+    // REGULAR SIDES GEOMETRY
+    //
+
+    log << "[Initialize] Copying regular sides vertex buffer\n";
+    log.flush();
+
+    pRegularSidesVertexBuffer = commandList->CopyVertexBuffer(
+        scene.RegularSides.Vertices.size(),
+        sizeof(SceneVertex),
+        scene.RegularSides.Vertices.data()
+    );
+
+    log << "[Initialize] Regular sides vertex buffer copied\n";
+    log.flush();
+
+    log << "[Initialize] Copying regular sides index buffer\n";
+    log.flush();
+
+    pRegularSidesIndexBuffer = commandList->CopyIndexBuffer(
+        scene.RegularSides.Indices.size(),
+        DXGI_FORMAT_R32_UINT,
+        scene.RegularSides.Indices.data()
+    );
+
+    log << "[Initialize] Regular sides index buffer copied\n";
+    log.flush();
 
     //
     // EMISSIVE GEOMETRY
@@ -165,30 +193,67 @@ BOOL CShaderAppDlg::Initialize()
 // MATERIALS
 //
 
-    log << "[Initialize] Creating regular material\n";
+//
+// REGULAR TOP MATERIAL
+//
+
+    log << "[Initialize] Creating regular top material\n";
     log.flush();
 
-    pRegularMaterial = std::make_shared<Material>();
+    pRegularTopMaterial = std::make_shared<Material>();
 
-    pRegularMaterial->SetDiffuseColor(
+    pRegularTopMaterial->SetDiffuseColor(
         { 1.0f, 1.0f, 1.0f, 1.0f });
 
-    pRegularMaterial->SetAmbientColor(
+    pRegularTopMaterial->SetAmbientColor(
         { 0.22f, 0.22f, 0.22f, 1.0f });
 
-    pRegularMaterial->SetSpecularColor(
+    pRegularTopMaterial->SetSpecularColor(
         { 0.15f, 0.15f, 0.15f, 1.0f });
 
-    pRegularMaterial->SetEmissiveColor(
+    pRegularTopMaterial->SetEmissiveColor(
         { 0.0f, 0.0f, 0.0f, 1.0f });
 
-    pRegularMaterial->SetBumpIntensity(
+    pRegularTopMaterial->SetBumpIntensity(
         { 1.25f }
     );
 
-    log << "[Initialize] Regular material created\n";
+    log << "[Initialize] Regular top material created\n";
     log.flush();
 
+
+    //
+    // REGULAR SIDES MATERIAL
+    //
+
+    log << "[Initialize] Creating regular sides material\n";
+    log.flush();
+
+    pRegularSidesMaterial = std::make_shared<Material>();
+
+    pRegularSidesMaterial->SetDiffuseColor(
+        { 1.0f, 1.0f, 1.0f, 1.0f });
+
+    pRegularSidesMaterial->SetAmbientColor(
+        { 0.22f, 0.22f, 0.22f, 1.0f });
+
+    pRegularSidesMaterial->SetSpecularColor(
+        { 0.15f, 0.15f, 0.15f, 1.0f });
+
+    pRegularSidesMaterial->SetEmissiveColor(
+        { 0.0f, 0.0f, 0.0f, 1.0f });
+
+    pRegularSidesMaterial->SetBumpIntensity(
+        { 0.25f }
+    );
+
+    log << "[Initialize] Regular sides material created\n";
+    log.flush();
+
+
+    //
+    // EMISSIVE MATERIAL
+    //
 
     log << "[Initialize] Creating emissive material\n";
     log.flush();
@@ -205,11 +270,10 @@ BOOL CShaderAppDlg::Initialize()
         { 0.0f, 0.0f, 0.0f, 1.0f });
 
     pEmissiveMaterial->SetEmissiveColor(
-        { 1.00f, 0.16f, 0.015f, 1.00f });
+        { 1.0f, 1.0f, 1.0f, 1.0f });
 
     log << "[Initialize] Emissive material created\n";
     log.flush();
-
 
     //
     // EXECUTE COPY COMMAND LIST
@@ -232,16 +296,22 @@ BOOL CShaderAppDlg::Initialize()
     const auto textureDirectory =
         GetExecutableDirectory()
         / L"Textures"
-        / L"VolcanicRock";
+        / L"RoughRock";
 
     const auto albedoTexturePath =
-        textureDirectory / L"volcanic-rock1-albedo.png";
+        textureDirectory / L"roughrockface2_Base_Color.png";
 
     const auto normalTexturePath =
-        textureDirectory / L"volcanic-rock1-normal-ogl.png";
+        textureDirectory / L"roughrockface2_Normal.png";
 
     const auto heightTexturePath =
-        textureDirectory / L"volcanic-rock1-height.png";
+        textureDirectory / L"roughrockface2_Height.png";
+
+    const auto roughnessTexturePath =
+        textureDirectory / L"roughrockface2_Roughness.png";
+
+    const auto ambientOcclusionTexturePath =
+        textureDirectory / L"roughrockface2_Ambient_Occlusion.png";
 
     auto albedoTexture =
         textureCommandList->LoadTextureFromFile(
@@ -263,22 +333,61 @@ BOOL CShaderAppDlg::Initialize()
             false
         );
 
-    pRegularMaterial->SetTexture(
+    auto roughnessTexture =
+        textureCommandList->LoadTextureFromFile(
+            roughnessTexturePath.wstring(),
+            false
+        );
+
+    auto ambientOcclusionTexture =
+        textureCommandList->LoadTextureFromFile(
+            ambientOcclusionTexturePath.wstring(),
+            false
+        );
+
+    pRegularTopMaterial->SetTexture(
         Material::TextureType::Diffuse,
         albedoTexture
     );
 
     
-    pRegularMaterial->SetTexture(
+    pRegularTopMaterial->SetTexture(
         Material::TextureType::Normal,
         normalTexture
     );
     
 
-    pRegularMaterial->SetTexture(
+    pRegularTopMaterial->SetTexture(
         Material::TextureType::Bump,
         heightTexture
     );
+
+    pRegularTopMaterial->SetTexture(
+        Material::TextureType::Roughness,
+        roughnessTexture
+    );
+
+    pRegularSidesMaterial->SetTexture(
+        Material::TextureType::Diffuse,
+        albedoTexture
+    );
+
+    pRegularTopMaterial->SetTexture(
+        Material::TextureType::AmbientOcclusion,
+        ambientOcclusionTexture
+    );
+
+    /*
+    pRegularSidesMaterial->SetTexture(
+        Material::TextureType::Normal,
+        normalTexture
+    );
+
+    pRegularSidesMaterial->SetTexture(
+        Material::TextureType::Bump,
+        heightTexture
+    );
+    */
 
     textureCommandQueue.ExecuteCommandList(
         textureCommandList
@@ -661,20 +770,20 @@ BOOL CShaderAppDlg::Initialize()
             std::make_shared<PointLight>(
                 position,
                 position,
-                "YELLOW",
+                "RED",
                 0.0f,   // Ambient
-                1.25f,   // Diffuse
+                3.0f,   // Diffuse
                 0.0f,   // Specular
                 1.0f,   // Constant
-                0.03f,  // Linear
-                0.01f   // Quadratic
+                0.06f,  // Linear
+                0.03f   // Quadratic
             );
 
         pointLight->SetColor(
             XMFLOAT4{
                 1.00f,
-                0.97f,
-                0.82f,
+                0.16f,
+                0.02f,
                 1.00f
             }
         );

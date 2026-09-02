@@ -3949,3 +3949,766 @@
 [App] Before deleting CShellManager
 [App] After deleting CShellManager
 [App] InitInstance finished. Returning FALSE
+================ APP START ================
+[App] InitInstance start
+[App] Current working directory: D:\Charcoal\Charcoal\ShaderApp
+[App] Before InitCommonControlsEx
+[App] After InitCommonControlsEx
+[App] Before CWinApp::InitInstance
+[App] After CWinApp::InitInstance
+[App] Before XMVerifyCPUSupport
+[App] After XMVerifyCPUSupport
+[App] Before SetThreadDpiAwarenessContext
+[App] After SetThreadDpiAwarenessContext
+[App] Before Device::EnableDebugLayer
+[App] After Device::EnableDebugLayer
+[App] Before Device::Create
+[App] After Device::Create
+[App] Before creating CShellManager
+[App] After creating CShellManager
+[App] Before CMFCVisualManager::SetDefaultManager
+[App] After CMFCVisualManager::SetDefaultManager
+[App] Before SetRegistryKey
+[App] After SetRegistryKey
+[App] Before creating CShaderAppDlg
+[App] After creating CShaderAppDlg
+[App] Before dlg.DoModal
+[App] After dlg.DoModal
+[App] Dialog closed with IDCANCEL
+[App] Before deleting CShellManager
+[App] After deleting CShellManager
+[App] InitInstance finished. Returning FALSE
+================ APP START ================
+[App] InitInstance start
+[App] Current working directory: D:\Charcoal\Charcoal\ShaderApp
+[App] Before InitCommonControlsEx
+[App] After InitCommonControlsEx
+[App] Before CWinApp::InitInstance
+[App] After CWinApp::InitInstance
+[App] Before XMVerifyCPUSupport
+[App] After XMVerifyCPUSupport
+[App] Before SetThreadDpiAwarenessContext
+[App] After SetThreadDpiAwarenessContext
+[App] Before Device::EnableDebugLayer
+[App] After Device::EnableDebugLayer
+[App] Before Device::Create
+[App] After Device::Create
+[App] Before creating CShellManager
+[App] After creating CShellManager
+[App] Before CMFCVisualManager::SetDefaultManager
+[App] After CMFCVisualManager::SetDefaultManager
+[App] Before SetRegistryKey
+[App] After SetRegistryKey
+[App] Before creating CShaderAppDlg
+[App] After creating CShaderAppDlg
+[App] Before dlg.DoModal
+================ APP START ================
+[App] InitInstance start
+[App] Current working directory: D:\Charcoal\Charcoal\ShaderApp
+[App] Before InitCommonControlsEx
+[App] After InitCommonControlsEx
+[App] Before CWinApp::InitInstance
+[App] After CWinApp::InitInstance
+[App] Before XMVerifyCPUSupport
+[App] After XMVerifyCPUSupport
+[App] Before SetThreadDpiAwarenessContext
+[App] After SetThreadDpiAwarenessContext
+[App] Before Device::EnableDebugLayer
+[App] After Device::EnableDebugLayer
+[App] Before Device::Create
+[App] After Device::Create
+[App] Before creating CShellManager
+[App] After creating CShellManager
+[App] Before CMFCVisualManager::SetDefaultManager
+[App] After CMFCVisualManager::SetDefaultManager
+[App] Before SetRegistryKey
+[App] After SetRegistryKey
+[App] Before creating CShaderAppDlg
+[App] After creating CShaderAppDlg
+[App] Before dlg.DoModal
+================ APP START ================
+[App] InitInstance start
+[App] Current working directory: D:\Charcoal\Charcoal\ShaderApp
+[App] Before InitCommonControlsEx
+[App] After InitCommonControlsEx
+[App] Before CWinApp::InitInstance
+[App] After CWinApp::InitInstance
+[App] Before XMVerifyCPUSupport
+[App] After XMVerifyCPUSupport
+[App] Before SetThreadDpiAwarenessContext
+[App] After SetThreadDpiAwarenessContext
+[App] Before Device::EnableDebugLayer
+[App] After Device::EnableDebugLayer
+[App] Before Device::Create
+[App] After Device::Create
+[App] Before creating CShellManager
+[App] After creating CShellManager
+[App] Before CMFCVisualManager::SetDefaultManager
+[App] After CMFCVisualManager::SetDefaultManager
+[App] Before SetRegistryKey
+[App] After SetRegistryKey
+[App] Before creating CShaderAppDlg
+[App] After creating CShaderAppDlg
+[App] Before dlg.DoModal
+[App] After dlg.DoModal
+[App] Dialog closed with IDCANCEL
+[App] Before deleting CShellManager
+[App] After deleting CShellManager
+[App] InitInstance finished. Returning FALSE
+================ APP START ================
+[App] InitInstance start
+[App] Current working directory: D:\Charcoal\Charcoal\ShaderApp
+[App] Before InitCommonControlsEx
+[App] After InitCommonControlsEx
+[App] Before CWinApp::InitInstance
+[App] After CWinApp::InitInstance
+[App] Before XMVerifyCPUSupport
+[App] After XMVerifyCPUSupport
+[App] Before SetThreadDpiAwarenessContext
+[App] After SetThreadDpiAwarenessContext
+[App] Before Device::EnableDebugLayer
+[App] After Device::EnableDebugLayer
+[App] Before Device::Create
+[App] After Device::Create
+[App] Before creating CShellManager
+[App] After creating CShellManager
+[App] Before CMFCVisualManager::SetDefaultManager
+[App] After CMFCVisualManager::SetDefaultManager
+[App] Before SetRegistryKey
+[App] After SetRegistryKey
+[App] Before creating CShaderAppDlg
+[App] After creating CShaderAppDlg
+[App] Before dlg.DoModal
+[App] After dlg.DoModal
+[App] Dialog closed with IDCANCEL
+[App] Before deleting CShellManager
+[App] After deleting CShellManager
+[App] InitInstance finished. Returning FALSE
+================ APP START ================
+[App] InitInstance start
+[App] Current working directory: D:\Charcoal\Charcoal\ShaderApp
+[App] Before InitCommonControlsEx
+[App] After InitCommonControlsEx
+[App] Before CWinApp::InitInstance
+[App] After CWinApp::InitInstance
+[App] Before XMVerifyCPUSupport
+[App] After XMVerifyCPUSupport
+[App] Before SetThreadDpiAwarenessContext
+[App] After SetThreadDpiAwarenessContext
+[App] Before Device::EnableDebugLayer
+[App] After Device::EnableDebugLayer
+[App] Before Device::Create
+[App] After Device::Create
+[App] Before creating CShellManager
+[App] After creating CShellManager
+[App] Before CMFCVisualManager::SetDefaultManager
+[App] After CMFCVisualManager::SetDefaultManager
+[App] Before SetRegistryKey
+[App] After SetRegistryKey
+[App] Before creating CShaderAppDlg
+[App] After creating CShaderAppDlg
+[App] Before dlg.DoModal
+[App] After dlg.DoModal
+[App] Dialog closed with IDCANCEL
+[App] Before deleting CShellManager
+[App] After deleting CShellManager
+[App] InitInstance finished. Returning FALSE
+================ APP START ================
+[App] InitInstance start
+[App] Current working directory: D:\Charcoal\Charcoal\ShaderApp
+[App] Before InitCommonControlsEx
+[App] After InitCommonControlsEx
+[App] Before CWinApp::InitInstance
+[App] After CWinApp::InitInstance
+[App] Before XMVerifyCPUSupport
+[App] After XMVerifyCPUSupport
+[App] Before SetThreadDpiAwarenessContext
+[App] After SetThreadDpiAwarenessContext
+[App] Before Device::EnableDebugLayer
+[App] After Device::EnableDebugLayer
+[App] Before Device::Create
+[App] After Device::Create
+[App] Before creating CShellManager
+[App] After creating CShellManager
+[App] Before CMFCVisualManager::SetDefaultManager
+[App] After CMFCVisualManager::SetDefaultManager
+[App] Before SetRegistryKey
+[App] After SetRegistryKey
+[App] Before creating CShaderAppDlg
+[App] After creating CShaderAppDlg
+[App] Before dlg.DoModal
+[App] After dlg.DoModal
+[App] Dialog closed with IDCANCEL
+[App] Before deleting CShellManager
+[App] After deleting CShellManager
+[App] InitInstance finished. Returning FALSE
+================ APP START ================
+[App] InitInstance start
+[App] Current working directory: D:\Charcoal\Charcoal\ShaderApp
+[App] Before InitCommonControlsEx
+[App] After InitCommonControlsEx
+[App] Before CWinApp::InitInstance
+[App] After CWinApp::InitInstance
+[App] Before XMVerifyCPUSupport
+[App] After XMVerifyCPUSupport
+[App] Before SetThreadDpiAwarenessContext
+[App] After SetThreadDpiAwarenessContext
+[App] Before Device::EnableDebugLayer
+[App] After Device::EnableDebugLayer
+[App] Before Device::Create
+[App] After Device::Create
+[App] Before creating CShellManager
+[App] After creating CShellManager
+[App] Before CMFCVisualManager::SetDefaultManager
+[App] After CMFCVisualManager::SetDefaultManager
+[App] Before SetRegistryKey
+[App] After SetRegistryKey
+[App] Before creating CShaderAppDlg
+[App] After creating CShaderAppDlg
+[App] Before dlg.DoModal
+[App] After dlg.DoModal
+[App] Dialog closed with IDCANCEL
+[App] Before deleting CShellManager
+[App] After deleting CShellManager
+[App] InitInstance finished. Returning FALSE
+================ APP START ================
+[App] InitInstance start
+[App] Current working directory: D:\Charcoal\Charcoal\ShaderApp
+[App] Before InitCommonControlsEx
+[App] After InitCommonControlsEx
+[App] Before CWinApp::InitInstance
+[App] After CWinApp::InitInstance
+[App] Before XMVerifyCPUSupport
+[App] After XMVerifyCPUSupport
+[App] Before SetThreadDpiAwarenessContext
+[App] After SetThreadDpiAwarenessContext
+[App] Before Device::EnableDebugLayer
+[App] After Device::EnableDebugLayer
+[App] Before Device::Create
+[App] After Device::Create
+[App] Before creating CShellManager
+[App] After creating CShellManager
+[App] Before CMFCVisualManager::SetDefaultManager
+[App] After CMFCVisualManager::SetDefaultManager
+[App] Before SetRegistryKey
+[App] After SetRegistryKey
+[App] Before creating CShaderAppDlg
+[App] After creating CShaderAppDlg
+[App] Before dlg.DoModal
+[App] After dlg.DoModal
+[App] Dialog closed with IDCANCEL
+[App] Before deleting CShellManager
+[App] After deleting CShellManager
+[App] InitInstance finished. Returning FALSE
+================ APP START ================
+[App] InitInstance start
+[App] Current working directory: D:\Charcoal\Charcoal\ShaderApp
+[App] Before InitCommonControlsEx
+[App] After InitCommonControlsEx
+[App] Before CWinApp::InitInstance
+[App] After CWinApp::InitInstance
+[App] Before XMVerifyCPUSupport
+[App] After XMVerifyCPUSupport
+[App] Before SetThreadDpiAwarenessContext
+[App] After SetThreadDpiAwarenessContext
+[App] Before Device::EnableDebugLayer
+[App] After Device::EnableDebugLayer
+[App] Before Device::Create
+[App] After Device::Create
+[App] Before creating CShellManager
+[App] After creating CShellManager
+[App] Before CMFCVisualManager::SetDefaultManager
+[App] After CMFCVisualManager::SetDefaultManager
+[App] Before SetRegistryKey
+[App] After SetRegistryKey
+[App] Before creating CShaderAppDlg
+[App] After creating CShaderAppDlg
+[App] Before dlg.DoModal
+[App] After dlg.DoModal
+[App] Dialog closed with IDCANCEL
+[App] Before deleting CShellManager
+[App] After deleting CShellManager
+[App] InitInstance finished. Returning FALSE
+================ APP START ================
+[App] InitInstance start
+[App] Current working directory: D:\Charcoal\Charcoal\ShaderApp
+[App] Before InitCommonControlsEx
+[App] After InitCommonControlsEx
+[App] Before CWinApp::InitInstance
+[App] After CWinApp::InitInstance
+[App] Before XMVerifyCPUSupport
+[App] After XMVerifyCPUSupport
+[App] Before SetThreadDpiAwarenessContext
+[App] After SetThreadDpiAwarenessContext
+[App] Before Device::EnableDebugLayer
+[App] After Device::EnableDebugLayer
+[App] Before Device::Create
+[App] After Device::Create
+[App] Before creating CShellManager
+[App] After creating CShellManager
+[App] Before CMFCVisualManager::SetDefaultManager
+[App] After CMFCVisualManager::SetDefaultManager
+[App] Before SetRegistryKey
+[App] After SetRegistryKey
+[App] Before creating CShaderAppDlg
+[App] After creating CShaderAppDlg
+[App] Before dlg.DoModal
+[App] After dlg.DoModal
+[App] Dialog closed with IDCANCEL
+[App] Before deleting CShellManager
+[App] After deleting CShellManager
+[App] InitInstance finished. Returning FALSE
+================ APP START ================
+[App] InitInstance start
+[App] Current working directory: D:\Charcoal\Charcoal\ShaderApp
+[App] Before InitCommonControlsEx
+[App] After InitCommonControlsEx
+[App] Before CWinApp::InitInstance
+[App] After CWinApp::InitInstance
+[App] Before XMVerifyCPUSupport
+[App] After XMVerifyCPUSupport
+[App] Before SetThreadDpiAwarenessContext
+[App] After SetThreadDpiAwarenessContext
+[App] Before Device::EnableDebugLayer
+[App] After Device::EnableDebugLayer
+[App] Before Device::Create
+[App] After Device::Create
+[App] Before creating CShellManager
+[App] After creating CShellManager
+[App] Before CMFCVisualManager::SetDefaultManager
+[App] After CMFCVisualManager::SetDefaultManager
+[App] Before SetRegistryKey
+[App] After SetRegistryKey
+[App] Before creating CShaderAppDlg
+[App] After creating CShaderAppDlg
+[App] Before dlg.DoModal
+================ APP START ================
+[App] InitInstance start
+[App] Current working directory: D:\Charcoal\Charcoal\ShaderApp
+[App] Before InitCommonControlsEx
+[App] After InitCommonControlsEx
+[App] Before CWinApp::InitInstance
+[App] After CWinApp::InitInstance
+[App] Before XMVerifyCPUSupport
+[App] After XMVerifyCPUSupport
+[App] Before SetThreadDpiAwarenessContext
+[App] After SetThreadDpiAwarenessContext
+[App] Before Device::EnableDebugLayer
+[App] After Device::EnableDebugLayer
+[App] Before Device::Create
+[App] After Device::Create
+[App] Before creating CShellManager
+[App] After creating CShellManager
+[App] Before CMFCVisualManager::SetDefaultManager
+[App] After CMFCVisualManager::SetDefaultManager
+[App] Before SetRegistryKey
+[App] After SetRegistryKey
+[App] Before creating CShaderAppDlg
+[App] After creating CShaderAppDlg
+[App] Before dlg.DoModal
+================ APP START ================
+[App] InitInstance start
+[App] Current working directory: D:\Charcoal\Charcoal\ShaderApp
+[App] Before InitCommonControlsEx
+[App] After InitCommonControlsEx
+[App] Before CWinApp::InitInstance
+[App] After CWinApp::InitInstance
+[App] Before XMVerifyCPUSupport
+[App] After XMVerifyCPUSupport
+[App] Before SetThreadDpiAwarenessContext
+[App] After SetThreadDpiAwarenessContext
+[App] Before Device::EnableDebugLayer
+[App] After Device::EnableDebugLayer
+[App] Before Device::Create
+[App] After Device::Create
+[App] Before creating CShellManager
+[App] After creating CShellManager
+[App] Before CMFCVisualManager::SetDefaultManager
+[App] After CMFCVisualManager::SetDefaultManager
+[App] Before SetRegistryKey
+[App] After SetRegistryKey
+[App] Before creating CShaderAppDlg
+[App] After creating CShaderAppDlg
+[App] Before dlg.DoModal
+[App] After dlg.DoModal
+[App] Dialog closed with IDCANCEL
+[App] Before deleting CShellManager
+[App] After deleting CShellManager
+[App] InitInstance finished. Returning FALSE
+================ APP START ================
+[App] InitInstance start
+[App] Current working directory: D:\Charcoal\Charcoal\ShaderApp
+[App] Before InitCommonControlsEx
+[App] After InitCommonControlsEx
+[App] Before CWinApp::InitInstance
+[App] After CWinApp::InitInstance
+[App] Before XMVerifyCPUSupport
+[App] After XMVerifyCPUSupport
+[App] Before SetThreadDpiAwarenessContext
+[App] After SetThreadDpiAwarenessContext
+[App] Before Device::EnableDebugLayer
+[App] After Device::EnableDebugLayer
+[App] Before Device::Create
+[App] After Device::Create
+[App] Before creating CShellManager
+[App] After creating CShellManager
+[App] Before CMFCVisualManager::SetDefaultManager
+[App] After CMFCVisualManager::SetDefaultManager
+[App] Before SetRegistryKey
+[App] After SetRegistryKey
+[App] Before creating CShaderAppDlg
+[App] After creating CShaderAppDlg
+[App] Before dlg.DoModal
+[App] After dlg.DoModal
+[App] Dialog closed with IDCANCEL
+[App] Before deleting CShellManager
+[App] After deleting CShellManager
+[App] InitInstance finished. Returning FALSE
+================ APP START ================
+[App] InitInstance start
+[App] Current working directory: D:\Charcoal\Charcoal\ShaderApp
+[App] Before InitCommonControlsEx
+[App] After InitCommonControlsEx
+[App] Before CWinApp::InitInstance
+[App] After CWinApp::InitInstance
+[App] Before XMVerifyCPUSupport
+[App] After XMVerifyCPUSupport
+[App] Before SetThreadDpiAwarenessContext
+[App] After SetThreadDpiAwarenessContext
+[App] Before Device::EnableDebugLayer
+[App] After Device::EnableDebugLayer
+[App] Before Device::Create
+[App] After Device::Create
+[App] Before creating CShellManager
+[App] After creating CShellManager
+[App] Before CMFCVisualManager::SetDefaultManager
+[App] After CMFCVisualManager::SetDefaultManager
+[App] Before SetRegistryKey
+[App] After SetRegistryKey
+[App] Before creating CShaderAppDlg
+[App] After creating CShaderAppDlg
+[App] Before dlg.DoModal
+[App] After dlg.DoModal
+[App] Dialog closed with IDCANCEL
+[App] Before deleting CShellManager
+[App] After deleting CShellManager
+[App] InitInstance finished. Returning FALSE
+================ APP START ================
+[App] InitInstance start
+[App] Current working directory: D:\Charcoal\Charcoal\ShaderApp
+[App] Before InitCommonControlsEx
+[App] After InitCommonControlsEx
+[App] Before CWinApp::InitInstance
+[App] After CWinApp::InitInstance
+[App] Before XMVerifyCPUSupport
+[App] After XMVerifyCPUSupport
+[App] Before SetThreadDpiAwarenessContext
+[App] After SetThreadDpiAwarenessContext
+[App] Before Device::EnableDebugLayer
+[App] After Device::EnableDebugLayer
+[App] Before Device::Create
+[App] After Device::Create
+[App] Before creating CShellManager
+[App] After creating CShellManager
+[App] Before CMFCVisualManager::SetDefaultManager
+[App] After CMFCVisualManager::SetDefaultManager
+[App] Before SetRegistryKey
+[App] After SetRegistryKey
+[App] Before creating CShaderAppDlg
+[App] After creating CShaderAppDlg
+[App] Before dlg.DoModal
+[App] After dlg.DoModal
+[App] Dialog closed with IDCANCEL
+[App] Before deleting CShellManager
+[App] After deleting CShellManager
+[App] InitInstance finished. Returning FALSE
+================ APP START ================
+[App] InitInstance start
+[App] Current working directory: D:\Charcoal\Charcoal\ShaderApp
+[App] Before InitCommonControlsEx
+[App] After InitCommonControlsEx
+[App] Before CWinApp::InitInstance
+[App] After CWinApp::InitInstance
+[App] Before XMVerifyCPUSupport
+[App] After XMVerifyCPUSupport
+[App] Before SetThreadDpiAwarenessContext
+[App] After SetThreadDpiAwarenessContext
+[App] Before Device::EnableDebugLayer
+[App] After Device::EnableDebugLayer
+[App] Before Device::Create
+[App] After Device::Create
+[App] Before creating CShellManager
+[App] After creating CShellManager
+[App] Before CMFCVisualManager::SetDefaultManager
+[App] After CMFCVisualManager::SetDefaultManager
+[App] Before SetRegistryKey
+[App] After SetRegistryKey
+[App] Before creating CShaderAppDlg
+[App] After creating CShaderAppDlg
+[App] Before dlg.DoModal
+[App] After dlg.DoModal
+[App] Dialog closed with IDCANCEL
+[App] Before deleting CShellManager
+[App] After deleting CShellManager
+[App] InitInstance finished. Returning FALSE
+================ APP START ================
+[App] InitInstance start
+[App] Current working directory: D:\Charcoal\Charcoal\ShaderApp
+[App] Before InitCommonControlsEx
+[App] After InitCommonControlsEx
+[App] Before CWinApp::InitInstance
+[App] After CWinApp::InitInstance
+[App] Before XMVerifyCPUSupport
+[App] After XMVerifyCPUSupport
+[App] Before SetThreadDpiAwarenessContext
+[App] After SetThreadDpiAwarenessContext
+[App] Before Device::EnableDebugLayer
+[App] After Device::EnableDebugLayer
+[App] Before Device::Create
+[App] After Device::Create
+[App] Before creating CShellManager
+[App] After creating CShellManager
+[App] Before CMFCVisualManager::SetDefaultManager
+[App] After CMFCVisualManager::SetDefaultManager
+[App] Before SetRegistryKey
+[App] After SetRegistryKey
+[App] Before creating CShaderAppDlg
+[App] After creating CShaderAppDlg
+[App] Before dlg.DoModal
+[App] After dlg.DoModal
+[App] Dialog closed with IDCANCEL
+[App] Before deleting CShellManager
+[App] After deleting CShellManager
+[App] InitInstance finished. Returning FALSE
+================ APP START ================
+[App] InitInstance start
+[App] Current working directory: D:\Charcoal\Charcoal\ShaderApp
+[App] Before InitCommonControlsEx
+[App] After InitCommonControlsEx
+[App] Before CWinApp::InitInstance
+[App] After CWinApp::InitInstance
+[App] Before XMVerifyCPUSupport
+[App] After XMVerifyCPUSupport
+[App] Before SetThreadDpiAwarenessContext
+[App] After SetThreadDpiAwarenessContext
+[App] Before Device::EnableDebugLayer
+[App] After Device::EnableDebugLayer
+[App] Before Device::Create
+[App] After Device::Create
+[App] Before creating CShellManager
+[App] After creating CShellManager
+[App] Before CMFCVisualManager::SetDefaultManager
+[App] After CMFCVisualManager::SetDefaultManager
+[App] Before SetRegistryKey
+[App] After SetRegistryKey
+[App] Before creating CShaderAppDlg
+[App] After creating CShaderAppDlg
+[App] Before dlg.DoModal
+[App] After dlg.DoModal
+[App] Dialog closed with IDCANCEL
+[App] Before deleting CShellManager
+[App] After deleting CShellManager
+[App] InitInstance finished. Returning FALSE
+================ APP START ================
+[App] InitInstance start
+[App] Current working directory: D:\Charcoal\Charcoal\ShaderApp
+[App] Before InitCommonControlsEx
+[App] After InitCommonControlsEx
+[App] Before CWinApp::InitInstance
+[App] After CWinApp::InitInstance
+[App] Before XMVerifyCPUSupport
+[App] After XMVerifyCPUSupport
+[App] Before SetThreadDpiAwarenessContext
+[App] After SetThreadDpiAwarenessContext
+[App] Before Device::EnableDebugLayer
+[App] After Device::EnableDebugLayer
+[App] Before Device::Create
+[App] After Device::Create
+[App] Before creating CShellManager
+[App] After creating CShellManager
+[App] Before CMFCVisualManager::SetDefaultManager
+[App] After CMFCVisualManager::SetDefaultManager
+[App] Before SetRegistryKey
+[App] After SetRegistryKey
+[App] Before creating CShaderAppDlg
+[App] After creating CShaderAppDlg
+[App] Before dlg.DoModal
+[App] After dlg.DoModal
+[App] Dialog closed with IDCANCEL
+[App] Before deleting CShellManager
+[App] After deleting CShellManager
+[App] InitInstance finished. Returning FALSE
+================ APP START ================
+[App] InitInstance start
+[App] Current working directory: D:\Charcoal\Charcoal\ShaderApp
+[App] Before InitCommonControlsEx
+[App] After InitCommonControlsEx
+[App] Before CWinApp::InitInstance
+[App] After CWinApp::InitInstance
+[App] Before XMVerifyCPUSupport
+[App] After XMVerifyCPUSupport
+[App] Before SetThreadDpiAwarenessContext
+[App] After SetThreadDpiAwarenessContext
+[App] Before Device::EnableDebugLayer
+[App] After Device::EnableDebugLayer
+[App] Before Device::Create
+[App] After Device::Create
+[App] Before creating CShellManager
+[App] After creating CShellManager
+[App] Before CMFCVisualManager::SetDefaultManager
+[App] After CMFCVisualManager::SetDefaultManager
+[App] Before SetRegistryKey
+[App] After SetRegistryKey
+[App] Before creating CShaderAppDlg
+[App] After creating CShaderAppDlg
+[App] Before dlg.DoModal
+[App] After dlg.DoModal
+[App] Dialog closed with IDCANCEL
+[App] Before deleting CShellManager
+[App] After deleting CShellManager
+[App] InitInstance finished. Returning FALSE
+================ APP START ================
+[App] InitInstance start
+[App] Current working directory: D:\Charcoal\Charcoal\ShaderApp
+[App] Before InitCommonControlsEx
+[App] After InitCommonControlsEx
+[App] Before CWinApp::InitInstance
+[App] After CWinApp::InitInstance
+[App] Before XMVerifyCPUSupport
+[App] After XMVerifyCPUSupport
+[App] Before SetThreadDpiAwarenessContext
+[App] After SetThreadDpiAwarenessContext
+[App] Before Device::EnableDebugLayer
+[App] After Device::EnableDebugLayer
+[App] Before Device::Create
+[App] After Device::Create
+[App] Before creating CShellManager
+[App] After creating CShellManager
+[App] Before CMFCVisualManager::SetDefaultManager
+[App] After CMFCVisualManager::SetDefaultManager
+[App] Before SetRegistryKey
+[App] After SetRegistryKey
+[App] Before creating CShaderAppDlg
+[App] After creating CShaderAppDlg
+[App] Before dlg.DoModal
+[App] After dlg.DoModal
+[App] Dialog closed with IDCANCEL
+[App] Before deleting CShellManager
+[App] After deleting CShellManager
+[App] InitInstance finished. Returning FALSE
+================ APP START ================
+[App] InitInstance start
+[App] Current working directory: D:\Charcoal\Charcoal\ShaderApp
+[App] Before InitCommonControlsEx
+[App] After InitCommonControlsEx
+[App] Before CWinApp::InitInstance
+[App] After CWinApp::InitInstance
+[App] Before XMVerifyCPUSupport
+[App] After XMVerifyCPUSupport
+[App] Before SetThreadDpiAwarenessContext
+[App] After SetThreadDpiAwarenessContext
+[App] Before Device::EnableDebugLayer
+[App] After Device::EnableDebugLayer
+[App] Before Device::Create
+[App] After Device::Create
+[App] Before creating CShellManager
+[App] After creating CShellManager
+[App] Before CMFCVisualManager::SetDefaultManager
+[App] After CMFCVisualManager::SetDefaultManager
+[App] Before SetRegistryKey
+[App] After SetRegistryKey
+[App] Before creating CShaderAppDlg
+[App] After creating CShaderAppDlg
+[App] Before dlg.DoModal
+[App] After dlg.DoModal
+[App] Dialog closed with IDCANCEL
+[App] Before deleting CShellManager
+[App] After deleting CShellManager
+[App] InitInstance finished. Returning FALSE
+================ APP START ================
+[App] InitInstance start
+[App] Current working directory: D:\Charcoal\Charcoal\ShaderApp
+[App] Before InitCommonControlsEx
+[App] After InitCommonControlsEx
+[App] Before CWinApp::InitInstance
+[App] After CWinApp::InitInstance
+[App] Before XMVerifyCPUSupport
+[App] After XMVerifyCPUSupport
+[App] Before SetThreadDpiAwarenessContext
+[App] After SetThreadDpiAwarenessContext
+[App] Before Device::EnableDebugLayer
+[App] After Device::EnableDebugLayer
+[App] Before Device::Create
+[App] After Device::Create
+[App] Before creating CShellManager
+[App] After creating CShellManager
+[App] Before CMFCVisualManager::SetDefaultManager
+[App] After CMFCVisualManager::SetDefaultManager
+[App] Before SetRegistryKey
+[App] After SetRegistryKey
+[App] Before creating CShaderAppDlg
+[App] After creating CShaderAppDlg
+[App] Before dlg.DoModal
+[App] After dlg.DoModal
+[App] Dialog closed with IDCANCEL
+[App] Before deleting CShellManager
+[App] After deleting CShellManager
+[App] InitInstance finished. Returning FALSE
+================ APP START ================
+[App] InitInstance start
+[App] Current working directory: D:\Charcoal\Charcoal\ShaderApp
+[App] Before InitCommonControlsEx
+[App] After InitCommonControlsEx
+[App] Before CWinApp::InitInstance
+[App] After CWinApp::InitInstance
+[App] Before XMVerifyCPUSupport
+[App] After XMVerifyCPUSupport
+[App] Before SetThreadDpiAwarenessContext
+[App] After SetThreadDpiAwarenessContext
+[App] Before Device::EnableDebugLayer
+[App] After Device::EnableDebugLayer
+[App] Before Device::Create
+[App] After Device::Create
+[App] Before creating CShellManager
+[App] After creating CShellManager
+[App] Before CMFCVisualManager::SetDefaultManager
+[App] After CMFCVisualManager::SetDefaultManager
+[App] Before SetRegistryKey
+[App] After SetRegistryKey
+[App] Before creating CShaderAppDlg
+[App] After creating CShaderAppDlg
+[App] Before dlg.DoModal
+[App] After dlg.DoModal
+[App] Dialog closed with IDCANCEL
+[App] Before deleting CShellManager
+[App] After deleting CShellManager
+[App] InitInstance finished. Returning FALSE
+================ APP START ================
+[App] InitInstance start
+[App] Current working directory: D:\Charcoal\Charcoal\ShaderApp
+[App] Before InitCommonControlsEx
+[App] After InitCommonControlsEx
+[App] Before CWinApp::InitInstance
+[App] After CWinApp::InitInstance
+[App] Before XMVerifyCPUSupport
+[App] After XMVerifyCPUSupport
+[App] Before SetThreadDpiAwarenessContext
+[App] After SetThreadDpiAwarenessContext
+[App] Before Device::EnableDebugLayer
+[App] After Device::EnableDebugLayer
+[App] Before Device::Create
+[App] After Device::Create
+[App] Before creating CShellManager
+[App] After creating CShellManager
+[App] Before CMFCVisualManager::SetDefaultManager
+[App] After CMFCVisualManager::SetDefaultManager
+[App] Before SetRegistryKey
+[App] After SetRegistryKey
+[App] Before creating CShaderAppDlg
+[App] After creating CShaderAppDlg
+[App] Before dlg.DoModal
+[App] After dlg.DoModal
+[App] Dialog closed with IDCANCEL
+[App] Before deleting CShellManager
+[App] After deleting CShellManager
+[App] InitInstance finished. Returning FALSE

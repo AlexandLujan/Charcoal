@@ -111,7 +111,7 @@ EffectPSO::EffectPSO(Device& device, bool enableLighting, bool enableDecal, DXGI
         D3D12_ROOT_SIGNATURE_FLAG_DENY_GEOMETRY_SHADER_ROOT_ACCESS;
 
     // Descriptor range for the textures.
-    CD3DX12_DESCRIPTOR_RANGE1 descriptorRage(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 8, 3);
+    CD3DX12_DESCRIPTOR_RANGE1 descriptorRange(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 10, 3);
 
     // clang-format off
     CD3DX12_ROOT_PARAMETER1 rootParameters[RootParameters::NumRootParameters];
@@ -121,7 +121,7 @@ EffectPSO::EffectPSO(Device& device, bool enableLighting, bool enableDecal, DXGI
     rootParameters[RootParameters::PointLights].InitAsShaderResourceView(0, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_PIXEL);
     rootParameters[RootParameters::SpotLights].InitAsShaderResourceView(1, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_PIXEL);
     rootParameters[RootParameters::DirectionalLights].InitAsShaderResourceView(2, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_PIXEL);
-    rootParameters[RootParameters::Textures].InitAsDescriptorTable(1, &descriptorRage, D3D12_SHADER_VISIBILITY_PIXEL);
+    rootParameters[RootParameters::Textures].InitAsDescriptorTable(1, &descriptorRange, D3D12_SHADER_VISIBILITY_PIXEL);
 
     CD3DX12_STATIC_SAMPLER_DESC anisotropicSampler(0, D3D12_FILTER_ANISOTROPIC);
 
@@ -254,6 +254,8 @@ void EffectPSO::Apply(CommandList& commandList)
             BindTexture(commandList, 5, m_Material->GetTexture(TextureType::Normal));
             BindTexture(commandList, 6, m_Material->GetTexture(TextureType::Bump));
             BindTexture(commandList, 7, m_Material->GetTexture(TextureType::Opacity));
+            BindTexture(commandList, 8, m_Material->GetTexture(TextureType::Roughness));
+            BindTexture(commandList, 9, m_Material->GetTexture(TextureType::AmbientOcclusion));
         }
     }
 
@@ -367,6 +369,22 @@ void EffectPSO::Apply(CommandList& commandList)
             gpuLight.DiffuseIntensity = light->diffuseIntensity;
             gpuLight.SpecularIntensity = light->specularIntensity;
 
+            std::string debug =
+                "Directional Light:\n"
+                "  Ambient: " +
+                std::to_string(gpuLight.Ambient) +
+                "\n  Diffuse: " +
+                std::to_string(gpuLight.DiffuseIntensity) +
+                "\n  Specular: " +
+                std::to_string(gpuLight.SpecularIntensity) +
+                "\n  Color: " +
+                std::to_string(gpuLight.Color.x) + ", " +
+                std::to_string(gpuLight.Color.y) + ", " +
+                std::to_string(gpuLight.Color.z) +
+                "\n";
+
+            OutputDebugStringA(debug.c_str());
+
             gpuDirectionalLights.push_back(gpuLight);
         }
 
@@ -381,6 +399,16 @@ void EffectPSO::Apply(CommandList& commandList)
         lightProps.NumDirectionalLights = static_cast<uint32_t>(m_DirectionalLights.size());
         lightProps.Padding = 0;
         lightProps.AmbientLightColor = m_AmbientLightColor;
+
+        std::string ambientDebug =
+            "AmbientLightColor: " +
+            std::to_string(lightProps.AmbientLightColor.x) + ", " +
+            std::to_string(lightProps.AmbientLightColor.y) + ", " +
+            std::to_string(lightProps.AmbientLightColor.z) + ", " +
+            std::to_string(lightProps.AmbientLightColor.w) +
+            "\n";
+
+        OutputDebugStringA(ambientDebug.c_str());
 
         commandList.SetGraphics32BitConstants(
             RootParameters::LightPropertiesCB,

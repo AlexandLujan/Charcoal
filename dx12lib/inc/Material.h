@@ -76,6 +76,10 @@ namespace dx12lib
 			, HasNormalTexture(false)
 			, HasBumpTexture(false)
 			, HasOpacityTexture(false)
+			, HasRoughnessTexture(false)
+			, RoughnessPadding0(0)
+			, RoughnessPadding1(0)
+			, RoughnessPadding2(0)
 		{}
 
 		DirectX::XMFLOAT4 Diffuse;
@@ -104,9 +108,20 @@ namespace dx12lib
 		uint32_t HasBumpTexture;
 		uint32_t HasOpacityTexture;
 		//------------------------------------ ( 16 bytes )
-		// Total:                              ( 16 * 8 = 128 bytes )
+		uint32_t HasRoughnessTexture = 0;
+		uint32_t RoughnessPadding0 = 0;
+		uint32_t RoughnessPadding1 = 0;
+		uint32_t RoughnessPadding2 = 0;
+		//------------------------------------ ( 16 bytes )
+		uint32_t HasAmbientOcclusionTexture = 0;
+		uint32_t AmbientOcclusionPadding0 = 0;
+		uint32_t AmbientOcclusionPadding1 = 0;
+		uint32_t AmbientOcclusionPadding2 = 0;
+		//------------------------------------ ( 16 bytes )
+		// Total:                              ( 16 * 10 = 160 bytes )
 	};
 	// clang-format on
+	static_assert(sizeof(MaterialProperties) == 160);
 
 	class DX12LIB_API Material
 	{
@@ -122,6 +137,8 @@ namespace dx12lib
 			Normal,
 			Bump,
 			Opacity,
+			Roughness,
+			AmbientOcclusion,
 			NumTypes,
 		};
 

@@ -165,12 +165,15 @@ private:
 	std::shared_ptr<RootSignature>       pCompositeRootSignature = nullptr;
 	std::shared_ptr<PipelineStateObject> pCompositePSO = nullptr;
 
-	std::shared_ptr<VertexBuffer>        pRegularVertexBuffer = nullptr;
-	std::shared_ptr<IndexBuffer>         pRegularIndexBuffer = nullptr;
+	std::shared_ptr<VertexBuffer>        pRegularTopVertexBuffer = nullptr;
+	std::shared_ptr<IndexBuffer>         pRegularTopIndexBuffer = nullptr;
+	std::shared_ptr<VertexBuffer>        pRegularSidesVertexBuffer = nullptr;
+	std::shared_ptr<IndexBuffer>         pRegularSidesIndexBuffer = nullptr;
 	std::shared_ptr<VertexBuffer>        pEmissiveVertexBuffer = nullptr;
 	std::shared_ptr<IndexBuffer>         pEmissiveIndexBuffer = nullptr;
 
-	std::shared_ptr<Material>            pRegularMaterial = nullptr;
+	std::shared_ptr<Material>            pRegularTopMaterial = nullptr;
+	std::shared_ptr<Material>            pRegularSidesMaterial = nullptr;
 	std::shared_ptr<Material>            pEmissiveMaterial = nullptr;
 
 	HighResolutionTimer m_Timer;

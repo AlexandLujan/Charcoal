@@ -36,7 +36,17 @@ struct Material
     bool  HasBumpTexture;
     bool  HasOpacityTexture;
     //------------------------------------ ( 16 bytes )
-    // Total:                              ( 16 * 8 = 128 bytes )
+    bool HasRoughnessTexture;
+    bool RoughnessPadding0;
+    bool RoughnessPadding1;
+    bool RoughnessPadding2;
+    //------------------------------------ ( 16 bytes )
+    bool HasAmbientOcclusionTexture;
+    bool AmbientOcclusionPadding0;
+    bool AmbientOcclusionPadding1;
+    bool AmbientOcclusionPadding2;
+    //------------------------------------ ( 16 bytes )
+    // Total:                              ( 16 * 10 = 160 bytes )
 };
 
 #if ENABLE_LIGHTING
@@ -127,14 +137,16 @@ StructuredBuffer<DirectionalLight> DirectionalLights : register( t2 );
 ConstantBuffer<Material> MaterialCB : register(b0, space1);
 
 // Textures
-Texture2D AmbientTexture       : register( t3 );
-Texture2D EmissiveTexture      : register( t4 );
-Texture2D DiffuseTexture       : register( t5 );
-Texture2D SpecularTexture      : register( t6 );
-Texture2D SpecularPowerTexture : register( t7 );
-Texture2D NormalTexture        : register( t8 );
-Texture2D BumpTexture          : register( t9 );
-Texture2D OpacityTexture       : register( t10 );
+Texture2D AmbientTexture              : register( t3 );
+Texture2D EmissiveTexture             : register( t4 );
+Texture2D DiffuseTexture              : register( t5 );
+Texture2D SpecularTexture             : register( t6 );
+Texture2D SpecularPowerTexture        : register( t7 );
+Texture2D NormalTexture               : register( t8 );
+Texture2D BumpTexture                 : register( t9 );
+Texture2D OpacityTexture              : register( t10 );
+Texture2D RoughnessTexture            : register( t11 );
+Texture2D AmbientOcclusionTexture     : register( t12 );
 
 SamplerState TextureSampler    : register(s0);
 
@@ -185,7 +197,8 @@ LightResult DoPointLight( PointLight light, float3 V, float3 P, float3 N, float 
 {
     LightResult result;
     float3 L = ( light.PositionVS.xyz - P );
-    float d = length( L );
+    float d = length(L);
+    d = max(d, 0.0001f);
     L = L / d;
 
     float attenuation = DoAttenuation( light.ConstantAttenuation,
@@ -195,7 +208,7 @@ LightResult DoPointLight( PointLight light, float3 V, float3 P, float3 N, float 
 
     result.Diffuse = DoDiffuse( N, L ) * attenuation * light.DiffuseIntensity * light.Color;
     result.Specular = DoSpecular( V, N, L, specularPower ) * attenuation * light.SpecularIntensity * light.Color;
-    result.Ambient = LightPropertiesCB.AmbientLightColor * light.Ambient;
+    result.Ambient = LightPropertiesCB.AmbientLightColor * light.Color * light.Ambient * attenuation;
 
     return result;
 }
@@ -204,7 +217,8 @@ LightResult DoSpotLight( SpotLight light, float3 V, float3 P, float3 N, float sp
 {
     LightResult result;
     float3 L = ( light.PositionVS.xyz - P );
-    float d = length( L );
+    float d = length(L);
+    d = max(d, 0.0001f);
     L = L / d;
 
     float attenuation = DoAttenuation( light.ConstantAttenuation,
@@ -216,7 +230,7 @@ LightResult DoSpotLight( SpotLight light, float3 V, float3 P, float3 N, float sp
 
     result.Diffuse = DoDiffuse( N, L ) * attenuation * spotIntensity * light.DiffuseIntensity * light.Color;
     result.Specular = DoSpecular( V, N, L, specularPower ) * attenuation * spotIntensity * light.SpecularIntensity * light.Color;
-    result.Ambient = LightPropertiesCB.AmbientLightColor * light.Ambient;
+    result.Ambient = LightPropertiesCB.AmbientLightColor * light.Color * light.Ambient * attenuation * spotIntensity;
 
     return result;
 }
@@ -229,7 +243,7 @@ LightResult DoDirectionalLight( DirectionalLight light, float3 V, float3 P, floa
 
     result.Diffuse = light.Color * DoDiffuse( N, L ) * light.DiffuseIntensity;
     result.Specular = light.Color * DoSpecular( V, N, L, specularPower ) * light.SpecularIntensity;
-    result.Ambient = LightPropertiesCB.AmbientLightColor * light.Ambient;
+    result.Ambient = LightPropertiesCB.AmbientLightColor * light.Color * light.Ambient;
 
     return result;
 }
@@ -403,6 +417,38 @@ float4 SampleTexture(Texture2D t, float2 uv, float4 c)
     return c;
 }
 
+float3 ComputeEmissiveGradient(float2 uv)
+{
+    float centerMask =
+        1.0f - abs(uv.y * 2.0f - 1.0f);
+
+    centerMask =
+        pow(
+            saturate(centerMask),
+            0.75f
+        );
+
+    const float3 edgeColor =
+        float3(
+            1.00f,
+            0.18f,
+            0.02f
+        );
+
+    const float3 centerColor =
+        float3(
+            1.00f,
+            0.72f,
+            0.12f
+        );
+
+    return lerp(
+        edgeColor,
+        centerColor,
+        centerMask
+    );
+}
+
 float4 main( PixelShaderInput IN ): SV_Target
 {
     Material material = MaterialCB;
@@ -426,22 +472,51 @@ float4 main( PixelShaderInput IN ): SV_Target
     float4 diffuse = material.Diffuse;
     float specularPower = material.SpecularPower;
     float2 uv = IN.TexCoord.xy;
+    float ao = 1.0f;
 
     if (material.HasAmbientTexture)
     {
         ambient = SampleTexture( AmbientTexture, uv, ambient );
     }
+    
     if (material.HasEmissiveTexture)
     {
         emissive = SampleTexture( EmissiveTexture, uv, emissive );
     }
+    
+    float3 emissiveBase =
+        emissive.rgb;
+
+    if (any(emissiveBase))
+    {
+        emissive.rgb =
+        ComputeEmissiveGradient(uv);
+    }
+    
     if ( material.HasDiffuseTexture )
     {
         diffuse = SampleTexture( DiffuseTexture, uv, diffuse );
     }
+    
     if (material.HasSpecularPowerTexture)
     {
         specularPower *= SpecularPowerTexture.Sample( TextureSampler, uv ).r;
+    }
+    
+    if (material.HasRoughnessTexture)
+    {
+        float roughness = RoughnessTexture.Sample(TextureSampler, uv).r;
+
+        specularPower = lerp(128.0f, 4.0f, saturate(roughness));
+    }
+    
+    if (material.HasAmbientOcclusionTexture)
+    {
+        ao =
+        AmbientOcclusionTexture.Sample(
+            TextureSampler,
+            uv
+        ).r;
     }
 
     float3 N;
@@ -497,23 +572,36 @@ float4 main( PixelShaderInput IN ): SV_Target
     float shadow = 1;
     float4 specular = 0;
 #if ENABLE_LIGHTING
-    LightResult lit = DoLighting( IN.PositionVS.xyz, N, specularPower );
+    LightResult lit = DoLighting(
+        IN.PositionVS.xyz,
+        N,
+        specularPower
+    );
+
     diffuse *= lit.Diffuse;
-    ambient *= lit.Ambient;
-    // Specular power less than 1 doesn't really make sense.
-    // Ignore specular on materials with a specular power less than 1.
-    if (material.SpecularPower > 1.0f)
+    ambient *= lit.Ambient * ao;
+
+    if (specularPower > 1.0f)
     {
         specular = material.Specular;
+
         if (material.HasSpecularTexture)
         {
-            specular = SampleTexture( SpecularTexture, uv, specular );
+            specular = SampleTexture(
+                SpecularTexture,
+                uv,
+                specular
+            );
         }
+
         specular *= lit.Specular;
     }
 #else 
     shadow = -IN.NormalVS.z;
 #endif // ENABLE_LIGHTING
 
-    return float4( ( emissive + ambient + diffuse + specular ).rgb * shadow, alpha * material.Opacity );
+    return float4( 
+        (emissive + ambient + diffuse + specular).rgb * shadow, 
+        alpha * material.Opacity 
+    );
 }

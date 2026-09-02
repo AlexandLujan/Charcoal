@@ -189,38 +189,80 @@ void CShaderAppDlg::OnRender()
 	commandList->SetRenderTarget(m_SceneRenderTarget);
 
 	//
-	// HEX CORRIDOR - REGULAR GEOMETRY
+	// HEX CORRIDOR - REGULAR TOP GEOMETRY
 	//
 
 	commandList->SetPrimitiveTopology(
 		D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST
 	);
 
-	log << "[OnRender] Applying regular material\n";
+	log << "[OnRender] Applying regular top material\n";
 	log.flush();
 
-	m_LightingPSO->SetMaterial(pRegularMaterial);
-	m_LightingPSO->Apply(*commandList);
+	m_LightingPSO->SetMaterial(
+		pRegularTopMaterial
+	);
 
-	log << "[OnRender] Regular PSO applied\n";
+	m_LightingPSO->Apply(
+		*commandList
+	);
+
+	log << "[OnRender] Regular top PSO applied\n";
 	log.flush();
 
 	commandList->SetVertexBuffer(
 		0,
-		pRegularVertexBuffer
+		pRegularTopVertexBuffer
 	);
 
 	commandList->SetIndexBuffer(
-		pRegularIndexBuffer
+		pRegularTopIndexBuffer
 	);
 
 	commandList->DrawIndexed(
 		static_cast<UINT>(
-			pRegularIndexBuffer->GetNumIndicies()
+			pRegularTopIndexBuffer->GetNumIndicies()
 			)
 	);
 
-	log << "[OnRender] Regular draw recorded\n";
+	log << "[OnRender] Regular top draw recorded\n";
+	log.flush();
+
+
+	//
+	// HEX CORRIDOR - REGULAR SIDES GEOMETRY
+	//
+
+	log << "[OnRender] Applying regular sides material\n";
+	log.flush();
+
+	m_LightingPSO->SetMaterial(
+		pRegularSidesMaterial
+	);
+
+	m_LightingPSO->Apply(
+		*commandList
+	);
+
+	log << "[OnRender] Regular sides PSO applied\n";
+	log.flush();
+
+	commandList->SetVertexBuffer(
+		0,
+		pRegularSidesVertexBuffer
+	);
+
+	commandList->SetIndexBuffer(
+		pRegularSidesIndexBuffer
+	);
+
+	commandList->DrawIndexed(
+		static_cast<UINT>(
+			pRegularSidesIndexBuffer->GetNumIndicies()
+			)
+	);
+
+	log << "[OnRender] Regular sides draw recorded\n";
 	log.flush();
 
 	//

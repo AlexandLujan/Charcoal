@@ -4,7 +4,8 @@
 
 struct HexCorridorGeometry
 {
-	SceneGeometry Regular;
+	SceneGeometry RegularTop;
+	SceneGeometry RegularSides;
 	SceneGeometry Emissive;
 
 	std::vector<DirectX::XMFLOAT4> EmissiveLightPositions;

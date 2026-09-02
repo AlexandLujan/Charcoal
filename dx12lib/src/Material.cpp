@@ -177,6 +177,16 @@ void Material::SetTexture( TextureType type, std::shared_ptr<Texture> texture )
         m_MaterialProperties->HasOpacityTexture = ( texture != nullptr );
     }
     break;
+    case TextureType::Roughness:
+    {
+        m_MaterialProperties->HasRoughnessTexture = (texture != nullptr);
+    }
+    break;
+    case TextureType::AmbientOcclusion:
+    {
+        m_MaterialProperties->HasAmbientOcclusionTexture = (texture != nullptr);
+    }
+    break;
     }
 }
 
