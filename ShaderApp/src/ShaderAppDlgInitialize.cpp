@@ -249,13 +249,13 @@ BOOL CShaderAppDlg::Initialize()
             true
         );
 
-    /*
+    
     auto normalTexture =
         textureCommandList->LoadTextureFromFile(
             normalTexturePath.wstring(),
             false
         );
-    */
+    
 
     auto heightTexture =
         textureCommandList->LoadTextureFromFile(
@@ -268,12 +268,12 @@ BOOL CShaderAppDlg::Initialize()
         albedoTexture
     );
 
-    /*
+    
     pRegularMaterial->SetTexture(
         Material::TextureType::Normal,
         normalTexture
     );
-    */
+    
 
     pRegularMaterial->SetTexture(
         Material::TextureType::Bump,

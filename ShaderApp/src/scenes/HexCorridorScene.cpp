@@ -429,7 +429,7 @@ HexCorridorGeometry BuildHexCorridorScene()
 
             if (!isOuterShell)
             {
-                constexpr int lightSpacing = 20;
+                constexpr int lightSpacing = 10;
 
                 if ((row % lightSpacing == 0) &&
                     (column % lightSpacing == 0))
