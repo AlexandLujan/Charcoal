@@ -80,8 +80,23 @@ static UINT g_Indicies[36] =
 
 //OBJ_3D_Model TheModel;
 
+void CShaderAppDlg::ClearDebugLogs()
+{
+    const char* logFiles[] =
+    {
+        "bloom_debug_log.txt",
+        "sandbox_debug_log.txt"
+    };
+
+    for (const char* file : logFiles)
+    {
+        std::ofstream(file, std::ios::trunc).close();
+    }
+}
+
 BOOL CShaderAppDlg::Initialize()
 {
+    ClearDebugLogs();
     std::ofstream log("sandbox_debug_log.txt", std::ios::app);
 
     log << "[Initialize] Start\n";

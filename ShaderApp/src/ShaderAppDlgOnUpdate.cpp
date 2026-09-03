@@ -168,13 +168,13 @@ void CShaderAppDlg::OnRender()
 	std::ofstream log("bloom_debug_log.txt", std::ios::app);
 
 	log << "[OnRender] Begin\n";
-	log.flush();
+
 
 	// Clear the render targets.
 	commandList->ClearTexture(renderTarget.GetTexture(AttachmentPoint::Color0), BackgroundColor);
 
 	log << "[OnRender] HDR color cleared\n";
-	log.flush();
+
 
 	commandList->ClearDepthStencilTexture(
 		renderTarget.GetTexture(AttachmentPoint::DepthStencil),
@@ -182,7 +182,7 @@ void CShaderAppDlg::OnRender()
 	);
 
 	log << "[OnRender] Depth cleared\n";
-	log.flush();
+
 
 	commandList->SetViewport(m_Viewport);
 	commandList->SetScissorRect(m_ScissorRect);
@@ -197,7 +197,7 @@ void CShaderAppDlg::OnRender()
 	);
 
 	log << "[OnRender] Applying regular top material\n";
-	log.flush();
+
 
 	m_LightingPSO->SetMaterial(
 		pRegularTopMaterial
@@ -208,7 +208,7 @@ void CShaderAppDlg::OnRender()
 	);
 
 	log << "[OnRender] Regular top PSO applied\n";
-	log.flush();
+
 
 	commandList->SetVertexBuffer(
 		0,
@@ -226,7 +226,7 @@ void CShaderAppDlg::OnRender()
 	);
 
 	log << "[OnRender] Regular top draw recorded\n";
-	log.flush();
+
 
 
 	//
@@ -234,7 +234,7 @@ void CShaderAppDlg::OnRender()
 	//
 
 	log << "[OnRender] Applying regular sides material\n";
-	log.flush();
+
 
 	m_LightingPSO->SetMaterial(
 		pRegularSidesMaterial
@@ -245,7 +245,7 @@ void CShaderAppDlg::OnRender()
 	);
 
 	log << "[OnRender] Regular sides PSO applied\n";
-	log.flush();
+
 
 	commandList->SetVertexBuffer(
 		0,
@@ -263,20 +263,20 @@ void CShaderAppDlg::OnRender()
 	);
 
 	log << "[OnRender] Regular sides draw recorded\n";
-	log.flush();
+
 
 	//
 	// HEX CORRIDOR - EMISSIVE GEOMETRY
 	//
 
 	log << "[OnRender] Applying emissive material\n";
-	log.flush();
+
 
 	m_LightingPSO->SetMaterial(pEmissiveMaterial);
 	m_LightingPSO->Apply(*commandList);
 
 	log << "[OnRender] Emissive PSO applied\n";
-	log.flush();
+
 
 	commandList->SetVertexBuffer(
 		0,
@@ -346,15 +346,6 @@ void CShaderAppDlg::OnRender()
 	commandList->Draw(3);
 
 	log << "[OnRender] Emissive draw recorded\n";
-	log.flush();
-
-	log << "[OnRender] Executing command list\n";
-	log.flush();
-
-	//commandQueue.ExecuteCommandList(commandList);
-
-	log << "[OnRender] Command list executed\n";
-	log.flush();
 
 	// TheScene->Accept(opaquePass);
 	// TheScene->Accept(transparentPass);
@@ -551,17 +542,21 @@ void CShaderAppDlg::OnRender()
 	);
 
 	// Fullscreen triangle.
+
+	log << "[OnRender] Executing command list\n";
+
 	commandList->Draw(3);
 
 	commandQueue.ExecuteCommandList(
 		commandList
 	);
-	
+
+	log << "[OnRender] Command list executed\n";
 
 	pSwapChain->Present();
 
 	log << "[OnRender] Presented\n";
-	log.flush();
+
 }
 
 void CShaderAppDlg::OnResized(UINT width, UINT height)

@@ -136,6 +136,8 @@ protected:
 	BOOL Initialize();
 	void OnResized(UINT width, UINT height);
 
+	void ClearDebugLogs();
+
 private:
 	D3D12_VIEWPORT m_Viewport;
 	D3D12_RECT m_ScissorRect;
