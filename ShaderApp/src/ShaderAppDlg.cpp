@@ -224,12 +224,48 @@ BOOL CShaderAppDlg::OnInitDialog()
 	);
 	*/
 
+	auto testSpotLight =
+		std::make_shared<SpotLight>(
+			XMFLOAT4{ 0.0f, 20.0f, 0.0f, 1.0f },
+			XMFLOAT4{ 0.0f, 20.0f, 0.0f, 1.0f },
+			"WHITE",
+			0.0f,      // Ambient
+			0.35f,     // Diffuse
+			0.08f,      // Specular
+			XM_PIDIV4,
+			1.0f,      // Constant
+			0.02f,      // Linear
+			0.004f       // Quadratic
+		);
+
+	testSpotLight->DirectionWS =
+		XMFLOAT4{
+			0.0f,
+			-1.0f,
+			0.0f,
+			0.0f
+	};
+
+	testSpotLight->SetColor(
+		XMFLOAT4{
+			0.68f,
+			0.72f,
+			0.78f,
+			1.0f
+		}
+	);
+
+	testSpotLight->TurnOn();
+
+	RegisterLight("Test Spot Light", testSpotLight);
+
 	LightName = "Default Directional Light";
 	currentLight = defaultLight;
 
 	controlBoard->ResetLightingNameList();
 	controlBoard->UpdateAddLightingName("Default Directional Light");
 	//controlBoard->UpdateAddLightingName("Test Point Light");
+	controlBoard->UpdateAddLightingName("Test Spot Light");
 	controlBoard->SetSelectedLighting(0);
 
 	controlBoard->UpdateLightColor(defaultLight->Color());
@@ -773,6 +809,24 @@ LRESULT CShaderAppDlg::OnLightMessage(WPARAM wParam, LPARAM lParam)
 				controlBoard->UpdateLightType(l->LightType());
 				controlBoard->UpdateLightStatus(l->Status());
 				currentLight = l;
+
+				if (l->LightType() == "PointLight")
+				{
+					controlBoard->UpdateLightIntensity(
+						l->DiffuseIntensity() * 10.0f
+					);
+				}
+				else if (
+					l->LightType() == "DirectionalLight" ||
+					l->LightType() == "SpotLight"
+					)
+				{
+					controlBoard->UpdateLightIntensity(
+						l->DiffuseIntensity() * 100.0f
+					);
+				}
+
+				currentLight = l;
 			}
 		}
 			break;
@@ -837,6 +891,11 @@ LRESULT CShaderAppDlg::OnLightMessage(WPARAM wParam, LPARAM lParam)
 					sliderValue / 10.0f;
 			}
 			else if (l->LightType() == "DirectionalLight")
+			{
+				l->DiffuseIntensity() =
+					sliderValue / 100.0f;
+			}
+			else if (l->LightType() == "SpotLight")
 			{
 				l->DiffuseIntensity() =
 					sliderValue / 100.0f;

@@ -18,16 +18,8 @@ BOOL CLightPage::OnSetActive()
 	Light_X_Slider.SetRange(-100, 100);
 	Light_Y_Slider.SetRange(-100, 100);
 	Light_Z_Slider.SetRange(-100, 100);
-	Light_Target_X_Slider.SetPos(0);
-	Light_Target_Y_Slider.SetPos(0);
-	Light_Target_Z_Slider.SetPos(0);
-	Light_X_Slider.SetPos(0);
-	Light_Y_Slider.SetPos(0);
-	Light_Z_Slider.SetPos(0);
 	lighting_intensity.SetRange(1, 100);
-	lighting_intensity.SetPos(1);
 	ambient_intensity.SetRange(1, 500);
-	ambient_intensity.SetPos(100);
 
 	if (lighting_style.GetCount() == 0)
 	{
@@ -102,49 +94,54 @@ void CLightPage::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
 	WPARAM SliderID = pScrollBar->GetDlgCtrlID();
 	CString text;
-	int slideValue = (int)nPos;
-	if (nSBCode == TB_THUMBTRACK)
+	auto* slider = reinterpret_cast<CSliderCtrl*>(pScrollBar);
+	int slideValue = slider->GetPos();
+	
+	switch (SliderID)
 	{
-		switch (SliderID)
-		{
-		case IDC_LIGHT_X_SLIDER:
-			((CControlBoard*)GetParentSheet())->SendLightMessage(WM_LIGHT_X_CHANGED, slideValue);
-			text.Format((LPCWSTR)L"%.1f", static_cast<float>(slideValue) / 10.0f);
-			light_location_x.SetWindowTextW(text);
-			break;
-		case IDC_LIGHT_Y_SLIDER:
-			((CControlBoard*)GetParentSheet())->SendLightMessage(WM_LIGHT_Y_CHANGED, slideValue);
-			text.Format((LPCWSTR)L"%.1f", static_cast<float>(slideValue) / 10.0f);
-			light_location_y.SetWindowTextW(text);
-			break;
-		case IDC_LIGHT_Z_SLIDER:
-			((CControlBoard*)GetParentSheet())->SendLightMessage(WM_LIGHT_Z_CHANGED, slideValue);
-			text.Format((LPCWSTR)L"%.1f", static_cast<float>(slideValue) / 10.0f);
-			light_location_z.SetWindowTextW(text);
-			break;
-		case IDC_LIGHT_TARGET_X_SLIDER:
-			((CControlBoard*)GetParentSheet())->SendLightMessage(WM_LIGHT_TARGET_X_CHANGED, slideValue);
-			text.Format((LPCWSTR)L"%d", slideValue);
-			light_target_x.SetWindowTextW(text);
-			break;
-		case IDC_LIGHT_TARGET_Y_SLIDER:
-			((CControlBoard*)GetParentSheet())->SendLightMessage(WM_LIGHT_TARGET_Y_CHANGED, slideValue);
-			text.Format((LPCWSTR)L"%d", slideValue);
-			light_target_y.SetWindowTextW(text);
-			break;
-		case IDC_LIGHT_TARGET_Z_SLIDER:
-			((CControlBoard*)GetParentSheet())->SendLightMessage(WM_LIGHT_TARGET_Z_CHANGED, slideValue);
-			text.Format((LPCWSTR)L"%d", slideValue);
-			light_target_z.SetWindowTextW(text);
-			break;
-		case IDC_AMBIENT_INTENSITY:
-			((CControlBoard*)GetParentSheet())->SendLightMessage(WM_LIGHT_AMBIENT_INTENSITY_CHANGED, slideValue);
-			break;
-		case IDC_LIGHTING_INTENSITY:
-			((CControlBoard*)GetParentSheet())->SendLightMessage(WM_LIGHT_INTENSITY_CHANGED, slideValue);
-			break;
-		}
+	case IDC_LIGHT_X_SLIDER:
+		((CControlBoard*)GetParentSheet())->SendLightMessage(WM_LIGHT_X_CHANGED, slideValue);
+		text.Format((LPCWSTR)L"%.1f", static_cast<float>(slideValue) / 10.0f);
+		light_location_x.SetWindowTextW(text);
+		break;
+	case IDC_LIGHT_Y_SLIDER:
+		((CControlBoard*)GetParentSheet())->SendLightMessage(WM_LIGHT_Y_CHANGED, slideValue);
+		text.Format((LPCWSTR)L"%.1f", static_cast<float>(slideValue) / 10.0f);
+		light_location_y.SetWindowTextW(text);
+		break;
+	case IDC_LIGHT_Z_SLIDER:
+		((CControlBoard*)GetParentSheet())->SendLightMessage(WM_LIGHT_Z_CHANGED, slideValue);
+		text.Format((LPCWSTR)L"%.1f", static_cast<float>(slideValue) / 10.0f);
+		light_location_z.SetWindowTextW(text);
+		break;
+	case IDC_LIGHT_TARGET_X_SLIDER:
+		((CControlBoard*)GetParentSheet())->SendLightMessage(WM_LIGHT_TARGET_X_CHANGED, slideValue);
+		text.Format((LPCWSTR)L"%d", slideValue);
+		light_target_x.SetWindowTextW(text);
+		break;
+	case IDC_LIGHT_TARGET_Y_SLIDER:
+		((CControlBoard*)GetParentSheet())->SendLightMessage(WM_LIGHT_TARGET_Y_CHANGED, slideValue);
+		text.Format((LPCWSTR)L"%d", slideValue);
+		light_target_y.SetWindowTextW(text);
+		break;
+	case IDC_LIGHT_TARGET_Z_SLIDER:
+		((CControlBoard*)GetParentSheet())->SendLightMessage(WM_LIGHT_TARGET_Z_CHANGED, slideValue);
+		text.Format((LPCWSTR)L"%d", slideValue);
+		light_target_z.SetWindowTextW(text);
+		break;
+	case IDC_AMBIENT_INTENSITY:
+		((CControlBoard*)GetParentSheet())->SendLightMessage(WM_LIGHT_AMBIENT_INTENSITY_CHANGED, slideValue);
+		break;
+	case IDC_LIGHTING_INTENSITY:
+		((CControlBoard*)GetParentSheet())->SendLightMessage(WM_LIGHT_INTENSITY_CHANGED, slideValue);
+		break;
 	}
+
+	CPropertyPage::OnHScroll(
+		nSBCode,
+		nPos,
+		pScrollBar
+	);
 }
 void CLightPage::OnBnClickedLightStatus()
 {
@@ -198,9 +195,9 @@ void CLightPage::UpdatePosition(XMFLOAT4 pos)
 }
 void CLightPage::UpdateTarget(XMFLOAT4 pos) 
 {
-	Light_Target_X_Slider.SetPos((int)pos.x + (SCREEN_WIDTH / 2));
-	Light_Target_Y_Slider.SetPos((int)pos.y + (SCREEN_HEIGHT / 2));
-	Light_Target_Z_Slider.SetPos((int)pos.z + (SCREEN_WIDTH / 2));
+	Light_Target_X_Slider.SetPos(static_cast<int>(pos.x * 100.0f));
+	Light_Target_Y_Slider.SetPos(static_cast<int>(pos.y * 100.0f));
+	Light_Target_Z_Slider.SetPos(static_cast<int>(pos.z * 100.0f));
 	CString text;
 	text.Format((LPCWSTR)L"%d", (int)pos.x);
 	light_target_x.SetWindowTextW(text);
@@ -219,7 +216,7 @@ void CLightPage::UpdateAmbientIntensity(FLOAT intensity)
 	//FLOAT log_intensity = logf(intensity);
 	//ambient_intensity.SetPos((int)(log_intensity * 100.0f));
 
-	ambient_intensity.SetPos(static_cast<int>(intensity * 100.0f));
+	ambient_intensity.SetPos(static_cast<int>(intensity));
 }
 void CLightPage::UpdateLightIntensity(FLOAT intensity) 
 {
@@ -239,7 +236,16 @@ void CLightPage::UpdateLightColor(XMFLOAT4 color)
 }
 void CLightPage::UpdateLightType(string lightType)
 {
-	CString type(lightType.c_str());
+	CString type;
+
+	if (lightType == "DirectionalLight")
+		type = L"Directional";
+	else if (lightType == "PointLight")
+		type = L"Point";
+	else if (lightType == "SpotLight")
+		type = L"Spot";
+	else
+		return;
 
 	int index = lighting_style.FindStringExact(-1, type);
 

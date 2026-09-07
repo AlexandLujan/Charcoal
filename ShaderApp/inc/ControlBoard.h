@@ -52,6 +52,7 @@ public:
 	void SendLightMessage(UINT MessageID, uint32_t content);
 	void SendLightMessage(UINT MessageID, std::string* content);
 	void UpdateLightColor(XMFLOAT4 color);
+	void UpdateLightIntensity(FLOAT intensity);
 	void SendObjectMessage(UINT MessageID, uint32_t content);
 	void SendObjectMessage(UINT MessageID, std::string* content);
 	void SendVideoMessage(UINT MessageID, uint32_t content);
@@ -137,13 +138,12 @@ public:
 	}
 	void UpdateLightAmbientIntensity(FLOAT pos)
 	{
-		lightPage.UpdateLightIntensity(pos);
+		lightPage.UpdateAmbientIntensity(pos);
 	}
 	void UpdateLightType(std::string lightType)
 	{
 		lightPage.UpdateLightType(lightType);
 	}
-
 	void UpdateLightStatus(std::string status)
 	{
 		lightPage.UpdateLightStatus(status);

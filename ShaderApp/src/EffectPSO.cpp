@@ -280,7 +280,7 @@ void EffectPSO::Apply(CommandList& commandList)
                     m_pAlignedMVP->View
                 );
 
-            XMStoreFloat4(
+            DirectX::XMStoreFloat4(
                 &gpuLight.PositionVS,
                 positionVS
             );
@@ -311,24 +311,88 @@ void EffectPSO::Apply(CommandList& commandList)
         {
             GPUSpotLight gpuLight{};
 
-            gpuLight.PositionWS = light->PositionWS;
-            gpuLight.PositionVS = light->PositionVS;
+            //
+            // POSITION
+            //
 
-            gpuLight.DirectionWS = light->DirectionWS;
-            gpuLight.DirectionVS = light->DirectionVS;
+            gpuLight.PositionWS =
+                light->PositionWS;
 
-            gpuLight.Color = light->color;
+            XMVECTOR positionWS =
+                XMLoadFloat4(
+                    &light->PositionWS
+                );
 
-            gpuLight.Ambient = light->ambient;
-            gpuLight.DiffuseIntensity = light->diffuseIntensity;
-            gpuLight.SpecularIntensity = light->specularIntensity;
-            gpuLight.SpotAngle = light->SpotAngle;
+            XMVECTOR positionVS =
+                XMVector4Transform(
+                    positionWS,
+                    m_pAlignedMVP->View
+                );
 
-            gpuLight.ConstantAttenuation = light->ConstantAttenuation;
-            gpuLight.LinearAttenuation = light->LinearAttenuation;
-            gpuLight.QuadraticAttenuation = light->QuadraticAttenuation;
+            DirectX::XMStoreFloat4(
+                &gpuLight.PositionVS,
+                positionVS
+            );
 
-            gpuSpotLights.push_back(gpuLight);
+            //
+            // DIRECTION
+            //
+
+            gpuLight.DirectionWS =
+                light->DirectionWS;
+
+            XMVECTOR directionWS =
+                XMLoadFloat4(
+                    &light->DirectionWS
+                );
+
+            XMVECTOR directionVS =
+                XMVector3TransformNormal(
+                    directionWS,
+                    m_pAlignedMVP->View
+                );
+
+            directionVS =
+                XMVector3Normalize(
+                    directionVS
+                );
+
+            DirectX::XMStoreFloat4(
+                &gpuLight.DirectionVS,
+                directionVS
+            );
+
+            //
+            // LIGHT PROPERTIES
+            //
+
+            gpuLight.Color =
+                light->color;
+
+            gpuLight.Ambient =
+                light->ambient;
+
+            gpuLight.DiffuseIntensity =
+                light->diffuseIntensity;
+
+            gpuLight.SpecularIntensity =
+                light->specularIntensity;
+
+            gpuLight.SpotAngle =
+                light->SpotAngle;
+
+            gpuLight.ConstantAttenuation =
+                light->ConstantAttenuation;
+
+            gpuLight.LinearAttenuation =
+                light->LinearAttenuation;
+
+            gpuLight.QuadraticAttenuation =
+                light->QuadraticAttenuation;
+
+            gpuSpotLights.push_back(
+                gpuLight
+            );
         }
 
         commandList.SetGraphicsDynamicStructuredBuffer(RootParameters::SpotLights, gpuSpotLights);
@@ -358,7 +422,7 @@ void EffectPSO::Apply(CommandList& commandList)
             directionVS =
                 XMVector3Normalize(directionVS);
 
-            XMStoreFloat4(
+            DirectX::XMStoreFloat4(
                 &gpuLight.DirectionVS,
                 directionVS
             );
