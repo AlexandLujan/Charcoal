@@ -67,7 +67,7 @@ void CControlBoard::SendCameraMessage(UINT MessageID, string* content)
 }
 void CControlBoard::SendLightMessage(UINT MessageID, uint32_t content)
 {
-	::PostMessage(parent->m_hWnd, WM_LIGHTING_MESSAGE, MessageID, static_cast<LPARAM>(content));
+	::SendMessage(parent->m_hWnd, WM_LIGHTING_MESSAGE, MessageID, static_cast<LPARAM>(content));
 }
 void CControlBoard::SendLightMessage(UINT MessageID, string* content)
 {
@@ -76,6 +76,10 @@ void CControlBoard::SendLightMessage(UINT MessageID, string* content)
 void CControlBoard::UpdateLightColor(XMFLOAT4 color)
 {
 	lightPage.UpdateLightColor(color);
+}
+void CControlBoard::UpdateLightIntensity(FLOAT intensity)
+{
+	lightPage.UpdateLightIntensity(intensity);
 }
 void CControlBoard::SendObjectMessage(UINT MessageID, uint32_t content)
 {
