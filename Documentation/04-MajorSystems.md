@@ -67,7 +67,7 @@ The scene provides a consistent geometric basis for evaluating material properti
 Its repeated geometry makes differences between rendering configurations easier to observe.
 
 **Suggested Figure 4.1 — Initial Hex Field Geometry**
-![[figure4-1.png]]
+![Figure 4.1](images/figure4-1.png)
 
 The geometry system establishes the structural foundation upon which the remaining rendering features operate.
 
@@ -198,7 +198,7 @@ This makes it useful for broad illumination across a scene.
 Within the Hex Field, directional lighting contributes to the overall appearance of surfaces and provides a foundation for evaluating material response.
 
 **Suggested Figure 4.2 — Directional Lighting Test**
-![[figure4-2.png]]
+![Figure 4.2](images/figure4-2.png)
 
 #### 4.6.3 Point Lighting
 
@@ -211,7 +211,7 @@ Distance attenuation can reduce the light's contribution as the distance from th
 Within the Hex Field, point lights contribute localized illumination near the hexagonal structures and their illuminated regions.
 
 **Suggested Figure 4.3 — Point Lighting Test**
-![[figure4-3.png]]
+![Figure 4.3](images/figure4-3.png)
 
 #### 4.6.4 Spot Lighting
 
@@ -224,7 +224,7 @@ Spot lighting configurations typically involve a light position, a direction, an
 Within the Hex Field, spot lighting provides more focused illumination and contributes to the visual separation of foreground and surrounding geometry.
 
 **Suggested Figure 4.4 — Spot Lighting Test**
-![[figure4-5.png]]
+![Figure 4.5](images/figure4-5.png)
 
 #### 4.6.5 Combined Lighting
 
@@ -235,7 +235,7 @@ Directional lighting contributes broader illumination, while point and spot ligh
 The combined lighting configuration allows different parts of the scene to exhibit distinct brightness and surface characteristics.
 
 **Suggested Figure 4.5 — Combined Lighting**
-![[figure4-4.png]]
+![Figure 4.4](images/figure4-4.png)
 
 The exact light accumulation calculations, attenuation equations, and shader data structures depend on the implemented lighting shader.
 
@@ -330,7 +330,7 @@ These comparisons help establish how texture information contributes to material
 
 | Base / Albedo                             | Normal Mapping                            | Combined Surface Detail                   |
 | ----------------------------------------- | ----------------------------------------- | ----------------------------------------- |
-| ![[figure4-7-1.png\|254]] | ![[figure4-6.png\|249]] | ![[figure4-7-2.png\|248]] |
+| ![figure4-7-1.png\|250](images/figure4-7-1.png) | ![figure4-6.png\|250](images/figure4-6.png) | ![figure4-7-2.png\|250](images/figure4-7-2.png) |
 _Figure 4.6 — Comparison of texture configurations applied to Hex Field surfaces._
 
 Screenshots should be labeled according to the texture inputs and shader features actually enabled during capture.
@@ -413,7 +413,7 @@ During development, multiple configurations were tested to refine the appearance
 These experiments included changes to emissive coloration, intensity, and the relationship between emissive regions and the surrounding dark materials.
 
 **Suggested Figure 4.7 — Emissive Material Tests**
-![[figure4-7.png]]
+![[figure4-7.png]](images/figure4-7.png)
 
 ### 4.11 Bloom and Post-Processing
 
@@ -448,7 +448,7 @@ flowchart TD
 ```
 
 _Figure 4.8 — Conceptual bloom processing pipeline._
-![[figure4-7-3.png]]
+![[figure4-7-3.png]](images/figure4-7-3.png)
 
 #### 4.11.3 Bloom Strength
 
@@ -466,7 +466,7 @@ The objective was to achieve a visually distinct glow without obscuring the geom
 
 | Reduced Bloom                             | Increased Bloom                           |
 | ----------------------------------------- | ----------------------------------------- |
-| ![[low-bump.png\|349]] | ![[high-bump.png\|348]] |
+| ![[low-bump.png\|350]](images/low-bump.png) | ![[high-bump.png\|350]](images/high-bump.png) |
 _Figure 4.9 — Comparison demonstrating the effect of bloom strength on emissive Hex Field surfaces._
 
 For an accurate comparison, the source images should use the same camera position, geometry, and lighting configuration, with bloom being the principal changed parameter.
