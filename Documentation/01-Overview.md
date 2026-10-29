@@ -1,6 +1,6 @@
 # Charcoal — ALPHA 0.30
 
-![[update-snapshot-0_30.png]]
+![Charcoal ALPHA 0.30 Snapshot](images/update-snapshot-0_30.png)
 **Project:** Charcoal  
 **Version:** ALPHA 0.30 — Foundational Build  
 **Application Type:** Real-Time Computer Graphics Desktop Application  
@@ -69,7 +69,7 @@ Three-dimensional objects are represented using vertex and index data. Transform
 
 Depth testing ensures that visible surfaces are correctly resolved according to their spatial relationship with the camera.
 
-![[figure1-4-1.png]]
+![Figure 1.4.1](images/figure1-4-1.png)
 Figure 1.4.1: Initial Hex Field rendering featuring repeated three-dimensional geometry, dark surface, materials, and high-contrast red illumination.
 
 ##### Lighting
@@ -80,7 +80,7 @@ Directional lights provide illumination originating from a specified direction, 
 
 These systems allow the renderer to combine different lighting sources to produce more complex visual results.
 
-![[figure1-4-2.png]]
+![Figure 1.4.2](images/figure1-4-2.png)
 Figure 1.4.2: Lighting Demonstration highlighting variations in surface illumination and the interaction between light and surrounding hexagonal geometry,
 
 ##### Materials and Texture
@@ -91,16 +91,16 @@ Texture sampling expands these capabilities through image-based surface informat
 
 These features allow geometric surfaces to display visual detail beyond their underlying mesh structure.
 
-![[figure1-4-3.png]]
+![Figure 1.4.3](images/figure1-4-3.png)
 Figure 1.4.3: Early surface-detail demonstration showing textured hexagonal geometry under localized illumination in a dark environment.
 
-![[figure1-4-4.png]]
+![Figure 1.4.4](images/figure1-4-4.png)
 Figure 1.4.4: Material rendering test demonstrating subtle surface texture variations across the hexagonal structures, in this case, only the Normal Mapping is enabled.
 
-![[figure1-4-5.png]]
+![Figure 1.4.5](images/figure1-4-5.png)
 Figure 1.4.5: The same scene as Figure 1.4.4 but instead of Normal Mapping, the Bump Mapping is solely enabled.
 
-![[figure1-4-6.png]]
+![Figure 1.4.6](images/figure1-4-6.png)
 Figure 1.4.6: Normal Mapping and Bump Mapping both enabled in this render.
 
 **Emissive Materials and Post-Processing**
@@ -111,10 +111,10 @@ Bloom post-processing further enhances bright regions by introducing a glow effe
 
 Together, these techniques allow Charcoal to produce stylized lighting effects and more visually distinctive environments.
 
-![[figure1-4-7.png]]
+![Figure 1.4.7](images/figure1-4-7.png)
 Figure 1.4.7: Low-intensity illumination test demonstrating localized surface highlights and the contrast between dark materials and orange emissive regions.
 
-![[figure1-4-8.png]]
+![Figure 1.4.8](images/figure1-4-8.png)
 Figure 1.4.8: Refined Lighting configuration (Directional + Point Lights) demonstrating increased surface visibility and the interaction between illumination and material detail.
 
 ### 1.5 Hex Field — Rendering Demonstration
@@ -131,10 +131,10 @@ The Hex Field also serves as a visual record of Charcoal's technical progression
 
 Rather than serving solely as a visual showcase, the scene functions as a practical testing environment for evaluating the rendering pipeline.
 
-![[figure1-5-1.png]]
+![Figure 1.5.1](images/figure1-5-1.png)
 Figure 1.5.1: Final render of the Hex Field environment scene; featuring textured walls, hexagonal platforms, and warm emissive lighting within an enclosed three-dimensional scene.
 
-![[figure1-5-2.png]]
+![Figure 1.5.2](images/figure1-5-2.png)
 Figure 1.5.2: An alternate render demonstrating reduced illumination, pronounced material contrast, and spatial depth within the environment. (And also, a more defined version of the emissive material that uses gradients to demonstrate the glow's intensity)
 
 ### 1.6 Development Scope and Limitations
