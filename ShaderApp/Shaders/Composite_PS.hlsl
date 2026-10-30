@@ -23,7 +23,7 @@ float4 main(PSInput IN) : SV_Target
             IN.TexCoord
         ).rgb;
 
-    const float bloomStrength = 2.0f;
+    const float bloomStrength = 1.25f;
 
     // Composite the original HDR scene with the blurred bloom texture.
     float3 hdrColor =

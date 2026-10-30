@@ -1,0 +1,908 @@
+{
+  "Objects": [
+    {
+      "name": "t38",
+      "type": "OBJ_FILE",
+      "directory": "t38",
+      "filename": "t38",
+      "vertex exchange": "ZYX",
+      "woundCCW": false,
+      "mirror": {
+        "x": 1,
+        "y": 0,
+        "z": 1
+      },
+      "mesh_names": [
+        "fuselage_fuselage.mesh",
+        "cover1",
+        "cover2",
+        "trous_trous.mesh",
+        "voletD_voletD.mesh",
+        "voletG_voletG.mesh",
+        "aileronD_aileronD.mesh",
+        "aileronG_aileronG.mesh",
+        "echappes_echappes.mesh",
+        "planchet_planchet.mesh",
+        "porteA1_porteA1.mesh",
+        "porteA2_porteA2.mesh",
+        "axeAB_axeAB.mesh",
+        "axeAH_axeAH.mesh",
+        "roueA_roueA.mesh",
+        "porteD1_porteD1.mesh",
+        "porteD2_porteD2.mesh",
+        "axeDB_axeDB.mesh",
+        "axeDH_axeDH.mesh",
+        "roueD_roueD.mesh",
+        "porteG1_porteG1.mesh",
+        "porteG2_porteG2.mesh",
+        "axeGB_axeGB.mesh",
+        "axeGH_axeGH.mesh",
+        "roueG_roueG.mesh",
+        "ailes2_ailes2.mesh",
+        "ailes_ailes.mesh",
+        "direction_direction.mesh",
+        "antennes_antennes.mesh",
+        "beacon_beacon.mesh",
+        "seat.001_seat.mesh.001",
+        "seat_seat.mesh",
+        "sides_sides.mesh",
+        "intvitres_intvitres.mesh",
+        "inttourvitres_inttourvitres.mesh",
+        "xtanks_tanks.mesh",
+        "slatD_slatD.mesh",
+        "slatG_slatG.mesh",
+        "spoilerD_spoilerD.mesh",
+        "spoilerG_spoilerG.mesh",
+        "support_support.mesh",
+        "vitres_vitres.mesh",
+        "canopyA_canopyA.mesh",
+        "canopyB_canopyB.mesh",
+        "intcanopyA_intcanopyA.mesh",
+        "intcanopyB_intcanopyB.mesh",
+        "intvitrecanopyA_intvitrecanopyA.mesh",
+        "intvitrecanopyB_intvitrecanopyB.mesh",
+        "vitrecanopyA_vitrecanopyA.mesh",
+        "vitrecanopyB_vitrecanopyB.mesh"
+      ]
+    },
+    {
+      "name": "C130",
+      "type": "OBJ_FILE",
+      "directory": "t38",
+      "filename": "YC130",
+      "vertex exchange": "XYZ",
+      "woundCCW": true,
+      "mirror": {
+        "x": 0,
+        "y": 0,
+        "z": 1
+      },
+      "mesh_names": [
+        "Glass",
+        "Glass001",
+        "Glass002",
+        "Interior",
+        "Main_Body",
+        "Main_Body001",
+        "Main_Body002",
+        "Wings",
+        "Wings001",
+        "Wings002",
+        "Wings003",
+        "Wings004",
+        "Wings005",
+        "Wings006",
+        "Wings007",
+        "Wings008",
+        "Wings009",
+        "Wings010",
+        "Wings011",
+        "Wings012",
+        "Wings013",
+        "Wings014",
+        "Wings015",
+        "Wings016",
+        "Wings017"
+      ]
+    }
+  ],
+  "Actors": [
+    {
+      "name": "cat",
+      "object": "t38",
+      "position": {
+        "x": -1.0,
+        "y": 0,
+        "z": 0
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1.2,
+        "y": 1.2,
+        "z": 1.2
+      }
+    },
+    {
+      "name": "dog",
+      "object": "t38",
+      "position": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1.5,
+        "y": 1.5,
+        "z": 1.5
+      }
+    },
+    {
+      "name": "horse",
+      "object": "t38",
+      "position": {
+        "x": 1,
+        "y": 0,
+        "z": 0
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1.2,
+        "y": 1.2,
+        "z": 1.2
+      }
+    },
+    {
+      "name": "pig",
+      "object": "C130",
+      "position": {
+        "x": 0,
+        "y": 0,
+        "z": -4.2
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 3.5,
+        "y": 3.5,
+        "z": 3.5
+      }
+    }
+
+  ],
+  "Cameras": [
+    {
+      "name": "Camera1",
+      "position": {
+        "x": 0,
+        "y": 0,
+        "z": -10
+      },
+      "lookat": {
+        "x": 0,
+        "y": 0,
+        "z": 2000
+      },
+      "fov": 60.0
+    }
+  ],
+  "Lights": {
+    "Ambient": 0.12,
+    "Fixtures": [
+      {
+        "name": "Point0",
+        "type": "PointLight",
+        "color": "WHITE",
+        "intensity": 0.125,
+        "status": "ON",
+        "position": {
+          "x": -20,
+          "y": -30,
+          "z": 0
+        },
+        "target": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      },
+      {
+        "name": "Flood0",
+        "type": "SpotLight",
+        "color": "WHITE",
+        "intensity": 0.15,
+        "status": "ON",
+        "spread": 30.0,
+        "position": {
+          "x": -20,
+          "y": 20,
+          "z": 0
+        },
+        "target": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      },
+      {
+        "name": "Flood2",
+        "type": "SpotLight",
+        "color": "WHITE",
+        "intensity": 0.05,
+        "status": "ON",
+        "spread": 60.0,
+        "position": {
+          "x": 15,
+          "y": 10,
+          "z": 20
+        },
+        "target": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      },
+      {
+        "name": "Spot0",
+        "type": "DirectionalLight",
+        "color": "RED",
+        "intensity": 0.13,
+        "status": "ON",
+        "spread": 5.0,
+        "position": {
+          "x": 15,
+          "y": 15,
+          "z": -15
+        },
+        "target": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      }
+    ]
+  },
+  "Set Up": [
+  ],
+  "Script": {
+    "movie filename": "t38.mp4",
+    "start frame": 0,
+    "end frame": 2500,
+    "fps": 30,
+    "width": 1920,
+    "height": 1080,
+    "actors": [
+      {
+        "actor name": "cat",
+        "actor script": [
+          {
+            "frame": 10,
+            "action": "Gear Up",
+            "location": {
+              "x": -1.7,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "target": {
+              "x": -1.7,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "frame": 40,
+            "action": "Front Canopy Open",
+            "location": {
+              "x": -1.7,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "target": {
+              "x": -1.7,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "frame": 1400,
+            "action": "Front Canopy Close",
+            "location": {
+              "x": -1.7,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "target": {
+              "x": -1.7,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "frame": 1500,
+            "action": "Gear Down",
+            "location": {
+              "x": -1.7,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "target": {
+              "x": -1.7,
+              "y": 0.0,
+              "z": 0.0
+            }
+          }
+        ]
+      },
+      {
+        "actor name": "dog",
+        "actor script": [
+          {
+            "frame": 10,
+            "action": "Gear Up",
+            "location": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "target": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "frame": 40,
+            "action": "Rear Canopy Open",
+            "location": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "target": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "frame": 50,
+            "action": "Flaps Down",
+            "parameter": "100",
+            "location": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "target": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "frame": 1240,
+            "action": "Rear Canopy Close",
+            "location": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "target": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "frame": 1510,
+            "action": "Flaps Up",
+            "parameter": "0",
+            "location": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "target": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          }
+        ]
+      },
+      {
+        "actor name": "horse",
+        "actor script": [
+          {
+            "frame": 10,
+            "action": "Speed Brake Extend",
+            "location": {
+              "x": 1.7,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "target": {
+              "x": 1.7,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "frame": 40,
+            "action": "Front Canopy Open",
+            "location": {
+              "x": 1.7,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "target": {
+              "x": 1.7,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "frame": 41,
+            "action": "Rear Canopy Open",
+            "location": {
+              "x": 1.7,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "target": {
+              "x": 1.7,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "frame": 50,
+            "action": "Gear Up",
+            "location": {
+              "x": 1.7,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "target": {
+              "x": 1.7,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "frame": 1160,
+            "action": "Speed Brake Retract",
+            "location": {
+              "x": 1.7,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "target": {
+              "x": 1.7,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "frame": 1350,
+            "action": "Gear Dpwn",
+            "location": {
+              "x": 1.7,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "target": {
+              "x": 1.7,
+              "y": 0.0,
+              "z": 0.0
+            }
+          }
+        ]
+      }
+    ],
+    "cameras": [
+      {
+        "camera name": "Camera1",
+        "camera script": [
+          {
+            "frame": 1,
+            "location": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": -150.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "target": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 300.0
+            }
+          },
+          {
+            "frame": 20,
+            "location": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": -50.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "target": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 300.0
+            }
+          },
+          {
+            "frame": 30,
+            "location": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": -20.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "target": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 300.0
+            }
+          },
+          {
+            "frame": 55,
+            "location": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": -14.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "target": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 300.0
+            }
+          },
+          {
+            "frame": 80,
+            "location": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": -6.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "target": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 300.0
+            }
+          },
+          {
+            "frame": 100,
+            "location": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 2.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "target": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 300.0
+            }
+          },
+          {
+            "frame": 553,
+            "location": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 128.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "target": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 300.0
+            }
+          },
+          {
+            "frame": 555,
+            "location": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 130.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "target": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 300.0
+            }
+          },
+          {
+            "frame": 568,
+            "location": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 140.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "target": {
+              "x": -20.0,
+              "y": 0.0,
+              "z": 180.0
+            }
+          },
+          {
+            "frame": 576,
+            "location": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 140.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "target": {
+              "x": -45.0,
+              "y": 0.0,
+              "z": 180.0
+            }
+          },
+          {
+            "frame": 580,
+            "location": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 140.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "target": {
+              "x": -70.0,
+              "y": 0.0,
+              "z": 180.0
+            }
+          },
+          {
+            "frame": 584,
+            "location": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 148.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "target": {
+              "x": -150.0,
+              "y": 0.0,
+              "z": 150.0
+            }
+          },
+          {
+            "frame": 592,
+            "location": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 156.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "target": {
+              "x": -70.0,
+              "y": 0.0,
+              "z": 30.0
+            }
+          },
+          {
+            "frame": 592,
+            "location": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 160.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "target": {
+              "x": -30.0,
+              "y": 0.0,
+              "z": 30.0
+            }
+          },
+          {
+            "frame": 605,
+            "location": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 170.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "target": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "frame": 650,
+            "location": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 170.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "target": {
+              "x": 0.0,
+              "y": -50.0,
+              "z": 0.0
+            }
+          },
+          {
+            "frame": 700,
+            "location": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 500.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "target": {
+              "x": 0.0,
+              "y": -250.0,
+              "z": 0.0
+            }
+          }
+        ]
+      }
+    ],
+    "lights": []
+  }
+}

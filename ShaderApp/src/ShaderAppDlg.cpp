@@ -230,27 +230,27 @@ BOOL CShaderAppDlg::OnInitDialog()
 			XMFLOAT4{ 0.0f, 20.0f, 0.0f, 1.0f },
 			"WHITE",
 			0.0f,      // Ambient
-			0.35f,     // Diffuse
+			0.55f,     // Diffuse
 			0.08f,      // Specular
-			XM_PIDIV4,
+			XM_PI / 3.0f,
 			1.0f,      // Constant
-			0.02f,      // Linear
-			0.004f       // Quadratic
+			0.008f,      // Linear
+			0.0015f       // Quadratic
 		);
 
 	testSpotLight->DirectionWS =
 		XMFLOAT4{
-			0.0f,
+			0.25f,
 			-1.0f,
-			0.0f,
+			0.25f,
 			0.0f
 	};
 
 	testSpotLight->SetColor(
 		XMFLOAT4{
-			0.68f,
-			0.72f,
-			0.78f,
+			0.70f,
+			0.74f,
+			0.80f,
 			1.0f
 		}
 	);
@@ -268,7 +268,7 @@ BOOL CShaderAppDlg::OnInitDialog()
 	controlBoard->UpdateAddLightingName("Test Spot Light");
 	controlBoard->SetSelectedLighting(0);
 
-	controlBoard->UpdateLightColor(defaultLight->Color());
+	controlBoard->UpdateLightColor(defaultLight->FRGB());
 	controlBoard->UpdateLightingAmbientColor(AmbientLightColor);
 	controlBoard->UpdateLightType(defaultLight->LightType());
 

@@ -1,0 +1,451 @@
+{
+  "Objects": [
+    {
+      "type": "BOX",
+      "name": "the box",
+      "width": 1.0,
+      "height": 1.0,
+      "depth": 1.0,
+      "front": "CHROME",
+      "back": "BRONZE",
+      "top": "JADE",
+      "bottom": "RED",
+      "left": "CYAN",
+      "right": "YELLOW"
+    }
+  ],
+  "Actors": [
+    {
+      "name": "box",
+      "object": "the box",
+      "position": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      }
+    }
+  ],
+  "Cameras": [
+    {
+      "name": "Camera1",
+      "position": {
+        "x": 0,
+        "y": 0,
+        "z": -50
+      },
+      "lookat": {
+        "x": 0,
+        "y": 0,
+        "z": 2000
+      },
+      "fov": 60.0
+    }
+  ],
+  "Lights": {
+    "Ambient": 0.3,
+    "Fixtures": [
+      {
+        "name": "Point0",
+        "type": "PointLight",
+        "color": "WHITE",
+        "intensity": 1000.0,
+        "status": "ON",
+        "position": {
+          "x": 100,
+          "y": 1000,
+          "z": -200
+        },
+        "target": {}
+      },
+      {
+        "name": "Flood0",
+        "type": "SpotLight",
+        "color": "WHITE",
+        "intensity": 10000.0,
+        "status": "ON",
+        "spread": 30.0,
+        "position": {
+          "x": -100,
+          "y": -100,
+          "z": 200
+        },
+        "target": {
+          "x": 0,
+          "y": 0,
+          "z": -100
+        }
+      },
+      {
+        "name": "Flood2",
+        "type": "SpotLight",
+        "color": "YELLOW",
+        "intensity": 10000.0,
+        "status": "ON",
+        "spread": 60.0,
+        "position": {
+          "x": 100,
+          "y": 100,
+          "z": -200
+        },
+        "target": {
+          "x": 50,
+          "y": 50,
+          "z": 100
+        }
+      },
+      {
+        "name": "Spot0",
+        "type": "DirectionalLight",
+        "color": "WHITE",
+        "intensity": 10000.0,
+        "status": "ON",
+        "spread": 5.0,
+        "position": {
+          "x": 0,
+          "y": 100,
+          "z": 500
+        },
+        "target": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      }
+    ]
+  },
+  "Set Up": [
+  ],
+  "Script": {
+    "movie filename": "t38.mp4",
+    "start frame": 8,
+    "end frame": 750,
+    "fps": 30,
+    "width": 1920,
+    "height": 1080,
+    "objects": [],
+    "cameras": [
+      {
+        "camera name": "Camera1",
+        "camera script": [
+          {
+            "frame": 1,
+            "location": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": -150.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "target": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 300.0
+            }
+          },
+          {
+            "frame": 20,
+            "location": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": -50.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "target": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 300.0
+            }
+          },
+          {
+            "frame": 30,
+            "location": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": -20.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "target": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 300.0
+            }
+          },
+          {
+            "frame": 55,
+            "location": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": -14.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "target": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 300.0
+            }
+          },
+          {
+            "frame": 80,
+            "location": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": -6.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "target": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 300.0
+            }
+          },
+          {
+            "frame": 100,
+            "location": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 2.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "target": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 300.0
+            }
+          },
+          {
+            "frame": 553,
+            "location": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 128.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "target": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 300.0
+            }
+          },
+          {
+            "frame": 555,
+            "location": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 130.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "target": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 300.0
+            }
+          },
+          {
+            "frame": 568,
+            "location": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 140.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "target": {
+              "x": -20.0,
+              "y": 0.0,
+              "z": 180.0
+            }
+          },
+          {
+            "frame": 576,
+            "location": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 140.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "target": {
+              "x": -45.0,
+              "y": 0.0,
+              "z": 180.0
+            }
+          },
+          {
+            "frame": 580,
+            "location": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 140.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "target": {
+              "x": -70.0,
+              "y": 0.0,
+              "z": 180.0
+            }
+          },
+          {
+            "frame": 584,
+            "location": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 148.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "target": {
+              "x": -150.0,
+              "y": 0.0,
+              "z": 150.0
+            }
+          },
+          {
+            "frame": 592,
+            "location": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 156.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "target": {
+              "x": -70.0,
+              "y": 0.0,
+              "z": 30.0
+            }
+          },
+          {
+            "frame": 592,
+            "location": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 160.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "target": {
+              "x": -30.0,
+              "y": 0.0,
+              "z": 30.0
+            }
+          },
+          {
+            "frame": 605,
+            "location": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 170.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "target": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "frame": 650,
+            "location": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 170.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "target": {
+              "x": 0.0,
+              "y": -50.0,
+              "z": 0.0
+            }
+          },
+          {
+            "frame": 700,
+            "location": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 500.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "target": {
+              "x": 0.0,
+              "y": -250.0,
+              "z": 0.0
+            }
+          }
+        ]
+      }
+    ],
+    "lights": []
+  }
+}

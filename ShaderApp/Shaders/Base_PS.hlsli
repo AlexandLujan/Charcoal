@@ -442,11 +442,13 @@ float3 ComputeEmissiveGradient(float2 uv)
             0.12f
         );
 
+    const float emissiveStrength = 1.15f;
+
     return lerp(
         edgeColor,
         centerColor,
         centerMask
-    );
+    ) * emissiveStrength;
 }
 
 float4 main( PixelShaderInput IN ): SV_Target
