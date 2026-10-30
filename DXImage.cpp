@@ -174,7 +174,7 @@ void DXImage::ParseCommandLineArgs(WCHAR* argv[], int argc)
 
 	try
 	{
-		speechConfig = SpeechConfig::FromSubscription("8ztKspsrUCac9xZsyRjPZqsZk8767ca1NQ5txIQNdy933XhGvZDHJQQJ99CFACYeBjFXJ3w3AAAYACOGGE94", "eastus"); //OldGeekSpeechServices
+		speechConfig = SpeechConfig::FromSubscription("YOUR_AZURE_SPEECH_KEY", "eastus"); //OldGeekSpeechServices
 
 		// Set the language (optional, defaults to en-US)
 		speechConfig->SetSpeechRecognitionLanguage("en-US");
@@ -208,10 +208,11 @@ void DXImage::ParseCommandLineArgs(WCHAR* argv[], int argc)
 	}
 }
 
+// Speech Use Case
 void RecognizeSpeech()
 {
 // Replace with your Azure subscription key and service region
-	auto config = SpeechConfig::FromSubscription("8ztKspsrUCac9xZsyRjPZqsZk8767ca1NQ5txIQNdy933XhGvZDHJQQJ99CFACYeBjFXJ3w3AAAYACOGGE94", "eastus"); //OldGeekSpeechServices
+	auto config = SpeechConfig::FromSubscription("YOUR_AZURE_SPEECH_KEY", "eastus"); //OldGeekSpeechServices
 
 	// Set the language (optional, defaults to en-US)
 	config->SetSpeechRecognitionLanguage("en-US");
